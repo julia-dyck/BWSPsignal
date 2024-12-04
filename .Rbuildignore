@@ -1,2 +1,4 @@
 ^BWSPsignal\.Rproj$
 ^\.Rproj\.user$
+^setup_Rpackage_with_stanfiles\.R$
+^test_new_stanfile_setup\.R$
