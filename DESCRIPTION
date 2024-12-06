@@ -12,7 +12,7 @@ type distribution with shape parameters equal to one.
 Using data and prior information, the BWSP test calculates the posterior 
 distribution and performs an HDI+ROPE test on each shape parameter leading to a
 decision on the presence of a signal.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
