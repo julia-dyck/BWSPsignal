@@ -7,6 +7,9 @@
 #' @param ... optional plot arguments (expept \code{type, lwd, main})
 #'
 #' @return A plot of the PDF, CDF, hazard and survival function
+#' 
+#' @examples
+#' plotpgw(scale = 2, shape = 5, powershape = 10)
 #'
 #' @export
 #'
