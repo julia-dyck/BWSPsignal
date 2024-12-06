@@ -2,8 +2,8 @@
 #'
 #'
 #'
-#' @description Reformating of a matrix or dataframe containing a time-event dataset
-#' with time in the first column and the event status in the second column.
+#' @description Reformating of a matrix or dataframe containing a time-to-event
+#' dataset with time in the first column and the event status in the second column.
 #'
 #' @details Converts time-event data to a suitable format for rstan model fitting.
 #'
