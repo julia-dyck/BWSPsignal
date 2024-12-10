@@ -28,7 +28,7 @@
 #'
 
 
-## density function
+## hazard function
 
 hpgw = function(x, scale = 1, shape = 1, powershape = 1, log = FALSE){
   # renaming to match the formula

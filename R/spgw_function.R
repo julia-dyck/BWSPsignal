@@ -31,7 +31,7 @@
 
 
 
-## density function
+## Survival function
 
 spgw = function(x, scale = 1, shape = 1, powershape = 1, log = FALSE){
   # renaming to match the formula
