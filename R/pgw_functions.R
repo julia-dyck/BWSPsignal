@@ -2,7 +2,7 @@
 #' 
 #' @description Survival function, hazard function, cumulative distribution function,
 #' density, quantile function and random generation for the power generalized 
-#' Weibull distribution with parameters \code{scale, \code{shape} and \code{powershape}.
+#' Weibull distribution with parameters \code{scale}, \code{shape} and \code{powershape}.
 #' 
 #' @param x vector of quantiles
 #' @param p vector of probabilities
