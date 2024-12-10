@@ -12,7 +12,7 @@
 #' @param shape Shape parameter
 #' @param powershape powershape parameter
 #' 
-#' @param log locigal argument; if TRUE, the logarithmized survival probability is returned
+#' @param log logical argument; if TRUE, the logarithmized survival probability is returned
 #' 
 #'
 #' @return A vector of cumulative probability values evaluated at each of the inserted quantiles
@@ -26,12 +26,13 @@
 #'\frac{\nu}{\gamma\theta^{\nu}}\cdot x^{\nu-1}\cdot  \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma-1}}
 #' }
 #' The cumulative distribution function is then \eqn{F(x) = 1 - S(x)} and the density function 
-#' is \eqn{S(x)\cdot h(x)}.
+#' is \eqn{S(x)\cdot h(x)}. The quantile function is the inverse of the cumulative 
+#' distribution function \eqn{F^{-1}(x)}.
 #'
 #' If both shape parameters equal 1, the pgw distribution reduces to the exponential distribution
 #' (implemented in \code{d/p/q/rexp} in Rpackage 'stats') with \eqn{\texttt{rate} = 1/\texttt{scale}}
 #' If the powershape parameter equals 1, the pgw distribution simplifies to the Weibull distribution
-#' (implemented in \code{d/p/q/rweibull} in Rpackage 'stats') with the same parametrization.
+#' (implemented in \code{d/p/q/rweibull} in Rpackage 'stats') with the same parameterization.
 #' 
 #' If parameter values are not specified, they are set as
 #' \code{scale = 1, shape = 1, powershape = 1} per default.
