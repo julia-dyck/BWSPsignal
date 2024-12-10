@@ -13,7 +13,7 @@
 #'         parameter gamma:
 #'
 #' \item{nu/ga.post.stats}{Summary statistics from the stanfit object about the posterior distribution, namely \code{mean, se_mean, sd},
-#'                  and bayesian convergence diagnostic measures, namely \cod{n_eff, Rhat}}
+#'                  and bayesian convergence diagnostic measures, namely \code{n_eff, Rhat}}
 #' \item{nu/ga.eti}{equitailed posterior (credibility) intervals specified by their lower and upper boundaries;
 #'                  one interval is derived for each specified credibility niveau}
 #' \item{nu/ga.hdi}{highest posterior density intervals specified by their lower and upper boundaries;
