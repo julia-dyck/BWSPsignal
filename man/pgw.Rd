@@ -31,7 +31,7 @@ rpgw(n, scale = 1, shape = 1, powershape = 1)
 
 \item{powershape}{powershape parameter}
 
-\item{log}{locigal argument; if TRUE, the logarithmized survival probability is returned}
+\item{log}{logical argument; if TRUE, the logarithmized survival probability is returned}
 
 \item{p}{vector of probabilities}
 
@@ -46,7 +46,7 @@ density, quantile function and random generation for the power generalized
 Weibull distribution with parameters \code{scale}, \code{shape} and \code{powershape}.
 }
 \details{
-The survival function of the power generalized distribution is (Nikulin and Wu, 2016, p. 15-16):
+The survival function of the power generalized distribution is (\insertRef{nikulin2016}{BWSPsignal}, p. 15-16):
 \deqn{
     S(x) = exp \left\{ 1 - \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma}} \right\}.
 }
@@ -55,12 +55,13 @@ The hazard function is
 \frac{\nu}{\gamma\theta^{\nu}}\cdot x^{\nu-1}\cdot  \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma-1}}
 }
 The cumulative distribution function is then \eqn{F(x) = 1 - S(x)} and the density function
-is \eqn{S(x)\cdot h(x)}.
+is \eqn{S(x)\cdot h(x)}. The quantile function is the inverse of the cumulative
+distribution function \eqn{F^{-1}(x)}.
 
 If both shape parameters equal 1, the pgw distribution reduces to the exponential distribution
 (implemented in \code{d/p/q/rexp} in Rpackage 'stats') with \eqn{\texttt{rate} = 1/\texttt{scale}}
 If the powershape parameter equals 1, the pgw distribution simplifies to the Weibull distribution
-(implemented in \code{d/p/q/rweibull} in Rpackage 'stats') with the same parametrization.
+(implemented in \code{d/p/q/rweibull} in Rpackage 'stats') with the same parameterization.
 
 If parameter values are not specified, they are set as
 \code{scale = 1, shape = 1, powershape = 1} per default.
