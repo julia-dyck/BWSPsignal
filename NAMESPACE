@@ -2,9 +2,6 @@
 
 export(datagen_tte)
 export(dpgw)
-export(fit.fll)
-export(fit.ggg)
-export(fit.lll)
 export(fit.prep)
 export(fit_pgw_tte)
 export(hpgw)

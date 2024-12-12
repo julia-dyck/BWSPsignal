@@ -30,3 +30,4 @@ LinkingTo:
     StanHeaders (>= 2.18.0)
 SystemRequirements: GNU make
 RdMacros: Rdpack
+LazyData: true
