@@ -13,6 +13,7 @@
 #'
 #' @export
 #'
+#' @seealso \code{\link{dpgw}}, \code{\link{spgw}}, \code{\link{ppgw}}, \code{\link{hpgw}}
 
 
 plotpgw = function(scale = 1, shape = 1, powershape = 1,...){
