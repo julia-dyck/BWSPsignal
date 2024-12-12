@@ -25,3 +25,6 @@ Visualization of the power generalized Weibull distribution
 plotpgw(scale = 2, shape = 5, powershape = 10)
 
 }
+\seealso{
+\code{\link{dpgw}}, \code{\link{spgw}}, \code{\link{ppgw}}, \code{\link{hpgw}}
+}

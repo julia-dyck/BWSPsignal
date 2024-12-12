@@ -57,3 +57,7 @@ censor. The standard deviation is defined as
 \eqn{ rel.sd \cdot censor}. All generated event-times
 \eqn{\leq 0} are set to 1.
 }
+\examples{
+datagen_tte(100, 0.1, 1, 0.5, 0.05, 365)
+
+}

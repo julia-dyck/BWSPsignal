@@ -46,7 +46,7 @@ density, quantile function and random generation for the power generalized
 Weibull distribution with parameters \code{scale}, \code{shape} and \code{powershape}.
 }
 \details{
-The survival function of the power generalized distribution is (\insertRef{nikulin2016}{BWSPsignal}, p. 15-16):
+The survival function of the power generalized distribution is:
 \deqn{
     S(x) = exp \left\{ 1 - \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma}} \right\}.
 }
@@ -65,4 +65,7 @@ If the powershape parameter equals 1, the pgw distribution simplifies to the Wei
 
 If parameter values are not specified, they are set as
 \code{scale = 1, shape = 1, powershape = 1} per default.
+}
+\references{
+\insertRef{nikulin2016}{BWSPsignal}
 }
