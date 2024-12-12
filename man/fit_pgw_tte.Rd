@@ -12,7 +12,28 @@ fit_pgw_tte(
   warmup = 1000
 )
 }
+\arguments{
+\item{datstan}{A named list of data for the stan model; a dataframe can be
+reformated with \code{tte2standat()}.}
+
+\item{priordist}{A character string indicating the prior distribution for the
+parameters of the pgW distribution. Options are
+\code{"fgg", "fll", "ggg", "lll"} (see details).}
+
+\item{chains}{The number of Markov chains to run}
+
+\item{iter}{The total number of iterations per chain (including warmup)}
+
+\item{warmup}{The number of warmup iterations per chain}
+}
+\value{
+A stanfit object
+}
 \description{
-The function apply the \code{rstan::stan} command with an already prespecified .stan file.
-Within a simulation study, the function can be run in parallel on various prior meta-parameter specifications or datasets.
+The function applies the \code{rstan::sampling} command to fit a pgW model to
+time-to-event data with a gamma or lognormal priors for the parameters of the
+pgW distribution.
+}
+\details{
+Additional details...
 }
