@@ -12,13 +12,13 @@
 
 
 
-survdat2pgwstanmodeldat = function(dat,
-                                   scale.mean,
-                                   scale.sd,
-                                   shape.mean,
-                                   shape.sd,
-                                   powershape.mean,
-                                   powershape.sd){
+tte2standat = function(dat,
+                       scale.mean,
+                       scale.sd,
+                       shape.mean,
+                       shape.sd,
+                       powershape.mean,
+                       powershape.sd){
 
   standat = list(N_status_e = sum(dat[,2]),
                  N_status_c = dim(dat)[1]-sum(dat[,2]),
@@ -39,10 +39,10 @@ survdat2pgwstanmodeldat = function(dat,
 # testd = datagenpgw(c(100, 32, scale = 3, shape = 4, powershape = 8))
 # head(testd)
 #
-# testdstanmod = survdat2pgwstanmodeldat(testd,
-#                                        scale.mean = 3,
-#                                        scale.sd = 4,
-#                                        shape.mean = 5,
-#                                        shape.sd = 6,
-#                                        powershape.mean = 7,
-#                                        powershape.sd = 8)
+# testdstanmod = tte2standat(testd,
+#                            scale.mean = 3,
+#                            scale.sd = 4,
+#                            shape.mean = 5,
+#                            shape.sd = 6,
+#                            powershape.mean = 7,
+#                            powershape.sd = 8)
