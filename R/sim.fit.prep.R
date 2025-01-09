@@ -11,7 +11,7 @@
 #' @export
 
 
-fit.prep = function(ttedat, pc){
+sim.fit.prep = function(ttedat, pc){
   # ttedat = data set in time-event-format generated from pc
   # pc contains N, br, adr.rate, adr.when, adr.relsd, censor, dist.ass, adr.ass
   adr.assumption = pc[8]

@@ -29,7 +29,7 @@ sim.fit.to.1.sample = function(pc, cores = 1){
   survdat = datagen_tte(genpar = pc)
 
   ### Data and prior prep
-  datstan = fit.prep(survdat = survdat, pc = pc)
+  datstan = sim.fit.prep(survdat = survdat, pc = pc)
 
   dist.ass = pc[7]
   adr.ass = pc[8]
