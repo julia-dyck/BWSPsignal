@@ -31,9 +31,46 @@ A stanfit object
 }
 \description{
 The function applies the \code{rstan::sampling} command to fit a pgW model to
-time-to-event data with a gamma or lognormal priors for the parameters of the
+time-to-event data with Gamma or Lognormal priors for the parameters of the
 pgW distribution.
 }
 \details{
-Additional details...
+The posterior is proportional to the likelihood times the prior. The likelihood is
+\deqn{\mathcal{L}(t| \Theta) = \prod_{i=1}^N S(t_i)^{1-d_i}\cdot f(t_i)^{d_i}}
+with \eqn{S(t)} the survival function of the pgW distribution and \eqn{f(t)} the
+density function of the pgW distribution. The pair \eqn{(t_i, d_i)} are the observed
+time-to-event observations.
+
+The priors are either independent univariate Gamma or Lognormal distribution
+for the parameters of the pgW distribution.
+Implemented distributional choices for the joint prior are products of the following:
+\tabular{llll}{
+for scale \eqn{\theta} \tab for shape \eqn{\nu} \tab for powershape \eqn{\gamma} \tab abbreviation \cr
+fixed to prior mean \tab Gamma \tab Gamma \tab fgg \cr
+Gamma \tab Gamma \tab Gamma \tab ggg \cr
+fixed to prior mean \tab Lognormal \tab Lognormal \tab fll \cr
+Lognormal \tab Lognormal \tab Lognormal \tab lll \cr
+}
+}
+\examples{
+# prep the data
+head(tte)
+standat = tte2standat(dat = tte,
+                     scale.mean = 1, 
+                     scale.sd = 10,
+                     shape.mean = 1, 
+                     shape.sd = 10,
+                     powershape.mean = 1, 
+                     powershape.sd = 10)
+# fit the model
+fit = fit_pgw_tte(datstan = standat,
+                 priordist = "lll",
+                 chains = 4,
+                 iter = 110,
+                 warmup = 10)
+# print the summary
+fit
+
+
+
 }
