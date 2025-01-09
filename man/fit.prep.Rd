@@ -4,17 +4,18 @@
 \alias{fit.prep}
 \title{Prepare Bayesian pgW fitting}
 \usage{
-fit.prep(survdat, pc)
+fit.prep(ttedat, pc)
 }
 \arguments{
-\item{survdat}{time-event-sample}
+\item{ttedat}{time-to-event data set}
 
-\item{pc}{one parameter combination used in simulation study}
+\item{pc}{vector representing one parameter combination used in simulation study}
 }
 \value{
-a list containing all information to be inserted into fit.fgg, fit.fll,
-fit.ggg, or fit.lll function.
+list containing all information to be inserted as \code{datstan}
+argument into the \code{\link{fit_pgw_tte} function.
 }
 \description{
-Contains data preparation for stanmodel.
+Formatting of simulated data generated with \code{link{datagen_tte}} as building
+block for tuning the Bayesian WSP test via simulation study.
 }

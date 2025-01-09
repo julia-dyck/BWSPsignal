@@ -13,8 +13,8 @@ fit_pgw_tte(
 )
 }
 \arguments{
-\item{datstan}{A named list of data for the stan model; a dataframe can be
-reformated with \code{tte2standat()}.}
+\item{datstan}{A named list of data for the stanmodel; a data frame can be
+reformated with \code{\link{tte2standat}}.}
 
 \item{priordist}{A character string indicating the prior distribution for the
 parameters of the pgW distribution. Options are
@@ -30,7 +30,7 @@ parameters of the pgW distribution. Options are
 A stanfit object
 }
 \description{
-The function applies the \code{rstan::sampling} command to fit a pgW model to
+The function applies the \code{\link{rstan::sampling}} command to fit a pgW model to
 time-to-event data with Gamma or Lognormal priors for the parameters of the
 pgW distribution.
 }

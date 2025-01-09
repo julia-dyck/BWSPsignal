@@ -1,11 +1,11 @@
 #' Fit pgW models with stan
 #'
-#' The function applies the \code{rstan::sampling} command to fit a pgW model to 
+#' The function applies the \code{\link{rstan::sampling}} command to fit a pgW model to 
 #' time-to-event data with Gamma or Lognormal priors for the parameters of the
 #' pgW distribution.
 #'
-#' @param datstan A named list of data for the stan model; a dataframe can be 
-#' reformated with \code{tte2standat()}.
+#' @param datstan A named list of data for the stanmodel; a data frame can be 
+#' reformated with \code{\link{tte2standat}}.
 #' @param priordist A character string indicating the prior distribution for the
 #' parameters of the pgW distribution. Options are 
 #' \code{"fgg", "fll", "ggg", "lll"} (see details).
