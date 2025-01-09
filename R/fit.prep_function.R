@@ -1,19 +1,14 @@
-#' Prepare Bayesian pgW fitting
-#'
-#' Formatting of simulated data generated with \code{link{datagen_tte}} as building
-#' block for tuning the Bayesian WSP test via simulation study.
-#'
+#' Prepare Bayesian pgW fitting for simulation study
+#' 
+#' Formatting of simulated data generated with \code{\link{datagen_tte}} as building block for tuning the Bayesian WSP test via simulation study.
 #'
 #' @param ttedat time-to-event data set
 #' @param pc vector representing one parameter combination used in simulation study
 #'
-#' @return list containing all information to be inserted as \code{datstan} 
+#' @return A list containing all information to be inserted as \code{datstan} 
 #' argument into the \code{\link{fit_pgw_tte} function.
 #'
-#'
 #' @export
-#'
-
 
 
 fit.prep = function(ttedat, pc){

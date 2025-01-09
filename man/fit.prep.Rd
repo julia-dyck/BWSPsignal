@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit.prep_function.R
 \name{fit.prep}
 \alias{fit.prep}
-\title{Prepare Bayesian pgW fitting}
+\title{Prepare Bayesian pgW fitting for simulation study}
 \usage{
 fit.prep(ttedat, pc)
 }
@@ -12,10 +12,9 @@ fit.prep(ttedat, pc)
 \item{pc}{vector representing one parameter combination used in simulation study}
 }
 \value{
-list containing all information to be inserted as \code{datstan}
+A list containing all information to be inserted as \code{datstan}
 argument into the \code{\link{fit_pgw_tte} function.
 }
 \description{
-Formatting of simulated data generated with \code{link{datagen_tte}} as building
-block for tuning the Bayesian WSP test via simulation study.
+Formatting of simulated data generated with \code{\link{datagen_tte}} as building block for tuning the Bayesian WSP test via simulation study.
 }
