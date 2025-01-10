@@ -32,7 +32,7 @@
 
 
 # function --------------------------------------------------------------------
-stanfit.to.poststats = function(stanfit.object, cred.niveaus = seq(0.5, 0.95, by = 0.05)){
+sim.stanfit.to.poststats = function(stanfit.object, cred.niveaus = seq(0.5, 0.95, by = 0.05)){
   require(rstan)
   obj = stanfit.object
 
