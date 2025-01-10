@@ -18,7 +18,7 @@
 #' @export
 #'
 
-stanfit.to.fitstats = function(stanfit.object, stan.dat){
+sim.stanfit.to.fitstats = function(stanfit.object, stan.dat){
 
   obj = stanfit.object
 

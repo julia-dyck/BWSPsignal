@@ -54,7 +54,7 @@ sim.fit.to.1.sample = function(pc, cores = 1){
 
   ### extracting relevant statistics
   stats = cbind(pc,
-                stanfit.to.fitstats(stanfit.object = mod,
+                sim.stanfit.to.fitstats(stanfit.object = mod,
                                     stan.dat = datstan),
                 as.data.frame(stanfit.to.poststats(stanfit.object = mod,
                                                    cred.niveaus = seq(0.5, 0.95, by = 0.05))))
