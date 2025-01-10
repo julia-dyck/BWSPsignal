@@ -23,32 +23,36 @@
 #'
 
 
-sim.fit.to.1.sample = function(pc, cores = 1){
+sim.fit.to.1.sample = function(pc){
 
   ### Data simulation
-  survdat = datagen_tte(genpar = pc)
+  ttedat = datagen_tte(genpar = pc)
 
   ### Data and prior prep
-  datstan = sim.fit.prep(survdat = survdat, pc = pc)
+  datstan = sim.fit.prep(ttedat = ttedat, pc = pc)
 
   dist.ass = pc[7]
   adr.ass = pc[8]
 
   ### Model fitting
   if(dist.ass == "fix.gam.gam"){
-    mod = fit.fgg(datstan = datstan, cores = cores)
+    mod = fit_pgw_tte(datstan = datstan,
+                      priordist = "fgg")
     mod@model_name = "fix.gam.gam" # manually, because not working automatically
   }
   if(dist.ass == "gam.gam.gam"){
-    mod = fit.ggg(datstan = datstan, cores = cores)
+    mod = fit_pgw_tte(datstan = datstan,
+                      priordist = "ggg")
     mod@model_name = "gam.gam.gam" # manually, because not working automatically
   }
   if(dist.ass == "fix.log.log"){
-    mod = fit.fll(datstan = datstan, cores = cores)
+    mod = fit_pgw_tte(datstan = datstan,
+                      priordist = "fll")
     mod@model_name = "fix.log.log" # manually, because not working automatically
   }
   if(dist.ass == "log.log.log"){
-    mod = fit.lll(datstan = datstan, cores = cores)
+    mod = fit_pgw_tte(datstan = datstan,
+                      priordist = "lll")
     mod@model_name = "log.log.log" # manually, because not working automatically
   }
 
@@ -57,24 +61,12 @@ sim.fit.to.1.sample = function(pc, cores = 1){
                 sim.stanfit.to.fitstats(stanfit.object = mod,
                                     stan.dat = datstan),
                 as.data.frame(sim.stanfit.to.poststats(stanfit.object = mod,
-                                                   cred.niveaus = seq(0.5, 0.95, by = 0.05))))
+                                                       cred.niveaus = seq(0.5, 0.95, by = 0.05))))
 
   return(stats)
 
 }
 
 
-#  testing ---------------------------------------------------------------------
-
-# library(rstan)
-# options(mc.cores = parallel::detectCores())
-# rstan_options(auto_write = TRUE)
-#
-# testft1s = sim.fit.to.1.sample(dat = testdatlist) # TESTEN
-# testft1s
-
-
 
 ## END OF DOC
-
-
