@@ -31,12 +31,12 @@
 #' \insertRef{kruschke2018}{BWSPsignal}
 #' 
 #' @examples
-#' ropehdi(nullregion = c(1,2), credregion = c(3,5)) # rope left from hdi and disjunct
-#' ropehdi(nullregion = c(1,3.5), credregion = c(3,5)) # rope left from hdi, with overlap
-#' ropehdi(nullregion = c(1,6), credregion = c(3,5)) # rope encompassing hdi
-#' ropehdi(nullregion = c(6,7), credregion = c(3,5)) # rope right from hdi and disjunct
-#' ropehdi(nullregion = c(4,7), credregion = c(3,5)) # rope right from hdi with overlap
-#' ropehdi(nullregion = c(4,4.5), credregion = c(3,5)) # rope encompassed by hdi
+#' hdi_plus_rope(nullregion = c(1,2), credregion = c(3,5)) # rope left from hdi and disjunct
+#' hdi_plus_rope(nullregion = c(1,3.5), credregion = c(3,5)) # rope left from hdi, with overlap
+#' hdi_plus_rope(nullregion = c(1,6), credregion = c(3,5)) # rope encompassing hdi
+#' hdi_plus_rope(nullregion = c(6,7), credregion = c(3,5)) # rope right from hdi and disjunct
+#' hdi_plus_rope(nullregion = c(4,7), credregion = c(3,5)) # rope right from hdi with overlap
+#' hdi_plus_rope(nullregion = c(4,4.5), credregion = c(3,5)) # rope encompassed by hdi
 #'
 #' @export
 #'
@@ -44,7 +44,7 @@
 
 
 
-ropehdi = function(nullregion, credregion){
+hdi_plus_rope = function(nullregion, credregion){
   # nullregion = region of practical equivalence representing the Null value,
   #              numeric vector of length 2, c(lowerboundary, upperboundary)
   # credregion = equal-tailed interval or highest posterior density region calculated
@@ -114,26 +114,6 @@ ropehdi = function(nullregion, credregion){
 
   #return(c(rej.nullvalue = rej.nullvalue, acc.nullvalue = acc.nullvalue, undecided = undecided))
 }
-
-
-
-# testing
-# ropehdi(nullregion = c(1,2), credregion = c(3,5)) # null region left from hdi and disjunct
-# 
-# ropehdi(nullregion = c(1,3.5), credregion = c(3,5)) # null region left from hdi, with overlap
-# 
-# ropehdi(nullregion = c(1,6), credregion = c(3,5)) # null region encompassing hdi
-# 
-# ropehdi(nullregion = c(6,7), credregion = c(3,5)) # null region right from hdi and disjunct
-# 
-# ropehdi(nullregion = c(4,7), credregion = c(3,5)) # null region right from hdi with overlap
-# 
-# ropehdi(nullregion = c(4,4.5), credregion = c(3,5)) # null region encompassed by hdi
-
-
-
-
-
 
 
 ## END OF DOCUMENT
