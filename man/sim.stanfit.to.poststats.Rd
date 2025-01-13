@@ -21,20 +21,18 @@ parameter gamma:
 
 \item{nu/ga.post.stats}{Summary statistics from the stanfit object about the posterior distribution, namely \code{mean, se_mean, sd},
 and bayesian convergence diagnostic measures, namely \code{n_eff, Rhat}}
-\item{nu/ga.eti}{equitailed posterior (credibility) intervals specified by their lower and upper boundaries;
+\item{nu/ga.eti}{equal-tailed posterior (credibility) intervals specified by their lower and upper boundaries;
 one interval is derived for each specified credibility niveau}
 \item{nu/ga.hdi}{highest posterior density intervals specified by their lower and upper boundaries;
 one interval is derived for each specified credibility niveau}
-\item{nu/ga.per}{percentiles for the posterior density in order to estimate the incorporated probability mass within a
-specified region of practical equivalence (rope) for the null value of the statistical test that will be
-conducted after the fitting procedure}
+\item{nu/ga.per}{percentiles for the posterior density}
 
-@details The storing in one long vector for each parameter is motivated by the
-goal to conduct a simulation study, where all relevant statistics per run ars stored columnwise
-and the repeated runs for one data scenario are store rowwise.
+@details The storing in one long vector for each parameter is provided to run a
+simulation study, where all relevant statistics per run are stored column-wise
+and the repeated runs for one data scenario are store row-wise.
 }
 \description{
-Given a stanfit object, the function extracts statistics about the posterior
+Given a stanfit object returned by \code{\link{fit_pgw_tte()}}, the function extracts statistics about the posterior
 distribution of the shape parameters nu and gamma.
 These shall give an overview and provide the basis for the adr signal detection
 testing in one vector.
