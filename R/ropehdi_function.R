@@ -1,27 +1,42 @@
-#' ROPE + HDR test
+#' HDI+ROPE test
 #'
-#'
+#' Hypothesis test based on the posterior sample of one parameter of interest.
 #'
 #' @param nullregion a vector of length two denoting the lower and upper boundary of the null values defined region of practical equivalence (ROPE)
-#' @param scale a vector with two entries denoting the lower and upper boundary of the posterior highest density region
+#' @param credregion a vector with two entries denoting the lower and upper boundary of the posterior highest density region
 #'
 #' @return 0 if H_0 is accepted, 1 if H_0 is rejected and NA if no decision
 #'
-#' @details The decision rule is:
+#' @details The hypothesis test is based on the comparison of the highest density
+#' interval (HDI) reflecting the posterior distribution of a parameter and
+#' the region of practical equivalence (ROPE) reflecting the null-hypothesis.
+#' 
+#' 
+#' Decision rule:
 #'
 #' - If the HDI falls completely inside the ROPE, then accept the null value for practical purposes.
 #'
 #' - If the HDI falls completely outside the ROPE, then reject the null value for practical purposes.
 #'
 #' - Else, withhold a decision.
-#'
-#'
-#' For more information see for example
-#'
-#' J. K. Kruschke. Rejecting or accepting parameter values in Bayesian estimation. Advances in Methods and Practices in Psychological Science, 1(2):270–280, 2018.
-#'
-#' J. K. Kruschke. Doing Bayesian data analysis: a tutorial with R, JAGS, and Stan. Academic Press, 2015.
-#'
+#' 
+#' There are many ways to choose an HDI and ROPE depending on the context. For more
+#' information on the concept and exemplary applications see 
+#' \insertCite{kruschke2015}{BWSPsignal} and \insertCite{kruschke2018}{BWSPsignal}.
+#' 
+#' @seealso [HDInterval::hdi()] for calculating highest density intervals from posterior samples.
+#' 
+#' @references
+#' \insertRef{kruschke2015}{BWSPsignal}
+#' \insertRef{kruschke2018}{BWSPsignal}
+#' 
+#' @examples
+#' ropehdi(nullregion = c(1,2), credregion = c(3,5)) # rope left from hdi and disjunct
+#' ropehdi(nullregion = c(1,3.5), credregion = c(3,5)) # rope left from hdi, with overlap
+#' ropehdi(nullregion = c(1,6), credregion = c(3,5)) # rope encompassing hdi
+#' ropehdi(nullregion = c(6,7), credregion = c(3,5)) # rope right from hdi and disjunct
+#' ropehdi(nullregion = c(4,7), credregion = c(3,5)) # rope right from hdi with overlap
+#' ropehdi(nullregion = c(4,4.5), credregion = c(3,5)) # rope encompassed by hdi
 #'
 #' @export
 #'
