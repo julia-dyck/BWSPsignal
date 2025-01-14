@@ -3,7 +3,7 @@
 #### packages ------------------------------------------------------------------
 library(dplyr)      # for data manipulation
 library(tidyverse)  # for data manipulation
-library(bADRfcts)   # signal detection tool components
+library(BWSPsignal)   # signal detection tool components
 library(ROCR)       # for AUC calculation
 library(stringr)    # for table generation
 library(xtable)     # for table generation

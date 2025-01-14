@@ -7,7 +7,7 @@ if(Sys.info()["nodename"] == "UWIW-386CCC2"){              # if access from offi
 }
 if(Sys.info()["nodename"] == "UWIW-8B3RL34"){              # if access from office laptop
   wd_output = "C:/Users/jdyck/sciebo/bADR_simstudyres01"
-  wd_pkg = "C:/Users/jdyck/github_office_laptop/bADRfcts"
+  wd_pkg = "C:/Users/jdyck/github_office_laptop/BWSPsignal"
 }
 
 #### set working directory to sim result folder --------------------------------
