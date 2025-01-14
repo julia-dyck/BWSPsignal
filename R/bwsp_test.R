@@ -1,45 +1,79 @@
-#' ROPE + HDI test
+#' Bayesian Weibull Shape Parameter Test
 #' 
-#' @description blabla
-#'
-#' @param nullregion a vector of length two denoting the lower and upper boundary of the null values defined region of practical equivalence (ROPE)
-#' @param scale a vector with two entries denoting the lower and upper boundary of the posterior highest density region
-#'
-#' @return 0 if H_0 is accepted, 1 if H_0 is rejected and NA if no decision
-#'
-#' @details The decision rule is:
-#'
-#' - If the HDI falls completely inside the ROPE, then accept the null value for practical purposes.
-#'
-#' - If the HDI falls completely outside the ROPE, then reject the null value for practical purposes.
-#'
-#' - Else, withhold a decision.
-#'
-#'
-#' For more information see for example
-#'
-#' J. K. Kruschke. Rejecting or accepting parameter values in Bayesian estimation. Advances in Methods and Practices in Psychological Science, 1(2):270–280, 2018.
-#'
-#' J. K. Kruschke. Doing Bayesian data analysis: a tutorial with R, JAGS, and Stan. Academic Press, 2015.
-#'
-#'
-#'
-#' @details
-#' Combination mechanism ("intuitive" version) reflects the thought:
-#'
-#' If H0 is accepted for both shape parameters nu and gamma of the power
-#' generalized Weibull distribution, then the combined test result is
-#' acceptance of H0. This is equivalent to "no adr signal".
-#'
-#' If H0 is rejected or there is undecidedness, then the combined test result
-#' is rejection of H0.
-#' @name ropehdi
+#' @description 
+#' Combined HDI+ROPE test for the shape parameters of the pgW distribution.
 #' 
-NULL
-
-
-
-#' @rdname ropehdi
+#'
+#' @param credregions vector of length 4 with the lower and upper boundaries of the 
+#' credibility interval (CI) reflecting the posterior distribution of the pgW shape
+#' parameters \eqn{\nu} and \eqn{\gamma}; required order: 1. lower boundary of
+#' CI(\eqn{\nu}) , 2. upper boundary of CI(\eqn{\nu}) , 3. lower boundary of
+#' CI(\eqn{\gamma}) , 4. upper boundary of CI(\eqn{\gamma})
+#' @param nullregion a vector of length two denoting the lower and upper boundary of the ROPE
+#' @param option rule to be used to combine single parameter test results
+#' @param mod modelling approach used to obtain the posterior samples of the shape
+#' parameters; default and currently only option is "pgw"
+#' 
+#' @return 0 if \eqn{H_0} is accepted, 1 if \eqn{H_1} is rejected; see details for definition
+#' of \eqn{H_0} and \eqn{H_1}
+#'
+#'
+#'
+#' @section Test concept: 
+#' 
+#' The Bayesian Weibull shape parameter test is a hypothesis test 
+#' for signal detection of adverse drug reactions.
+#' It is based on the principle of non-constant hazard function \insertCite{cornelius2012}{BWSPsignal}
+#' that can be formalized as the following hypotheses \insertCite{sauzet2024}{BWSPsignal}
+#' depending on the underlying model:
+#' 
+#' \tabular{lcc}{
+#'         \tab \eqn{H_0} \tab \eqn{H_1} \cr
+#'  general formulation \tab constant hazard function \tab non-constant hazard function \cr
+#'  under pgW model \tab \eqn{\nu = 1 \text{ and } \gamma = 1} \tab \eqn{\nu \neq 1 \text{ or } \gamma \neq 1} \cr
+#'  under Weibull model \tab \eqn{\nu = 1} \tab \eqn{\nu \neq 1} \cr
+#'  (not implemented yet) \tab \tab \cr
+#'  under double Weibull model \tab \eqn{\nu_1 = 1 \text{ and } \nu_2 = 1} \tab \eqn{\nu \neq 1 \text{ or } \gamma \neq 1} \cr
+#'  (not implemented yet) \tab \tab \cr
+#' }
+#' 
+#' 
+#' 
+#' @section Bayesian approach: 
+#' 
+#' More extensive information on the Bayesion Power Generalized Weibull shape 
+#' parameter test approach can be found in \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
+#' 
+#' The region of practical equivalence (ROPE) specified in the 
+#' \code{nullregion} argument represents the expected parameter value under \eqn{H_0}.
+#' The credibility regions represent the posterior distribution of each shape parameter.
+#' 
+#' The BWSP test conducts an HDI+ROPE test (see \code{\link{hdi_plus_rope()}}) for each 
+#' shape parameter and combines the interim results of all shape parameters. 
+#' 
+#' @section Options for combination rule: 
+#' The formalized hypotheses under a model with two parameters defines 
+#' one intuitive combination rule (\code{option = 1}). Two addition, more reserved options  
+#' ( ie. leading to a signal in fewer cases) are implemented:
+#'
+#' \tabular{ccccc}{
+#' HDI+ROPE \tab HDI+ROPE \tab combination \tab combination \tab combination \cr
+#' outcome \tab outcome \tab rule \tab rule \tab rule \cr
+#' for \eqn{\nu}\tab for \eqn{\gamma} \tab (\code{option = 1}) \tab (\code{option = 2}) \tab (\code{option = 3}) \cr
+#' rejection \tab rejection \tab signal \tab signal \tab signal \cr
+#' acceptance \tab rejection \tab signal \tab - \tab - \cr
+#' rejection \tab acceptance \tab signal \tab - \tab - \cr
+#' acceptance \tab acceptance \tab - \tab - \tab - \cr
+#' no decision \tab rejection \tab signal \tab signal \tab - \cr
+#' no decision \tab acceptance \tab - \tab - \tab - \cr
+#' rejection \tab no decision \tab signal \tab signal \tab - \cr 
+#' acceptance \tab no decision \tab - \tab - \tab - \cr
+#' no decision \tab no decision \tab signal \tab - \tab - \cr
+#' }
+#' 
+#' @references 
+#' \insertAllCited{}
+#' 
 #' 
 #' @export
 #'
@@ -52,8 +86,8 @@ bwsp_test = function(credregions, nullregion, option = c(1,2,3), mod = "pgw"){
   nu.credregion = credregions[1:2]
   ga.credregion = credregions[3:4]
 
-  nu.ropehdi_res = ropehdi(nullregion = nullregion, credregion = nu.credregion)
-  ga.ropehdi_res = ropehdi(nullregion = nullregion, credregion = ga.credregion)
+  nu.ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = nu.credregion)
+  ga.ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = ga.credregion)
   res = c(nu.ropehdi_res, ga.ropehdi_res)
 
   if(option == 1){
