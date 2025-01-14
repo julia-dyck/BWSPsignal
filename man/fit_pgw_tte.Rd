@@ -63,8 +63,8 @@ standat = tte2standat(dat = tte,
                      powershape.mean = 1, 
                      powershape.sd = 10)
 # fit the model
-fit = fit_pgw_tte(datstan = standat,
-                 priordist = "lll",
+fit = fit_pgw_tte(datstan = standat,  # (be aware that posterior sample
+                 priordist = "lll",   # is small for demo purpose)
                  chains = 4,
                  iter = 110,
                  warmup = 10)
