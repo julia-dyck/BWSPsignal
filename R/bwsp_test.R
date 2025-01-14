@@ -10,7 +10,7 @@
 #' CI(\eqn{\nu}) , 2. upper boundary of CI(\eqn{\nu}) , 3. lower boundary of
 #' CI(\eqn{\gamma}) , 4. upper boundary of CI(\eqn{\gamma})
 #' @param nullregion a vector of length two denoting the lower and upper boundary of the ROPE
-#' @param option rule to be used to combine single parameter test results
+#' @param option numeric value out of \code{1,2,3}; rule to be used to combine single parameter test results
 #' @param mod modelling approach used to obtain the posterior samples of the shape
 #' parameters; default and currently only option is "pgw"
 #' 
@@ -46,15 +46,20 @@
 #' 
 #' The region of practical equivalence (ROPE) specified in the 
 #' \code{nullregion} argument represents the expected parameter value under \eqn{H_0}.
-#' The credibility regions represent the posterior distribution of each shape parameter.
+#' The credibility regions specified in the \code{credregions} argument represent
+#' the posterior distribution of each shape parameter.
 #' 
 #' The BWSP test conducts an HDI+ROPE test (see \code{\link{hdi_plus_rope()}}) for each 
-#' shape parameter and combines the interim results of all shape parameters. 
+#' shape parameter and combines the interim results of all shape parameters. More 
+#' information on the HDI+ROPE test and recommendations for interval specifications
+#' can be found in \insertCite{kruschke2018}{BWSPsignal} and
+#' \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
 #' 
 #' @section Options for combination rule: 
-#' The formalized hypotheses under a model with two parameters defines 
-#' one intuitive combination rule (\code{option = 1}). Two addition, more reserved options  
-#' ( ie. leading to a signal in fewer cases) are implemented:
+#' The formalized hypotheses under a model with two parameters defines the
+#' combination rule (\code{option = 1}) directly implementing the hypothesis above.
+#' Two additional, more reserved options (ie. leading to a signal in fewer cases)
+#' are implemented:
 #'
 #' \tabular{ccccc}{
 #' HDI+ROPE \tab HDI+ROPE \tab combination \tab combination \tab combination \cr
@@ -71,8 +76,56 @@
 #' no decision \tab no decision \tab signal \tab - \tab - \cr
 #' }
 #' 
+#' 
+#' 
+#' 
 #' @references 
 #' \insertAllCited{}
+#' 
+#' 
+#' @examples
+#' # Exemplary conduction of a test from data and prior to test result:
+#' 
+#' # 1. specify ROPE reflecting the null hypothesis:
+#' # we choose an 80% confidence interval around the 
+#' # null value (1 for both shape parameters)
+#' 
+#' logpars = logprior_repar(m_t = 1,s_t = 10) # get parameters of a 
+#'                                            # Lognormal distribution with 
+#'                                            # mean 1 and sd 10
+#'                                             
+#' rope = qlnorm(p = c(0.1,0.9), meanlog = logpars[1], sdlog = logpars[2])
+#' 
+#' # 2. Prior specification and model fitting:
+#' # we formalize a prior belief (here "no association
+#' # between drug and event", therefore prior mean = 1 for both shape parameters)
+#' # and reformat our tte data to fit the model in the following
+#' 
+#' standat = tte2standat(dat = tte,           # reformat the data
+#'                      scale.mean = 1, 
+#'                      scale.sd = 10,
+#'                      shape.mean = 1, 
+#'                      shape.sd = 10,
+#'                      powershape.mean = 1, 
+#'                      powershape.sd = 10)
+#'
+#' fit = fit_pgw_tte(datstan = standat,      # fit the model
+#'                  priordist = "lll",       # (be aware that posterior sample
+#'                  chains = 4,              # is small for demo purpose)
+#'                  iter = 110,
+#'                  warmup = 10)
+#' 
+#' # 3. HDI specification and extraction:
+#' # extract 80% HDIs representing posterior samples of the shape parameters
+#' 
+#' post.samples = rstan::extract(fit, pars = c("nu", "gamma")) 
+#' nu.hdi = HDInterval::hdi(object = post.samples$nu, credMass = 0.8)
+#' ga.hdi = HDInterval::hdi(object = post.samples$gamma, credMass = 0.8)
+#' 
+#' # 4. conduct the BWSPtest
+#' bwsp_test(credregions = c(nu.hdi, ga.hdi), nullregion = rope, option = 1)
+#' 
+#' # leads to a signal
 #' 
 #' 
 #' @export
