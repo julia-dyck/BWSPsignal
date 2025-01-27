@@ -1,12 +1,18 @@
-#' Load single scenario
+#' Load simulated scenario
+#' 
+#' Load all simulations of a simulated scenario and return number of run 
+#' simulations.
 #'
 #' @param wd working directory were ALL the simulation files lie
+#' 
 #' @param pc parameter combination (numeric version)
+#' 
 #' @return Returns a table with counts on run simulation scenarios
+#' 
 #' @export
 #'
 #'
-load_scenario = function(wd,
+sim.load.scenario = function(wd,
                          pc, batchnr = 1){
   N = pc[1]
   br = pc[2]
