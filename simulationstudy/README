@@ -1,0 +1,25 @@
+## Overview
+
+This folder contains the R scripts necessary to reproduce the simulation study evaluating the `BPgWSP test` presented in the article
+
+[add arxiv preprint ref here].
+
+
+## Background
+
+The `bwsp_test()` function, implemented in the `BWSPsignal` package, is designed to conduct a signal detection test for adverse drug reactions based on electronic
+health records data. Our simulation study aims to evaluate/tune its effectiveness under various scenarios. The results are currently available as a preprint on [preprint server name], accessible at: [link to preprint].
+
+## Structure of the Repository
+
+The repository contains the following key components:
+
+- `masterfile.R` – The main script that orchestrates the execution of all
+   necessary R scripts in the correct order.
+- `xy.R` – A number of individual R scripts responsible for different steps of
+   the simulation study.
+
+## How to Reproduce the Simulation Study
+
+Open the `masterfile.R` script in R and open all scripts by running the `edit.file()` commands to sequentially execute all necessary steps to run and evaluate of
+the simulations.

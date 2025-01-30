@@ -2,7 +2,7 @@
 #'
 #'@export
 
-monitor_progress = function(pc_table,
+sim.monitor.progress = function(pc_table,
                             wd = "D:/J/Sciebo/bADR_simstudyres01",
                             batch_max = 10){
   # prep

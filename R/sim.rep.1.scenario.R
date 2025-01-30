@@ -25,7 +25,7 @@
 
 
 
-sim.repeat.1.scenario = function(batch.nr, reps = 10, pc, cores,
+sim.repeat.1.scenario = function(batch.nr, reps = 10, pc,
                                  save = F, path = getwd()){
   # batch.nr = number of batch to save them under different names and prevent overwriting
   # reps = number of repetitions for this scenario
@@ -34,7 +34,7 @@ sim.repeat.1.scenario = function(batch.nr, reps = 10, pc, cores,
   #------------------------------
 
   res.batch = t(replicate(reps,
-                          sim.fit.to.1.sample(pc = pc, cores = cores),
+                          sim.fit.to.1.sample(pc = pc),
                           simplify = T)
                 )
 

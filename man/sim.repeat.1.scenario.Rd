@@ -4,7 +4,7 @@
 \alias{sim.repeat.1.scenario}
 \title{Simulation study: replicate one scenario 2.0}
 \usage{
-sim.repeat.1.scenario(batch.nr, reps = 10, pc, cores, save = F, path = getwd())
+sim.repeat.1.scenario(batch.nr, reps = 10, pc, save = F, path = getwd())
 }
 \arguments{
 \item{reps}{number of repeated simulations for one scenario}
