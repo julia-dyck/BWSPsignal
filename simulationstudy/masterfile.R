@@ -32,9 +32,9 @@ file.edit("run_simulation_gap_filler.R") # when partly run, but not complete
 
 #### merge results -------------------------------------------------------------
 
+file.edit("merge_raw_results.R")
+## HIER WEITER; MERGE CHUNK IN ANDEREM ORDNER TESTEN!
 
-## evaluation prep (packages, setwd, load parcombi tables) --------------------
-file.edit("simulationstudy/eval_prep.R")
 
 ## number of cancelled simulation runs for different dist assumptions
 source("simulationstudy/eval_cancelled_simulation_runs.R")
