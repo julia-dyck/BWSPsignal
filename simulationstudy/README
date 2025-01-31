@@ -16,10 +16,14 @@ The repository contains the following key components:
 
 - `masterfile.R` – The main script that orchestrates the execution of all
    necessary R scripts in the correct order.
-- `xy.R` – A number of individual R scripts responsible for different steps of
-   the simulation study.
+-  `run_[...].R` – scripts to run the simulation and save the output of each 
+   repetition in results raw folder
+- `eval_[...].R` – scripts for evaluating the BPgWSP test given the results of 
+   the simulation study
 
 ## How to Reproduce the Simulation Study
 
-Open the `masterfile.R` script in R and open all scripts by running the `edit.file()` commands to sequentially execute all necessary steps to run and evaluate of
-the simulations.
+Open the `masterfile.R` script in R and open all scripts by running the `edit.file()` commands to sequentially adjust working directories and execute all necessary steps to run and evaluate the simulations.
+
+
+## END OF DOC

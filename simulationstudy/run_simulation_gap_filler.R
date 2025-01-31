@@ -23,47 +23,49 @@ library(BWSPsignal)
 #### loading of parameter combination table ------------------------------------
 load("pc_in_various_formats.RData")
 
-### result path
+### check progress of simulation runs __________________________________________
+
+### result path ----------------------------------------------------------------
 resultpath = paste0(getwd(), "/results_raw")
 
 
-# extract indices of not yet run simulations ___________________________________
+# extract indices of not yet run simulations -----------------------------------
 
 file.edit("run_monitor_progress.R") # run it to get progress as vector
 
-load("progress_YYYY_MM_DD.RData") # run if progress already 
-                                  # monitored and save in wd
+load("progress.RData") # run if progress already 
+                       # monitored and save in wd
 
 
-### parameter combinations to be run -------------------------------------------
-load("pc_fr_complete.RData")
-load("progress_2023_05_24.RData")
+# conduction of missing simulations ____________________________________________
 
-
-
-# conduction of simulations ____________________________________________________
-
+# parameter combination indices with 0 batches run -----------------------------
 ind_0_runs = which(progress == 0)
 progress[ind_0_runs]
 pc[ind_0_runs,]
 
-for(pcind in ind_0_runs){
+for(pcind in ind_0_runs){ # run 10 batches of 10 reps each
   for(i in 1:10){
     sim.repeat.1.scenario(batch.nr=i, reps = 10, pc = pc[pcind,],
                           save = T, path = getwd())
   }
 }
 
-
+# parameter combi indices with 1 batch run
 ind_1_runs = which(progress == 1)
 progress[ind_1_runs]
 pc[ind_1_runs,]
 
-for(pcind in ind_1_runs){
-  for(i in 1:10){
+for(pcind in ind_1_runs){ # run 9 batches of 10 reps each
+  for(i in 2:10){ 
     sim.repeat.1.scenario(batch.nr=i, reps = 10, pc = pc[pcind,],
                           save = T, path = getwd())
   }
 }
+
+# parameter combi indices with ... batches run
+# -> copy and adjust
+
+
 
 ## END OF DOC
