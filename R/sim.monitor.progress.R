@@ -15,7 +15,7 @@ sim.monitor.progress = function(pc_table,
           # 'tryCatch()' will return the last evaluated expression
           # in case the "try" part was completed successfully
           message("File exists.")
-          load_scenario(pc = pc_table[i,], wd= wd, batchnr = j)
+          sim.load.scenario(pc = pc_table[i,], wd= wd, batchnr = j)
           1
           # You don't need to state the return value via `return()` as code
           # in the "try" part is not wrapped inside a function (unlike that

@@ -12,8 +12,7 @@
 #' @export
 #'
 #'
-sim.load.scenario = function(wd,
-                         pc, batchnr = 1){
+sim.load.scenario = function(wd, pc, batchnr = 1){
   N = pc[1]
   br = pc[2]
   adr.rate = pc[3]

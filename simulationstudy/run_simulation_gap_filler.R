@@ -29,7 +29,10 @@ resultpath = paste0(getwd(), "/results_raw")
 
 # extract indices of not yet run simulations ___________________________________
 
-load("progress_YYYY_MM_DD.RData")
+file.edit("run_monitor_progress.R") # run it to get progress as vector
+
+load("progress_YYYY_MM_DD.RData") # run if progress already 
+                                  # monitored and save in wd
 
 
 ### parameter combinations to be run -------------------------------------------

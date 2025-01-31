@@ -26,7 +26,12 @@ load("pc_in_various_formats.RData")
 resultpath = paste0(getwd(), "/results_raw")
 
 
-# monitor progress _____________________________________________________________
+### monitor progress ___________________________________________________________
 
+# how many simulation batches of which pc are already run?
+# (each batch contains 10 simulation runs of the specified scenario)
+progress = sim.monitor.progress(pc_table = pc.numeric, 
+                                wd = resultpath, 
+                                batch_max = 10)
 
-
+# save(progress, file = getwd()) # if to be saved for later

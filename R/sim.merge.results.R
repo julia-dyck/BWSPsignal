@@ -15,7 +15,7 @@
 # ## there are 100 rows per scenario, the scenario prespecifications
 #    are in the first 8 cols of the table
 
-merge_results = function(pc_table,
+sim.merge.results = function(pc_table,
                             wd_load,
                             wd_save,
                             nr_batches = 10, save = F){
