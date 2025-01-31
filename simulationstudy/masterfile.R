@@ -13,17 +13,24 @@ library(xtable)     # for table generation
 # directory where the simulation study is stored [ADJUST TO YOUR LOCAL PATH]
 setwd("C:/Users/jdyck/github_office_laptop/BWSPsignal/simulationstudy")
 
+
+#### specify parameter combinations for simulation study -----------------------
+
 # have a look at parameter combinations (pc) for simulations
 load("pc_in_various_formats.RData")
-head(pc)
-?BWSPsignal::datagen_tte # provides infos on data-generation-process
+
+# if you want to simulate new scenarios, have a look at
+file.edit("setup_parameter_combination.R") 
+
 
 #### run simulation study ------------------------------------------------------
 
 file.edit("run_simulation.R") # to run all specified pc 100 times
 
-file.edit(run_simulation_gap_filler.R) # when partly run, but not complete
+file.edit("run_simulation_gap_filler.R") # when partly run, but not complete
 
+
+#### merge results -------------------------------------------------------------
 
 
 ## evaluation prep (packages, setwd, load parcombi tables) --------------------
