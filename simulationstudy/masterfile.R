@@ -3,13 +3,30 @@
 #### packages ------------------------------------------------------------------
 library(dplyr)      # for data manipulation
 library(tidyverse)  # for data manipulation
-library(BWSPsignal)   # signal detection tool components
+library(BWSPsignal) # signal detection test & simulation fcts.
 library(ROCR)       # for AUC calculation
 library(stringr)    # for table generation
 library(xtable)     # for table generation
 
+#### set working directory -----------------------------------------------------
 
-## evaluation prep (packages, setwd, loadf parcombi tables) --------------------
+# directory where the simulation study is stored [ADJUST TO YOUR LOCAL PATH]
+setwd("C:/Users/jdyck/github_office_laptop/BWSPsignal/simulationstudy")
+
+# have a look at parameter combinations (pc) for simulations
+load("pc_in_various_formats.RData")
+head(pc)
+?BWSPsignal::datagen_tte # provides infos on data-generation-process
+
+#### run simulation study ------------------------------------------------------
+
+file.edit("run_simulation.R") # to run all specified pc 100 times
+
+file.edit(run_simulation_gap_filler.R) # when partly run, but not complete
+
+
+
+## evaluation prep (packages, setwd, load parcombi tables) --------------------
 file.edit("simulationstudy/eval_prep.R")
 
 ## number of cancelled simulation runs for different dist assumptions
