@@ -60,13 +60,13 @@ file.edit("eval_auc_calc.R")
 
 ## summarize AUC results (grouped averages) 
 
-## strtatified wrt. all prior distributional choices
-# ## average auc
+## stratified wrt. all prior distributional choices:
+# ## average auc (over all scenarios)
 # ## average auc | conditional on correct prior "when"-specification
 file.edit("eval_auc_summary.R")
 
 ## after investigation of running time and effective sample size:
-## focus on results with log-log-log as distr. assumption
+## focus on results with log-log-log as prior distributional choice
 file.edit("eval_auc_summary_lll.R")
 
 

@@ -1,59 +1,12 @@
-#### auc results summary ####
+#### auc results summary
+
 
 nr.combined.tests = pc.aucs %>%
   select(10:ncol(.)) %>% ncol()
 
-## boxplot of aucs for each prior choice per test ------------------------------
 
-# boxplot over all aucs in all scenarios
-pc.aucs %>%
-  select(10:ncol(.)) %>%
-  boxplot(main = "Test performance",
-          xaxt = "n",
-          xlab = "Test ID",
-          ylab = "AUC")
-axis(1, 1:nr.combined.tests)
-
-
-# boxplot over all aucs splitted for distr. assumptions
-par(mfrow = c(2,2))
-pc.aucs %>%
-  filter(.$dist.ass == 1) %>%
-  select(10:ncol(.)) %>%
-  boxplot(main = "Test performance - dist.ass = fll",
-          xaxt = "n",
-          xlab = "Test ID",
-          ylab = "AUC")
-axis(1, 1:nr.combined.tests)
-
-pc.aucs %>%
-  filter(.$dist.ass == 2) %>%
-  select(10:ncol(.)) %>%
-  boxplot(main = "Test performance - dist.ass = lll",
-          xaxt = "n",
-          xlab = "Test ID",
-          ylab = "AUC")
-axis(1, 1:nr.combined.tests)
-
-pc.aucs %>%
-  filter(.$dist.ass == 3) %>%
-  select(10:ncol(.)) %>%
-  boxplot(main = "Test performance - dist.ass = fgg",
-          xaxt = "n",
-          xlab = "Test ID",
-          ylab = "AUC")
-axis(1, 1:nr.combined.tests)
-
-pc.aucs %>%
-  filter(.$dist.ass == 4) %>%
-  select(10:ncol(.)) %>%
-  boxplot(main = "Test performance - dist.ass = ggg",
-          xaxt = "n",
-          xlab = "Test ID",
-          ylab = "AUC")
-axis(1, 1:nr.combined.tests)
-
-#### mean auc results ----------------------------------------------------------
+#### mean AUC performance for each test ----------------------------------------
+# stratified wrt all prior distributional choices
 auc.means = pc.aucs %>%
   na.omit() %>%
   group_by(dist.ass) %>%
@@ -83,14 +36,14 @@ auc.means.df = data.frame(prior.choice,
                           test.option,
                           auc.means.vect)
 
-## ranking wrt all tests and all distributional assumptions
+
+## ranking wrt all tests and all distributional assumptions --------------------
 rank.order = order(auc.means.df$auc.means.vect, decreasing = T)
 
 auc.means.df[rank.order,] %>% View()
 
 
-
-#### ranking under correct prior "when"-specification ---------------------------
+#### ranking under correct prior "when"-specification --------------------------
 
 auc.means.0 = pc.aucs %>%
   filter(adr.ass.rank == 0) %>% # filter for correct "when"-specification
@@ -104,6 +57,7 @@ auc.means.0.vect = c(as.numeric(auc.means.0[1,]),
                    as.numeric(auc.means.0[3,]),
                    as.numeric(auc.means.0[4,]))
 
+# generate informative dataframe columns
 prior.choice = c(rep("fll",60), rep("lll",60), rep("fgg",60), rep("ggg",60))
 interval.form = c(rep("hdi",10), rep("eti", 10)) %>% rep(., 3)
 cred.niveau = seq(50,95, by = 5) %>% rep(., 6)
@@ -116,10 +70,11 @@ auc.means.0.df = data.frame(prior.choice, interval.form, cred.niveau, test.optio
 ## ranking wrt all tests and all distributional assumptions
 rank.order.0 = order(auc.means.0.df$auc.means.0.vect, decreasing = T)
 
-auc.means.0.df[rank.order.0,] %>% View()
+# ranking table:
+auc.means.0.df[rank.order.0,] %>% View() 
 
 
-## ranking grouped by distributional assumption for all dists.
+## separate ranking tables for all prior distributional choices
 
 auc.means.dist.0 = list()
 

@@ -1,28 +1,13 @@
-#### auc lll results - summary ####
+#### auc results summary given log-log-log as prior distributional choice
 
-#### lll and correct prior specification ---------------------------------------
 
 pc.aucs.lll = pc.aucs %>%
   filter(dist.ass == 2)
 
-
-## boxplot over all aucs in all lll scenarios
-par(mfrow = c(1,1))
-pc.aucs.lll %>%
-  filter(adr.ass.rank == 0) %>%
-  select(10:ncol(.)) %>%
-  boxplot(sub = "lll; correct prior 'when'- spec.",
-          main = "Test performance",
-          horizontal = T, yaxt = "n",
-          ylab = "Test ID",
-          xlab = "AUC")
-axis(2, las = 2)
-
-
-## mean auc results ------------------------------------------------------------
+## mean AUC calculation --------------------------------------------------------
 
 auc.means.lll.0 = pc.aucs.lll %>%
-  filter(adr.ass.rank == 0) %>%
+  filter(adr.ass.rank == 0) %>%     # filter for correct "when"-specification
   summarize_all(mean) %>%
   select(10:ncol(.)) %>%
   as.numeric(.)
@@ -35,9 +20,11 @@ test.option = c(rep("intuitive",20), rep("reserved",20), rep("veryreserved",20))
 testnames = paste(prior.choice, interval.form, cred.niveau, test.option, sep = ".")
 names(auc.means.lll.0) = testnames
 
-auc.means.lll.0.df = data.frame(prior.choice, interval.form, cred.niveau, test.option, auc.means.lll.0)
-
-# View(auc.means.lll.0.df)
+auc.means.lll.0.df = data.frame(prior.choice, 
+                                interval.form, 
+                                cred.niveau, 
+                                test.option, 
+                                auc.means.lll.0)
 
 
 # AUC ranking to see which test combination works relatively best --------------
@@ -50,11 +37,11 @@ rank.order.lll.0 = pc.aucs.lll %>%
   order(decreasing = T)
 
 auc.means.lll.0.df[rank.order.lll.0,] %>% View() # ranking table
+# -> best test according to ranking:
+#    reserved (in bwsp_test fct. option=2) 80%-HDI test
 
-# best test in first row of ranking table:
-colnames(pc.aucs)[9 + 27] # "hdi.80.reserved"
-
-#### auc of best test under correct prior 'when' - specification ---------------
+#### AUC of best test under correct prior 'when' - specification ---------------
+# stratified wrt to data generating process parameters
 
 # overall mean for best test
 overall = pc.aucs.lll %>%
@@ -120,8 +107,7 @@ print(xtable(best.test.table, digits = c(0,0,0,3), # first zero "represents" row
 
 
 
-
-#### lll and robustness wrt to prior specification -----------------------------
+#### lll and robustness in case of incorrect prior "when"-specification --------
 
 # grouped by adr.ass.rank
 # rank definition:
@@ -136,4 +122,4 @@ pc.aucs.lll %>%
   select(.,adr.ass.rank, hdi.80.reserved)
 
 
-## END OF DOCUMENT
+## END OF DOC
