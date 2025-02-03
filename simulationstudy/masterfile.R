@@ -33,11 +33,12 @@ file.edit("run_simulation_gap_filler.R") # when partly run, but not complete
 #### merge results -------------------------------------------------------------
 
 file.edit("merge_raw_results.R")
-## HIER WEITER; MERGE CHUNK IN ANDEREM ORDNER TESTEN!
 
 
-## number of cancelled simulation runs for different dist assumptions
-source("simulationstudy/eval_cancelled_simulation_runs.R")
+#### evaluation of non-convergance and estimation times ------------------------
+
+## no of cancelled simulation runs for different prior distributional choices
+file.edit("eval_cancelled_simulation_runs.R")
 
 ## running times for different dist assumptions -> boxplots --------------------
 source("simulationstudy/eval_running_times_for_different_dist_assumptions.R")
