@@ -19,8 +19,8 @@ devtools::install_github(repo = "julia-dyck/BWSPsignal")
 ```
 
 ## Reproduction of simulation study
-To reproduce the simulation study presented in [Dyck & Sauzet (2024)](https://arxiv.org/abs/2412.05463) you can either 
-- fork the repository or
-- install the R package from Github, download the folder "simulationstudy" from the repository
+To reproduce the simulation study presented in [Dyck & Sauzet (2024)](https://arxiv.org/abs/2412.05463) fork the repository and follow the instructions in "BWSPsignal/simulationstudy/README".
 
-and follow the instructions in "BWSPsignal/simulationstudy/README".
+## Tuning of the PgWSP test for your purpose
+To tune the PgWSP test for your application you can use the folder in "BWSPsignal/simulationstudy/" as a template, and adjust sample scenarios, and test alternatives accordingly.
+
