@@ -35,16 +35,17 @@ file.edit("run_simulation_gap_filler.R") # when partly run, but not complete
 file.edit("merge_raw_results.R")
 
 
-#### evaluation of non-convergance and estimation times ------------------------
+#### comparison of prior distributions wrt convergence issues, execution times 
+#    and effective sample sizes for different prior distributional choices
 
-## no of cancelled simulation runs for different prior distributional choices
+## no of simulation runs with convergence issues
 file.edit("eval_cancelled_simulation_runs.R")
 
-## running times for different dist assumptions -> boxplots --------------------
-source("simulationstudy/eval_running_times_for_different_dist_assumptions.R")
+## execution times 
+file.edit("eval_execution_times.R")
 
-## effective sample sizes for different dist assumptions -> boxplots -----------
-source("simulationstudy/eval_investigate_effective_sample_sizes.R")
+## effective sample sizes
+file.edit("eval_investigate_effective_sample_sizes.R")
 
 ## auc results calculation------------------------------------------------------
 #source("simulationstudy/eval_auc_calc.R")
