@@ -10,6 +10,7 @@ This folder contains the R scripts necessary to reproduce the simulation study e
 The `bwsp_test()` function, implemented in the `BWSPsignal` package, is designed to conduct a signal detection test for adverse drug reactions based on electronic
 health records data. Our simulation study aims to evaluate/tune its effectiveness under various scenarios. The results are currently available as a preprint on [preprint server name], accessible at: [link to preprint].
 
+
 ## Structure of the Repository
 
 The repository contains the following key components:
@@ -20,6 +21,7 @@ The repository contains the following key components:
    repetition in results raw folder
 - `eval_[...].R` – scripts for evaluating the BPgWSP test given the results of 
    the simulation study
+
 
 ## How to Reproduce the Simulation Study
 
