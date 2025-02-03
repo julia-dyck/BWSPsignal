@@ -1,29 +1,15 @@
-#### evaluate running times for different distr. assumptions
+#### evaluate execution times for different prior distributional choices
 
 
-#### running times for different dist. assumptions ---------------------------
+# calculate execution times for different dist. assumptions
 dist.ass.factor = res$dist.ass %>% as.numeric() %>% as.factor()
 
-run.min.numeric = res$run.min %>% as.numeric()
-run.h.numeric = run.min.numeric/60
-
-#### basic R boxplot -----------------------------------------------------------
-## not used in article
-boxplot(run.min.numeric ~ dist.ass.factor,
-        horizontal = F,
-        range = 0,
-        xlab = "prior distribution",
-        ylab = "minutes",
-        main = "running times",
-        ylim = c(0,250),
-        yaxt = "n"
-        )
-# y-axis ticks as 0, 60, 120,...?
-axis(2, at = c(0, 60, 120, 180, 240))
+run.min.numeric = res$run.min %>% as.numeric() # in minutes
+run.h.numeric = run.min.numeric/60             # in hours
 
 
-#### ggplot boxplot ------------------------------------------------------------
-## used in article
+#### boxplot of execution times ------------------------------------------------
+
 time.df = data.frame(dist.ass.factor, run.min.numeric)
 xlabs = c("fix-log-log", "log-log-log", "fix-gam-gam", "gam-gam-gam")
 
@@ -42,6 +28,7 @@ png(file= paste0(wd_output,"/graphics/fig_boxplot-running-times.png"),
 p
 dev.off()
 
+
 #### summary table of running times in minutes ---------------------------------
 
 run.time.summary = aggregate(run.min.numeric, list(dist.ass.factor), FUN=summary) %>%
@@ -50,8 +37,6 @@ colnames(run.time.summary) <- xlabs
 
 
 run.time.summary
-
-
 
 
 ## END OF DOC
