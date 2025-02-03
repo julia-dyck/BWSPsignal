@@ -1,7 +1,8 @@
-#### test output generation in all simulation results ####
+#### AUC calculation per scenario
 
+# REMARK: adjust setup of ROPES and HDIs 
 
-#### perform combined rope tests -----------------------------------------------
+#### perform HDI+ROPE tests ----------------------------------------------------
 
 # prior parameters under null hypothesis
 logpars1 = logprior_repar(m_t = 1,s_t = 10)
@@ -11,22 +12,29 @@ prob = seq(0.5, 0.95, by = 0.05)
 rope.percentile.l = (1-prob)/2
 rope.percentile.u = prob + (1-prob)/2
 rope.perc = cbind(rope.percentile.l, rope.percentile.u)
+rope.perc
 
-# create the lognorm confidence intervals as ropes
+## ROPEs
+# Lognormal confidence intervals under null-hypthesis as ropes
 ropes = apply(X = rope.perc, MARGIN = 1, FUN = qlnorm, meanlog =logpars1[1], sdlog = logpars1[2]) %>%
   t() %>%
   rbind(.,.,.) %>%
   rbind(.,.)
 ropes
 
-# posterior credibility regions to be extracted from sim results
-# ## eg nu.hdi0.5l and nu.hdi0.5u for 50%-highest density region of nu
+## HDIs (and ETIs respectively)
+# posterior credibility regions will be extracted from sim results, e.g.
+# nu.hdi0.5l and nu.hdi0.5u as lower & upper boundary for 50% - highest density 
+# region of nu
 
 
-### perform test for each simulation repetition and
-#   store in col "predx" (x == test nr corresponding to definition in
-#   hypothesis_test_combis.xlsx)
+# Have a look at the following table for definition of all HDI+ROPE test variants
+# tried out:
+hdi_rope_test_variants = read.csv("test_combis_predx.csv", 
+                                  header = TRUE, row.names = NULL, sep = ";")
+hdi_rope_test_variants
 
+## perform test no [x] for each simulation repetition and store in col "pred[x]"
 res.pred = res %>%
   mutate(pred1 = apply(.[,c("nu.hdi0.5l","nu.hdi0.5u", "ga.hdi0.5l", "ga.hdi0.5u")],
                        MARGIN = 1,
@@ -276,8 +284,8 @@ nr.combined.tests
 
 #### setup pc.pos in data.frame format for auc results per scenario ------------
 
-# ## control cases are not in there, as they are assigned to each positive
-#    scenario when calculating auc.
+## control cases are not in there, as they are assigned to each ADR-positive
+# scenario (pc.pos) when calculating the AUC
 pc.pos = pc.num %>%
   filter(.$label == 1) %>%
   mutate(adr.ass.tr = adr.ass/4) %>%
@@ -285,19 +293,20 @@ pc.pos = pc.num %>%
   mutate(adr.ass.rank0 = abs(adr.when - adr.ass.tr2)*4) %>%
   mutate(adr.ass.rank = ifelse(adr.ass.rank0 > 10, 3, adr.ass.rank0)) %>%
   select(., -c(adr.ass.tr, adr.ass.tr2, adr.ass.rank0))
-# adr.ass.rank definition:
+# adr.ass.rank variable definition:
 # ## 0 = correct prior ass
 # ## 1 = one quarter of observation time frame off
 # ## 2 = two quarter of observation time frame off
 # ## 3 = "no adr" as prior assumption (which is true for control)
 
 
-# prepare matrix for auc results
+# matrix for AUC results -----------------------------------------------
+
 aucs = matrix(rep(0, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
 colnames(aucs) = paste0("auc", 1:nr.combined.tests)
 
 dims.restest = c()
-# go through every pos. scenario linked with control
+# go through every ADR-positive scenario linked with control
 for(i in 1:nrow(pc.pos)){
   N_i = pc.pos$N[i]
   adr.rate_i = pc.pos$adr.rate[i]
@@ -338,7 +347,7 @@ for(i in 1:nrow(pc.pos)){
 }
 
 
-#### merge pc specification and auc results
+#### merge pc specification and auc results ------------------------------------
 pc.aucs = data.frame(pc.pos, aucs) %>%
   select(., -label)
 
@@ -350,5 +359,5 @@ testnames = paste(interval.form, cred.niveau, test.option, sep = ".")
 colnames(aucs) = paste(testnames, sep = ".")
 colnames(pc.aucs)[-(1:9)] = paste(testnames, sep = ".")
 
-
+View(pc.aucs)
 ## END OF DOC

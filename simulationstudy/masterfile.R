@@ -35,8 +35,8 @@ file.edit("run_simulation_gap_filler.R") # when partly run, but not complete
 file.edit("merge_raw_results.R")
 
 
-#### comparison of prior distributions wrt convergence issues, execution times 
-#    and effective sample sizes for different prior distributional choices
+#### convergence issues, execution times and effective sample sizes ------------
+   # for different prior distributional choices
 
 ## no of simulation runs with convergence issues
 file.edit("eval_cancelled_simulation_runs.R")
@@ -47,22 +47,27 @@ file.edit("eval_execution_times.R")
 ## effective sample sizes
 file.edit("eval_effective_sample_sizes.R")
 
-## auc results calculation------------------------------------------------------
-#source("simulationstudy/eval_auc_calc.R")
-# or
-load("simulationstudy/eval_aucs.RData")
+
+#### AUC performance -----------------------------------------------------------
+   # (AUC: area under the ROC curve)
+
+# if already calculated and saved, load AUC results per scenario with
+load("eval_aucs.RData")
+
+# else, calculate AUC per scenario with
+file.edit("eval_auc_calc.R")
 
 
-## summarize auc results (grouped averages etc.) -------------------------------
+## summarize AUC results (grouped averages) 
 
-## for all distr. assumptions
-## ## average auc
-## ## average auc | conditional on correct prior "when"-specification
-source("simulationstudy/eval_auc_summary.R")
+## strtatified wrt. all prior distributional choices
+# ## average auc
+# ## average auc | conditional on correct prior "when"-specification
+file.edit("eval_auc_summary.R")
 
 ## after investigation of running time and effective sample size:
 ## focus on results with log-log-log as distr. assumption
-source("simulationstudy/eval_auc_summary_lll.R")
+file.edit("eval_auc_summary_lll.R")
 
 
 
