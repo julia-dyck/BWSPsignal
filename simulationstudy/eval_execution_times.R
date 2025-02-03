@@ -21,7 +21,7 @@ p = ggplot(time.df, aes(dist.ass.factor, run.min.numeric)) +
   labs(x = "", y = "") + #, title = "Computation time in minutes") +
   coord_cartesian(ylim = c(0, 210)) # zoom in as ggg leads to max > 2700
 
-png(file= paste0(wd_output,"/graphics/fig_boxplot-running-times.png"),
+png(file= paste0(getwd(),"/fig_boxplot-running-times.png"),
     width = 600, height = 400,
     units = "px", pointsize = 12,
     bg = "white")

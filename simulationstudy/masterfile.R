@@ -45,7 +45,7 @@ file.edit("eval_cancelled_simulation_runs.R")
 file.edit("eval_execution_times.R")
 
 ## effective sample sizes
-file.edit("eval_investigate_effective_sample_sizes.R")
+file.edit("eval_effective_sample_sizes.R")
 
 ## auc results calculation------------------------------------------------------
 #source("simulationstudy/eval_auc_calc.R")
