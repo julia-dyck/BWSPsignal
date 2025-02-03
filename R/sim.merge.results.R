@@ -20,17 +20,17 @@ sim.merge.results = function(pc_table,
                             wd_save,
                             nr_batches = 10, save = F){
   # prepare output matrix format
-  load_for_dims = load_scenario(wd = wd_load, pc = pc_table[1,], batchnr = 1)
+  load_for_dims = sim.load.scenario(wd = wd_load, pc = pc_table[1,], batchnr = 1)
   ncol_out = ncol(load_for_dims) # nr of cols of the merged results table
   nr_scenarios = nrow(pc_table)
   merged_res = matrix(nrow = 0, ncol = ncol_out)
 
   for(i in 1:nr_scenarios){
     for(j in 1:nr_batches){
-      merged_res = rbind(merged_res, load_scenario(wd = wd_load, pc = pc_table[i,], batchnr = j))
+      merged_res = rbind(merged_res, sim.load.scenario(wd = wd_load, pc = pc_table[i,], batchnr = j))
     }
   }
-  merged_res = data.frame(merged.res)
+  merged_res = data.frame(merged_res)
   if(save == T){
     save(merged_res, file = paste0(wd_save, "/merged_res.RData"))
   }
@@ -40,4 +40,3 @@ sim.merge.results = function(pc_table,
 
 }
 
-#test = merge_results(pc[1:2,])
