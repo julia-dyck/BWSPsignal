@@ -1,6 +1,6 @@
 # BWSPsignal
 
-This repository provides the BWSPsignal R package and a simulationstudy folder to tune and apply the Bayesian Power generalized Weibull Shape Parameter (BPgWSP) test.
+This repository provides the BWSPsignal R package and a "/simulationstudy" folder to tune and apply the Bayesian Power generalized Weibull Shape Parameter (BPgWSP) test.
 
 The BPgWSP test was developed to perform signal detection for adverse event monitoring based on electronic health records.
 
