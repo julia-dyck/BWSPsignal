@@ -19,7 +19,7 @@
 #' 
 #' @details The survival function of the power generalized distribution is:
 #' \deqn{
-#'     S(x) = exp \left\{ 1 - \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma}} \right\}.
+#'     S(x) = \exp \left\{ 1 - \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma}} \right\}.
 #' }
 #' The hazard function is
 #' \deqn{
