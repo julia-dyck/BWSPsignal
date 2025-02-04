@@ -59,9 +59,9 @@ p = ggplot(n_eff.df, aes(dist.ass, n_eff, fill = parameter)) +
 
 p
 
-png(file = paste0(getwd(), "/fig_boxplot-effective-sample-sizes.png"),
+pdf(file = paste0(getwd(), "/fig_boxplot-effective-sample-sizes.pdf"),
     width = 600, height = 400,
-    units = "px", pointsize = 12)
+    pointsize = 12)
 
 dev.off()
 
