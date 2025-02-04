@@ -11,10 +11,13 @@
 #' @examples
 #' plotpgw(scale = 2, shape = 5, powershape = 10)
 #'
-#' @export
 #'
-#' @seealso \code{\link{dpgw}}, \code{\link{spgw}}, \code{\link{ppgw}}, \code{\link{hpgw}}
-
+#' @seealso \code{\link{dpgw}}, \code{\link{spgw}}, \code{\link{ppgw}}, \code{\link{hpgw}}.
+#' 
+#' An interactive version of this plot is available
+#' on \url{https://janoleko.shinyapps.io/pgwd/}.
+#' 
+#' @export
 
 plotpgw = function(scale = 1, shape = 1, powershape = 1,...){
 
