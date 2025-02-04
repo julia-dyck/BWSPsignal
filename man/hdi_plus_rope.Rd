@@ -44,6 +44,7 @@ hdi_plus_rope(nullregion = c(4,4.5), credregion = c(3,5)) # rope encompassed by 
 }
 \references{
 \insertRef{kruschke2015}{BWSPsignal}
+
 \insertRef{kruschke2018}{BWSPsignal}
 }
 \seealso{

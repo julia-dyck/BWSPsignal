@@ -28,6 +28,7 @@
 #' 
 #' @references
 #' \insertRef{kruschke2015}{BWSPsignal}
+#' 
 #' \insertRef{kruschke2018}{BWSPsignal}
 #' 
 #' @examples
