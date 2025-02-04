@@ -1,22 +1,20 @@
-#' Simulation study: replicate one scenario 2.0
+#' repeat simulation for one sample scenario (pc) in simulationstudy
 #'
-#' repeat the data generation and fitting and results output for
-#' one scenario parameter combination
+#' Repeat the data generation and fitting and results output for
+#' one scenario parameter combination (pc).
 #'
-#' @param scenario.pars Vector with parametervalues, that specify the data
-#'        generating scenario. See function \code{datagenUnifBr} for
-#'        details.
-#' @param reps number of repeated simulations for one scenario
+#' @param batch.nr number of batch to save them under different names and 
+#' prevent overwriting
+#' @param reps number of repeated simulations for one scenario forming one batch
+#' @param pc matrix of parameter combinations for the scenario to be simulated
 #' @param save logical: states whether output is to be saved in a specified file
 #'        (T) or in the global environment (F)
 #' @param path file path specifying where to save the output if save = T
 #'
-#' @return a data frame object (named \code{raw.sim.table}) containing all fitting and
-#'         posterior sample statistics of the simulation runs (statistics are
-#'         gathered using the \code{stanfit.to.fitstats} and \code{stanfit.to.poststats}
-#'         function).
-#'                      generating scenario. See function \code{datagenUnifBr} for
-#'                      details.
+#' @return a data frame containing all fitting and posterior sample statistics of 
+#' the simulation runs (statistics are gathered using the 
+#' \code{\link{sim.stanfit.to.fitstats}} and \code{\link{sim.stanfit.to.poststats}} 
+#' functions).
 #'
 #'
 #' @export

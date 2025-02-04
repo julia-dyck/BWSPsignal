@@ -2,31 +2,30 @@
 % Please edit documentation in R/sim.repeat.1.scenario.R
 \name{sim.repeat.1.scenario}
 \alias{sim.repeat.1.scenario}
-\title{Simulation study: replicate one scenario 2.0}
+\title{repeat simulation for one sample scenario (pc) in simulationstudy}
 \usage{
 sim.repeat.1.scenario(batch.nr, reps = 10, pc, save = F, path = getwd())
 }
 \arguments{
-\item{reps}{number of repeated simulations for one scenario}
+\item{batch.nr}{number of batch to save them under different names and
+prevent overwriting}
+
+\item{reps}{number of repeated simulations for one scenario forming one batch}
+
+\item{pc}{matrix of parameter combinations for the scenario to be simulated}
 
 \item{save}{logical: states whether output is to be saved in a specified file
 (T) or in the global environment (F)}
 
 \item{path}{file path specifying where to save the output if save = T}
-
-\item{scenario.pars}{Vector with parametervalues, that specify the data
-generating scenario. See function \code{datagenUnifBr} for
-details.}
 }
 \value{
-a data frame object (named \code{raw.sim.table}) containing all fitting and
-posterior sample statistics of the simulation runs (statistics are
-gathered using the \code{stanfit.to.fitstats} and \code{stanfit.to.poststats}
-function).
-generating scenario. See function \code{datagenUnifBr} for
-details.
+a data frame containing all fitting and posterior sample statistics of
+the simulation runs (statistics are gathered using the
+\code{\link{sim.stanfit.to.fitstats}} and \code{\link{sim.stanfit.to.poststats}}
+functions).
 }
 \description{
-repeat the data generation and fitting and results output for
-one scenario parameter combination
+Repeat the data generation and fitting and results output for
+one scenario parameter combination (pc).
 }
