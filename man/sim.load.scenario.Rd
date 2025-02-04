@@ -15,6 +15,6 @@ sim.load.scenario(wd, pc, batchnr = 1)
 Returns a table with counts on run simulation scenarios
 }
 \description{
-Load all simulations of a simulated scenario and return number of run
+Load all simulations of a simulated scenario (obtained using \code{\link{sim.rep.1.scenario}}) and return number of run
 simulations.
 }

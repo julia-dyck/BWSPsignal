@@ -7,10 +7,12 @@
 sim.fit.to.1.sample(pc)
 }
 \arguments{
-\item{survdat}{time-event-sample}
+\item{survdat}{time-to-event sample}
 }
 \value{
-a data frame with 16 rows. Each row contains statistics for one of the 4x4 prior and model alternatives.
+a data frame with 16 rows. Each row contains statistics for one of the
+4x4 prior (fll, lll, fgg, ggg) and model (no ADR expected, ADR expected around
+1st, 2nd, 3rd quartile of observation period) alternatives.
 }
 \description{
 Conducts all steps from data input to simulation output generation including:
