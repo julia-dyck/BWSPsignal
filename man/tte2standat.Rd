@@ -2,7 +2,7 @@
 % Please edit documentation in R/tte2standat.R
 \name{tte2standat}
 \alias{tte2standat}
-\title{reformat time-to-event data for usage in stanmodel.pgw}
+\title{reformat time-to-event data for usage in \code{fit_pgw_tte()}}
 \usage{
 tte2standat(
   dat,
@@ -15,9 +15,9 @@ tte2standat(
 )
 }
 \description{
-Reformating of a matrix or dataframe containing a time-to-event
-dataset with time in the first column and the event status in the second column.
+Reformatting of a matrix or data frame containing a time-to-event
+data set with time in the first column and the event status in the second column.
 }
 \details{
-Converts time-event data to a suitable format for rstan model fitting.
+Converts time-event data to a suitable format for \code{rstan} model fitting.
 }

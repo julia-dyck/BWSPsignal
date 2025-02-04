@@ -1,11 +1,11 @@
-#' reformat time-to-event data for usage in stanmodel.pgw
+#' reformat time-to-event data for usage in `fit_pgw_tte()`
 #'
 #'
 #'
-#' @description Reformating of a matrix or dataframe containing a time-to-event
-#' dataset with time in the first column and the event status in the second column.
+#' @description Reformatting of a matrix or data frame containing a time-to-event
+#' data set with time in the first column and the event status in the second column.
 #'
-#' @details Converts time-event data to a suitable format for rstan model fitting.
+#' @details Converts time-event data to a suitable format for `rstan` model fitting.
 #'
 #'
 #'@export

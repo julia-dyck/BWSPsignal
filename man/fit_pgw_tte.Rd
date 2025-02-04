@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_pgw_tte.R
 \name{fit_pgw_tte}
 \alias{fit_pgw_tte}
-\title{Fit pgW models with stan}
+\title{Fit pgw models with stan}
 \usage{
 fit_pgw_tte(
   datstan,
