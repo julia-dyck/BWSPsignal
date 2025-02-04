@@ -34,11 +34,3 @@ sim.monitor.progress = function(pc_table,
   return(progress)
 }
 
-
-#progress8 = monitor_progress(pc_table = pc.numeric)
-#View(progress8)
-#save(progress8, file = "progress_2023_11_20.RData")
-#library(dplyr)
-#library(tidyverse)
-#which(progress8 == 0) %>% pc[.,]
-#which(progress8 < 10 & progress8 > 0) %>% pc[.,]
