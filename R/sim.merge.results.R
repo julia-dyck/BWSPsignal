@@ -1,19 +1,17 @@
-
+#' merge result table batches from simulationstudy
+#'
+#' @param pc_table table of scenarios
+#' @param wd_load path in which the result batches are stored
+#' @param wd_save path in which the merged result table will be stored
+#' @param nr_batches number of batch files per scenario
+#'
+#' @return one result dataframe containing all simulations (one per row); the 
+#' pc specifications are in the first 8 columns, remaining specifications contain
+#' statistics on prior specifications and posterior sample
+#'
+#'
 #' @export
 
-# merge result table batches from simstudy01
-
-## input arguments
-# ## pc_table: table of scenarios pc_table
-# ## wd_load: path in which the result batches are stored
-# ## wd_save: path in which the merged result table will be stored
-# ## nr_batches: number of batch files per scenario
-
-## output
-# one result table containing all simulations:
-# ## one row = one simulation run
-# ## there are 100 rows per scenario, the scenario prespecifications
-#    are in the first 8 cols of the table
 
 sim.merge.results = function(pc_table,
                             wd_load,
