@@ -1,6 +1,6 @@
 #' Load simulated scenario
 #' 
-#' Load all simulations of a simulated scenario and return number of run 
+#' Load all simulations of a simulated scenario (obtained using \code{\link{sim.rep.1.scenario}}) and return number of run 
 #' simulations.
 #'
 #' @param wd working directory were ALL the simulation files lie
@@ -12,6 +12,7 @@
 #' @export
 #'
 #'
+
 sim.load.scenario = function(wd, pc, batchnr = 1){
   N = pc[1]
   br = pc[2]

@@ -13,9 +13,11 @@
 #'   - 0 to 100 percentiles of the posterior distribution (to roughly estimate the
 #'     probability mass within the region of practical equivalence for the null value)
 #'
-#' @param survdat time-event-sample
+#' @param survdat time-to-event sample
 #'
-#' @return a data frame with 16 rows. Each row contains statistics for one of the 4x4 prior and model alternatives.
+#' @return a data frame with 16 rows. Each row contains statistics for one of the 
+#' 4x4 prior (fll, lll, fgg, ggg) and model (no ADR expected, ADR expected around 
+#' 1st, 2nd, 3rd quartile of observation period) alternatives.
 #'
 #'
 #' @export
