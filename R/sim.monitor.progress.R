@@ -1,4 +1,18 @@
-#'
+#' Monitor the progress of simulationstudy
+#' 
+#' The function monitors the progress of the simulationstudy by going through 
+#' raw result files.
+#' This can be done to find the restarting point when the running of simulations 
+#' was interrupted or to investigate which simulations could not be run
+#' successfully (due to convergence issues).
+#' 
+#' @param pc_table data frame with the parameter combinations to be used for 
+#' the simulation study
+#' @param wd working directory where the raw result files are stored
+#' @param batch_max planned number of batches (each batch contains 10 simulation
+#' runs)
+#' 
+#' @return a vector with the number of successfully run simulations for each pc
 #'
 #'@export
 
