@@ -14,6 +14,21 @@ tte2standat(
   powershape.sd
 )
 }
+\arguments{
+\item{dat}{Matrix or data frame with time in the first column and event status in the second column.}
+
+\item{scale.mean}{The a priori expected mean of the scale parameter.}
+
+\item{scale.sd}{The priori expected standard deviation of the scale parameter.}
+
+\item{shape.mean}{The priori expected mean of the shape parameter.}
+
+\item{shape.sd}{The priori expected standard deviation of the shape parameter.}
+
+\item{powershape.mean}{The priori expected mean of the power shape parameter.}
+
+\item{powershape.sd}{The priori expected standard deviation of the power shape parameter.}
+}
 \description{
 Reformatting of a matrix or data frame containing a time-to-event
 data set with time in the first column and the event status in the second column.

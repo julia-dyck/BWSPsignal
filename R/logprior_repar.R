@@ -3,7 +3,7 @@
 #' 
 #' `logprior_repar` can be used after specifying a Lognormal prior in terms of
 #' mean `m_t` and standard deviation `s_t` to calculate the location `meanlog` 
-#' and scale `sdlog` as defined and used in \link{`dlnorm()`}.
+#' and scale `sdlog` as defined and used in \code{\link[stats]{dlnorm}}.
 #' 
 #' @param m_t mean of the Lognormal distribution
 #' @param s_t standard deviation of the Lognormal distribution

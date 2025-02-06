@@ -12,7 +12,8 @@ sim.stanfit.to.poststats(
 \arguments{
 \item{stanfit.object}{the estimated stan model output}
 
-\item{cred.niveaus}{}
+\item{cred.niveaus}{a vector of credibility niveaus/levels of the the equal-tailed and highest posterior density intervals
+shall be calculated}
 }
 \value{
 Information about the posterior distributions stored in a vector
@@ -32,7 +33,7 @@ simulation study, where all relevant statistics per run are stored column-wise
 and the repeated runs for one data scenario are store row-wise.
 }
 \description{
-Given a stanfit object returned by \code{\link{fit_pgw_tte()}}, the function extracts statistics about the posterior
+Given a stanfit object returned by \code{\link{fit_pgw_tte}}, the function extracts statistics about the posterior
 distribution of the shape parameters nu and gamma.
 These shall give an overview and provide the basis for the adr signal detection
 testing in one vector.

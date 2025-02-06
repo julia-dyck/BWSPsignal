@@ -1,6 +1,6 @@
 #' Fit pgw models with stan
 #'
-#' The function applies the \code{\link{rstan::sampling}} command to fit a pgW model to 
+#' The function applies the \code{\link[rstan]{sampling}} command to fit a pgW model to 
 #' time-to-event data with Gamma or Lognormal priors for the parameters of the
 #' pgW distribution.
 #'

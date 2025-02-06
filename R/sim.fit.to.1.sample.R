@@ -1,6 +1,8 @@
 #' Simstudy: apply all models to one specific sample
 #'
-#' Conducts all steps from data input to simulation output generation including:
+#' Conducts all steps from data generation to simulation output generation including:
+#' 
+#' - data generation based on provided parameter combination
 #'
 #' - data preparation for stanmodel for all prior assumptions
 #'
@@ -13,7 +15,7 @@
 #'   - 0 to 100 percentiles of the posterior distribution (to roughly estimate the
 #'     probability mass within the region of practical equivalence for the null value)
 #'
-#' @param survdat time-to-event sample
+#' @param pc parameter combination 
 #'
 #' @return a data frame with 16 rows. Each row contains statistics for one of the 
 #' 4x4 prior (fll, lll, fgg, ggg) and model (no ADR expected, ADR expected around 

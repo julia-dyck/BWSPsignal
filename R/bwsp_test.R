@@ -49,7 +49,7 @@
 #' The credibility regions specified in the \code{credregions} argument represent
 #' the posterior distribution of each shape parameter.
 #' 
-#' The BWSP test conducts an HDI+ROPE test (see \code{\link{hdi_plus_rope()}}) for each 
+#' The BWSP test conducts an HDI+ROPE test (see \code{\link{hdi_plus_rope}}) for each 
 #' shape parameter and combines the interim results of all shape parameters. More 
 #' information on the HDI+ROPE test and recommendations for interval specifications
 #' can be found in \insertCite{kruschke2018}{BWSPsignal} and

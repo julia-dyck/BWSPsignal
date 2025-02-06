@@ -1,12 +1,13 @@
 #' extract posterior summary statistics and credibility intervals
 #'
-#' Given a stanfit object returned by \code{\link{fit_pgw_tte()}}, the function extracts statistics about the posterior
+#' Given a stanfit object returned by \code{\link{fit_pgw_tte}}, the function extracts statistics about the posterior
 #' distribution of the shape parameters nu and gamma.
 #' These shall give an overview and provide the basis for the adr signal detection
 #' testing in one vector.
 #'
 #' @param stanfit.object the estimated stan model output
-#' @param cred.niveaus
+#' @param cred.niveaus a vector of credibility niveaus/levels of the the equal-tailed and highest posterior density intervals
+#'                    shall be calculated
 #'
 #' @return Information about the posterior distributions stored in a vector
 #'         consisting of the following entry parts first for parameter nu followed by the same statistics regarding
@@ -64,8 +65,8 @@ sim.stanfit.to.poststats = function(stanfit.object, cred.niveaus = seq(0.5, 0.95
   # ## post.sample$gam = posterior sample of gamma, representing the posterior distribution
 
   # credibility/confidence niveaus 1-alpha
-    # 5% ETI and HDI
-    # 10% ETI and HDI
+    # 50% ETI and HDI
+    # 55% ETI and HDI
     # ...
     # 95% ETI and HDI
 

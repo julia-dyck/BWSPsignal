@@ -7,7 +7,7 @@
 sim.fit.to.1.sample(pc)
 }
 \arguments{
-\item{survdat}{time-to-event sample}
+\item{pc}{parameter combination}
 }
 \value{
 a data frame with 16 rows. Each row contains statistics for one of the
@@ -15,10 +15,11 @@ a data frame with 16 rows. Each row contains statistics for one of the
 1st, 2nd, 3rd quartile of observation period) alternatives.
 }
 \description{
-Conducts all steps from data input to simulation output generation including:
+Conducts all steps from data generation to simulation output generation including:
 }
 \details{
 \itemize{
+\item data generation based on provided parameter combination
 \item data preparation for stanmodel for all prior assumptions
 \item fitting all model alternatives
 \item extracting and returning relevant statistics from stan output:
