@@ -48,7 +48,7 @@
 #' @return A simulated time-to-event data frame of size N
 #' 
 #' @examples
-#' datagen_tte(100, 0.1, 1, 0.5, 0.05, 365)
+#' datagen_tte(c(100, 0.1, 1, 0.5, 0.05, 365))
 #' 
 #' @export
 
