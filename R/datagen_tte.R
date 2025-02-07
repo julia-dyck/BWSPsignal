@@ -64,17 +64,17 @@ datagen_tte = function(genpar){
   censor = genpar[6]
 
   # Number of br & adr cases in the study
-  n.br = rbinom(1,n, prob = br)
-  n.adr = rbinom(1,n, prob = br*adr.rate)
+  n.br = stats::rbinom(1,n, prob = br)
+  n.adr = stats::rbinom(1,n, prob = br*adr.rate)
   # event time for background event candidates
-  t.br = runif(n.br, min = 0, max = censor)
+  t.br = stats::runif(n.br, min = 0, max = censor)
 
   # mean time point for adr events
   m.adr = round(adr.quantile*censor)
   # standard deviation for adr event times
   sd.adr = adr.relsd*censor
   # event time for adr event candidates
-  t.adr = rnorm(n.adr, mean = m.adr, sd = sd.adr)
+  t.adr = stats::rnorm(n.adr, mean = m.adr, sd = sd.adr)
   # adjustment for negative time points
   if(sum(t.adr<=0)>0){
     t.adr[t.adr<=0] = 1

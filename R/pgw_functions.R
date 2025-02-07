@@ -12,7 +12,7 @@
 #' @param shape Shape parameter
 #' @param powershape powershape parameter
 #' 
-#' @param log logical argument; if TRUE, the logarithmized survival probability is returned
+#' @param log logical argument; if TRUE, the logarithm of the survival probability is returned
 #' 
 #'
 #' @return A vector of cumulative probability values evaluated at each of the inserted quantiles
@@ -179,7 +179,7 @@ rpgw = function(n, scale = 1, shape = 1, powershape = 1){
   nu = shape
   gamma = powershape
   
-  u = runif(n) # generate random sample from uniform distribution
+  u = stats::runif(n) # generate random sample from uniform distribution
   
   # inverse cumulative distribution fct.
   inv_ppgw = theta*( ( 1 - log(1-u) )^gamma - 1 )^(1/nu)
