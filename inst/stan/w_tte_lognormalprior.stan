@@ -14,7 +14,7 @@ data {
   #include /data/w_tte_data.stan //ADJUST->erstelle w_tte_data.stan & save in data folder
   }
 parameters {
-  #include /parameters/pgw_parameters.stan
+  #include /parameters/w_parameters.stan
 }
 model {
   real t_mu = lognormal_expect_stdev_to_mu(t_expect, t_stdev);       // transform parametrization to predefined lognormal parameterization
