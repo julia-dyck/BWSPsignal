@@ -30,6 +30,7 @@ model {
   real g_alpha = gamma_expect_stdev_to_alpha(g_expect, g_stdev); // ----"----
   real g_beta = gamma_expect_stdev_to_beta(g_expect, g_stdev);   // ----"----
 
+  target += gamma_lpdf(theta | t_alpha, t_beta);
   target += gamma_lpdf(nu | n_alpha, n_beta);
   target += gamma_lpdf(gamma | g_alpha, g_beta);
   for(i in 1:N_status_e){
