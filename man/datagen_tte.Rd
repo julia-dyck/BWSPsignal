@@ -51,13 +51,13 @@ the medication (or start of regular medication) and the censor is the
 official end time of the cohort study.
 
 For the br cases, the event-times are generated using a uniform distribution on
-the interval \link{0, censor}. For the adr cases, event-times follow a normal
+the interval \eqn{[0,} \code{censor} \eqn{]}. For the adr cases, event-times follow a normal
 distribution. The mean of the normal distribution is at either 0.25, 0.5 or 0.75 times
 censor. The standard deviation is defined as
 \eqn{ rel.sd \cdot censor}. All generated event-times
 \eqn{\leq 0} are set to 1.
 }
 \examples{
-datagen_tte(100, 0.1, 1, 0.5, 0.05, 365)
+datagen_tte(c(100, 0.1, 1, 0.5, 0.05, 365))
 
 }

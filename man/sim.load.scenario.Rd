@@ -10,11 +10,15 @@ sim.load.scenario(wd, pc, batchnr = 1)
 \item{wd}{working directory were ALL the simulation files lie}
 
 \item{pc}{parameter combination (numeric version)}
+
+\item{batchnr}{nr of files (batches) containing simulation output based on the
+same pc}
 }
 \value{
 Returns a table with counts on run simulation scenarios
 }
 \description{
-Load all simulations of a simulated scenario (obtained using \code{\link{sim.rep.1.scenario}}) and return number of run
+Load all simulations of a simulated scenario (obtained using
+\code{\link{sim.repeat.1.scenario}}) and return number of run
 simulations.
 }

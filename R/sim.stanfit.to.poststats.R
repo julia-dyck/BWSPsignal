@@ -1,12 +1,13 @@
 #' extract posterior summary statistics and credibility intervals
 #'
-#' Given a stanfit object returned by \code{\link{fit_pgw_tte()}}, the function extracts statistics about the posterior
+#' Given a stanfit object returned by \code{\link{fit_pgw_tte}}, the function extracts statistics about the posterior
 #' distribution of the shape parameters nu and gamma.
 #' These shall give an overview and provide the basis for the adr signal detection
 #' testing in one vector.
 #'
 #' @param stanfit.object the estimated stan model output
-#' @param cred.niveaus
+#' @param cred.niveaus a vector of credibility niveaus/levels of the the equal-tailed and highest posterior density intervals
+#'                    shall be calculated
 #'
 #' @return Information about the posterior distributions stored in a vector
 #'         consisting of the following entry parts first for parameter nu followed by the same statistics regarding
@@ -31,7 +32,7 @@
 
 # function --------------------------------------------------------------------
 sim.stanfit.to.poststats = function(stanfit.object, cred.niveaus = seq(0.5, 0.95, by = 0.05)){
-  require(rstan)
+  
   obj = stanfit.object
 
   ######## extraction of posterior summary stats
@@ -64,15 +65,15 @@ sim.stanfit.to.poststats = function(stanfit.object, cred.niveaus = seq(0.5, 0.95
   # ## post.sample$gam = posterior sample of gamma, representing the posterior distribution
 
   # credibility/confidence niveaus 1-alpha
-    # 5% ETI and HDI
-    # 10% ETI and HDI
+    # 50% ETI and HDI
+    # 55% ETI and HDI
     # ...
     # 95% ETI and HDI
 
   # calculate equal tailed intervals (ETIs)
   nu.eti = matrix(nrow = length(cred.niveaus), ncol = 2)
   for(i in 1:length(cred.niveaus)){
-    nu.eti[i,] = quantile(post.sample$nu, probs = 0.5 + c(-1,1)*cred.niveaus[i]/2)
+    nu.eti[i,] = stats::quantile(post.sample$nu, probs = 0.5 + c(-1,1)*cred.niveaus[i]/2)
   }
   nu.eti = c(t(nu.eti)) # transform to vector
   names(nu.eti) = paste0("nu.eti",rep(cred.niveaus, each = 2), rep(c("l","u"), times = length(cred.niveaus)) )
@@ -80,7 +81,7 @@ sim.stanfit.to.poststats = function(stanfit.object, cred.niveaus = seq(0.5, 0.95
 
   ga.eti = matrix(nrow = length(cred.niveaus), ncol = 2)
   for(i in 1:length(cred.niveaus)){
-    ga.eti[i,] = quantile(post.sample$gamma, probs = 0.5 + c(-1,1)*cred.niveaus[i]/2)
+    ga.eti[i,] = stats::quantile(post.sample$gamma, probs = 0.5 + c(-1,1)*cred.niveaus[i]/2)
   }
   ga.eti = c(t(ga.eti)) # transform to vector
   names(ga.eti) = paste0("ga.eti",rep(cred.niveaus, each = 2), rep(c("l","u"), times = length(cred.niveaus)) )
@@ -99,10 +100,10 @@ sim.stanfit.to.poststats = function(stanfit.object, cred.niveaus = seq(0.5, 0.95
 
   # calculate percentiles
 
-  nu.per = quantile(post.sample$nu, probs = (0:100)/100)
+  nu.per = stats::quantile(post.sample$nu, probs = (0:100)/100)
   names(nu.per) = paste0("nu.per", names(nu.per))
 
-  ga.per = quantile(post.sample$gamma, probs = (0:100)/100)
+  ga.per = stats::quantile(post.sample$gamma, probs = (0:100)/100)
   names(ga.per) = paste0("ga.per", names(ga.per))
 
  ret.vect = t(as.data.frame(c(th.post.stats,

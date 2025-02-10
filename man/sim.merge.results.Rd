@@ -14,6 +14,9 @@ sim.merge.results(pc_table, wd_load, wd_save, nr_batches = 10, save = F)
 \item{wd_save}{path in which the merged result table will be stored}
 
 \item{nr_batches}{number of batch files per scenario}
+
+\item{save}{logical indicating whether to automatically save the merged result in
+\code{wd_save} or just return it the session environment (by default \code{FALSE})}
 }
 \value{
 one result dataframe containing all simulations (one per row); the

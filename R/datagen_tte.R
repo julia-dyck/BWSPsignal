@@ -29,7 +29,7 @@
 #' official end time of the cohort study.
 #'
 #' For the br cases, the event-times are generated using a uniform distribution on
-#' the interval [0, censor]. For the adr cases, event-times follow a normal
+#' the interval \eqn{[0,} \code{censor} \eqn{]}. For the adr cases, event-times follow a normal
 #' distribution. The mean of the normal distribution is at either 0.25, 0.5 or 0.75 times
 #' censor. The standard deviation is defined as
 #' \eqn{ rel.sd \cdot censor}. All generated event-times
@@ -48,7 +48,7 @@
 #' @return A simulated time-to-event data frame of size N
 #' 
 #' @examples
-#' datagen_tte(100, 0.1, 1, 0.5, 0.05, 365)
+#' datagen_tte(c(100, 0.1, 1, 0.5, 0.05, 365))
 #' 
 #' @export
 
@@ -64,17 +64,17 @@ datagen_tte = function(genpar){
   censor = genpar[6]
 
   # Number of br & adr cases in the study
-  n.br = rbinom(1,n, prob = br)
-  n.adr = rbinom(1,n, prob = br*adr.rate)
+  n.br = stats::rbinom(1,n, prob = br)
+  n.adr = stats::rbinom(1,n, prob = br*adr.rate)
   # event time for background event candidates
-  t.br = runif(n.br, min = 0, max = censor)
+  t.br = stats::runif(n.br, min = 0, max = censor)
 
   # mean time point for adr events
   m.adr = round(adr.quantile*censor)
   # standard deviation for adr event times
   sd.adr = adr.relsd*censor
   # event time for adr event candidates
-  t.adr = rnorm(n.adr, mean = m.adr, sd = sd.adr)
+  t.adr = stats::rnorm(n.adr, mean = m.adr, sd = sd.adr)
   # adjustment for negative time points
   if(sum(t.adr<=0)>0){
     t.adr[t.adr<=0] = 1

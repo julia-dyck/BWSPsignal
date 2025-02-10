@@ -18,7 +18,7 @@ Lognormal distribution
 \description{
 \code{logprior_repar} can be used after specifying a Lognormal prior in terms of
 mean \code{m_t} and standard deviation \code{s_t} to calculate the location \code{meanlog}
-and scale \code{sdlog} as defined and used in \link{`dlnorm()`}.
+and scale \code{sdlog} as defined and used in \code{\link[stats]{dlnorm}}.
 }
 \details{
 Expectation (mean) and standard deviation of a Lognormal random variable \eqn{X}

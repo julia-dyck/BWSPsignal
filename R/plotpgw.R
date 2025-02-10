@@ -23,8 +23,8 @@ plotpgw = function(scale = 1, shape = 1, powershape = 1,...){
 
   sim = rpgw(1000, scale, shape, powershape)
   m = mean(sim)
-  med = median(sim)
-  std = sd(sim)
+  med = stats::median(sim)
+  std = stats::sd(sim)
 
   x_upper = m + 2*std
   if(is.finite(x_upper)){
@@ -44,7 +44,7 @@ plotpgw = function(scale = 1, shape = 1, powershape = 1,...){
   par_name = c("scale", "shape", "powershape")
   par_vect = c(scale, shape, powershape)
 
-  par(mfrow = c(2,2))
+  graphics::par(mfrow = c(2,2))
   for(i in 1:4){
     plot(values[[i]],
          type = "l",
@@ -53,20 +53,20 @@ plotpgw = function(scale = 1, shape = 1, powershape = 1,...){
          ...
          )
     if(i == 1){
-      abline(v = m, lwd = 3, lty = 2, col = "darkgrey")
-      legend("topright",
+      graphics::abline(v = m, lwd = 3, lty = 2, col = "darkgrey")
+      graphics::legend("topright",
              legend = "emp. mean",
              lty = 2,
              col = "darkgrey"
              )
       }
     if(i == 2){
-      legend("topright",
+      graphics::legend("topright",
              legend = paste0(par_name, " = ", par_vect)
                )
       }
   }
-  par(mfrow = c(1,1))
+  graphics::par(mfrow = c(1,1))
 
  cat("empirical mean = ", m)
  cat("\n")

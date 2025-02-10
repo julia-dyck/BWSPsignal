@@ -13,8 +13,9 @@ sim.fit.prep(ttedat, pc)
 }
 \value{
 A list containing all information to be inserted as \code{datstan}
-argument into the \code{\link{fit_pgw_tte} function.
+argument into the \code{\link{fit_pgw_tte}} function.
 }
 \description{
-Formatting of simulated data generated with \code{\link{datagen_tte}} as building block for tuning the Bayesian WSP test via simulation study.
+Formatting of simulated data generated with \code{\link{datagen_tte}} as
+building block for tuning the Bayesian WSP test via simulation study.
 }

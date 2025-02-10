@@ -31,7 +31,7 @@ rpgw(n, scale = 1, shape = 1, powershape = 1)
 
 \item{powershape}{powershape parameter}
 
-\item{log}{logical argument; if TRUE, the logarithmized survival probability is returned}
+\item{log}{logical argument; if TRUE, the logarithm of the survival probability is returned}
 
 \item{p}{vector of probabilities}
 

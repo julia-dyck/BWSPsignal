@@ -1,6 +1,6 @@
-#' Fit pgw models with stan
+#' Fit Weibull models with stan
 #'
-#' The function applies the \code{\link[rstan]{sampling}} command to fit a pgW model to 
+#' The function applies the \code{\link[rstan]{sampling}} command to fit a Weibull model to 
 #' time-to-event data with Gamma or Lognormal priors for the parameters of the
 #' pgW distribution.
 #'
@@ -18,7 +18,7 @@
 #' 
 #' 
 #' @details
-#' The posterior is proportional to the likelihood times the prior. The likelihood is
+#' ADJUST: The posterior is proportional to the likelihood times the prior. The likelihood is
 #' \deqn{\mathcal{L}(t| \Theta) = \prod_{i=1}^N S(t_i)^{1-d_i}\cdot f(t_i)^{d_i}} 
 #' with \eqn{S(t)} the survival function of the pgW distribution and \eqn{f(t)} the
 #' density function of the pgW distribution. The pair \eqn{(t_i, d_i)} are the observed
@@ -59,15 +59,15 @@
 #' @export
 
 
-fit_pgw_tte = function(datstan, 
-                          priordist = c("fgg","fll","ggg","lll"),
-                          chains = 4,
-                          iter = 11000,
-                          warmup = 1000
-                          ){
+fit_w_tte = function(datstan, 
+                     priordist = c("fgg","fll","ggg","lll"),
+                     chains = 4,
+                     iter = 11000,
+                     warmup = 1000
+){
   if(priordist == "fgg"){
     output = rstan::sampling(
-      object = stanmodels$pgw_tte_gammaprior_scalefixed,  # Stan model
+      object = stanmodels$w_tte_gammaprior_scalefixed,  # Stan model
       data = datstan,     # named list of data
       chains = chains,    # number of Markov chains
       warmup = warmup,    # number of warmup iterations per chain
@@ -76,7 +76,7 @@ fit_pgw_tte = function(datstan,
   }
   if(priordist == "fll"){
     output = rstan::sampling(
-      object = stanmodels$pgw_tte_lognormalprior_scalefixed,  # Stan model
+      object = stanmodels$w_tte_lognormalprior_scalefixed,  # Stan model
       data = datstan,     # named list of data
       chains = chains,    # number of Markov chains
       warmup = warmup,    # number of warmup iterations per chain
@@ -85,7 +85,7 @@ fit_pgw_tte = function(datstan,
   }
   if(priordist == "ggg"){
     output = rstan::sampling(
-      object = stanmodels$pgw_tte_gammaprior,  # Stan model
+      object = stanmodels$w_tte_gammaprior,  # Stan model
       data = datstan,     # named list of data
       chains = chains,    # number of Markov chains
       warmup = warmup,    # number of warmup iterations per chain
@@ -94,7 +94,7 @@ fit_pgw_tte = function(datstan,
   }
   if(priordist == "lll"){
     output = rstan::sampling(
-      object = stanmodels$pgw_tte_lognormalprior,  # Stan model
+      object = stanmodels$w_tte_lognormalprior,  # Stan model
       data = datstan,     # named list of data
       chains = chains,    # number of Markov chains
       warmup = warmup,    # number of warmup iterations per chain
