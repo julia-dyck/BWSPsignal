@@ -6,6 +6,7 @@
 #' data set with time in the first column and the event status in the second column.
 #' 
 #' @param dat Matrix or data frame with time in the first column and event status in the second column.
+#' @param mod modelling approach to be used; options are "w" for Weibull or "pgw" for power generalized Weibull.
 #' @param scale.mean The a priori expected mean of the scale parameter.
 #' @param scale.sd The priori expected standard deviation of the scale parameter.
 #' @param shape.mean The priori expected mean of the shape parameter.
@@ -20,25 +21,40 @@
 
 
 
-tte2standat = function(dat,
-                       scale.mean,
-                       scale.sd,
-                       shape.mean,
-                       shape.sd,
-                       powershape.mean,
-                       powershape.sd){
-
-  standat = list(N_status_e = sum(dat[,2]),
-                 N_status_c = dim(dat)[1]-sum(dat[,2]),
-                 te = dat[which(dat[,2]== 1),1],
-                 tc = dat[which(dat[,2]== 0),1],
-                 t_expect = scale.mean,
-                 t_stdev = scale.sd,
-                 n_expect = shape.mean,
-                 n_stdev = shape.sd,
-                 g_expect = powershape.mean,
-                 g_stdev = powershape.sd
-                 )
+tte2standat = function(dat, mod = c("w", "pgw"),
+                       scale.mean = 1,
+                       scale.sd = 10,
+                       shape.mean = 1,
+                       shape.sd = 10,
+                       powershape.mean = 1,
+                       powershape.sd = 10){
+  if(mod == "w"){
+    standat = list(N_status_e = sum(dat[,2]),
+                   N_status_c = dim(dat)[1]-sum(dat[,2]),
+                   te = dat[which(dat[,2]== 1),1],
+                   tc = dat[which(dat[,2]== 0),1],
+                   t_expect = scale.mean,
+                   t_stdev = scale.sd,
+                   n_expect = shape.mean,
+                   n_stdev = shape.sd
+    )
+  }
+  if(mod == "pgw"){
+    standat = list(N_status_e = sum(dat[,2]),
+                   N_status_c = dim(dat)[1]-sum(dat[,2]),
+                   te = dat[which(dat[,2]== 1),1],
+                   tc = dat[which(dat[,2]== 0),1],
+                   t_expect = scale.mean,
+                   t_stdev = scale.sd,
+                   n_expect = shape.mean,
+                   n_stdev = shape.sd,
+                   g_expect = powershape.mean,
+                   g_stdev = powershape.sd
+    )
+  }
+  else{
+    stop("Argument mod must be either 'w' or 'pgw'.")
+  }
   return(standat)
 }
 
@@ -48,6 +64,7 @@ tte2standat = function(dat,
 # head(testd)
 #
 # testdstanmod = tte2standat(testd,
+#                            mod = "pgw",
 #                            scale.mean = 3,
 #                            scale.sd = 4,
 #                            shape.mean = 5,

@@ -6,16 +6,19 @@
 \usage{
 tte2standat(
   dat,
-  scale.mean,
-  scale.sd,
-  shape.mean,
-  shape.sd,
-  powershape.mean,
-  powershape.sd
+  mod = c("w", "pgw"),
+  scale.mean = 1,
+  scale.sd = 10,
+  shape.mean = 1,
+  shape.sd = 10,
+  powershape.mean = 1,
+  powershape.sd = 10
 )
 }
 \arguments{
 \item{dat}{Matrix or data frame with time in the first column and event status in the second column.}
+
+\item{mod}{modelling approach to be used; options are "w" for Weibull or "pgw" for power generalized Weibull.}
 
 \item{scale.mean}{The a priori expected mean of the scale parameter.}
 
