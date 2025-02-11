@@ -21,7 +21,8 @@
 
 
 
-tte2standat = function(dat, mod = c("w", "pgw"),
+tte2standat = function(dat, 
+                       mod = c("w", "pgw"),
                        scale.mean = 1,
                        scale.sd = 10,
                        shape.mean = 1,
@@ -39,7 +40,7 @@ tte2standat = function(dat, mod = c("w", "pgw"),
                    n_stdev = shape.sd
     )
   }
-  if(mod == "pgw"){
+  else if(mod == "pgw"){
     standat = list(N_status_e = sum(dat[,2]),
                    N_status_c = dim(dat)[1]-sum(dat[,2]),
                    te = dat[which(dat[,2]== 1),1],
