@@ -16,12 +16,20 @@ RcppExport SEXP _rcpp_module_boot_stan_fit4pgw_tte_gammaprior_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4pgw_tte_gammaprior_scalefixed_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4pgw_tte_lognormalprior_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4pgw_tte_lognormalprior_scalefixed_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4w_tte_gammaprior_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4w_tte_gammaprior_scalefixed_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4w_tte_lognormalprior_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4w_tte_lognormalprior_scalefixed_mod();
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rcpp_module_boot_stan_fit4pgw_tte_gammaprior_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pgw_tte_gammaprior_mod, 0},
     {"_rcpp_module_boot_stan_fit4pgw_tte_gammaprior_scalefixed_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pgw_tte_gammaprior_scalefixed_mod, 0},
     {"_rcpp_module_boot_stan_fit4pgw_tte_lognormalprior_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pgw_tte_lognormalprior_mod, 0},
     {"_rcpp_module_boot_stan_fit4pgw_tte_lognormalprior_scalefixed_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pgw_tte_lognormalprior_scalefixed_mod, 0},
+    {"_rcpp_module_boot_stan_fit4w_tte_gammaprior_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4w_tte_gammaprior_mod, 0},
+    {"_rcpp_module_boot_stan_fit4w_tte_gammaprior_scalefixed_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4w_tte_gammaprior_scalefixed_mod, 0},
+    {"_rcpp_module_boot_stan_fit4w_tte_lognormalprior_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4w_tte_lognormalprior_mod, 0},
+    {"_rcpp_module_boot_stan_fit4w_tte_lognormalprior_scalefixed_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4w_tte_lognormalprior_scalefixed_mod, 0},
     {NULL, NULL, 0}
 };
 
