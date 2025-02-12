@@ -30,11 +30,13 @@ parameters of the pgW distribution. Options are
 A stanfit object
 }
 \description{
+Inner function of \code{\link{fit_mod_tte}}.
+}
+\details{
 The function applies the \code{\link[rstan]{sampling}} command to fit a pgW model to
 time-to-event data with Gamma or Lognormal priors for the parameters of the
 pgW distribution.
-}
-\details{
+
 The posterior is proportional to the likelihood times the prior. The likelihood is
 \deqn{\mathcal{L}(t| \Theta) = \prod_{i=1}^N S(t_i)^{1-d_i}\cdot f(t_i)^{d_i}}
 with \eqn{S(t)} the survival function of the pgW distribution and \eqn{f(t)} the

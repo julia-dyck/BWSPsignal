@@ -2,17 +2,21 @@
 % Please edit documentation in R/tte2standat.R
 \name{tte2standat}
 \alias{tte2standat}
-\title{reformat time-to-event data for usage in \code{fit_pgw_tte()}}
+\title{reformat time-to-event data for model fitting}
 \usage{
 tte2standat(
   dat,
-  mod = c("w", "pgw"),
+  mod = c("w", "dw", "pgw"),
   scale.mean = 1,
   scale.sd = 10,
   shape.mean = 1,
   shape.sd = 10,
   powershape.mean = 1,
-  powershape.sd = 10
+  powershape.sd = 10,
+  scale_c.mean = 1,
+  scale_c.sd = 10,
+  shape_c.mean = 1,
+  shape_c.sd = 10
 )
 }
 \arguments{
@@ -31,11 +35,38 @@ tte2standat(
 \item{powershape.mean}{The priori expected mean of the power shape parameter.}
 
 \item{powershape.sd}{The priori expected standard deviation of the power shape parameter.}
+
+\item{scale_c.mean}{The a priori expected mean of the scale parameter for the
+data censored at mid of the observation period.}
+
+\item{scale_c.sd}{The priori expected standard deviation of the scale parameter
+for the data censored at mid of the observation period.}
+
+\item{shape_c.mean}{The priori expected mean of the shape parameter for the
+data censored at mid of the observation period.}
+
+\item{shape_c.sd}{The priori expected standard deviation of the shape parameter
+for the data censored at mid of the observation period.}
 }
 \description{
 Reformatting of a matrix or data frame containing a time-to-event
-data set with time in the first column and the event status in the second column.
+data set with time in the first column and the event status in the second column
+to a list suitable for model fitting with \code{\link{fit_w_tte}},
+\code{\link{fit_dw_tte}} or \code{\link{fit_pgw_tte}}.
 }
 \details{
-Converts time-event data to a suitable format for \code{rstan} model fitting.
+Converts time-event data to a suitable format for \code{rstan} model fitting
+which is performed within the \code{\link{fit_w_tte}},
+\code{\link{fit_dw_tte}} and \code{\link{fit_pgw_tte}} functions.
+
+The subset of parameters or their prior mean and standard deviation, respectively,
+to be specified depends on the \code{mod} argument. For the Weibull model
+(\code{mod = "w"}), the scale and shape parameters are required.
+
+For the
+double Weibull approach (\code{mod = "dw"}), the scale and shape parameters are
+and the scale and shape parameters for the censored data are required.
+
+For the power generalized Weibull model (\code{mod = "pgw"}), the scale, shape
+and power shape parameters are required.
 }

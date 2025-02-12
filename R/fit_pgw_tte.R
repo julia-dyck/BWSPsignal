@@ -1,5 +1,7 @@
 #' Fit pgw models with stan
 #'
+#' Inner function of \code{\link{fit_mod_tte}}.
+#' 
 #' The function applies the \code{\link[rstan]{sampling}} command to fit a pgW model to 
 #' time-to-event data with Gamma or Lognormal priors for the parameters of the
 #' pgW distribution.
@@ -56,7 +58,6 @@
 #' 
 #' 
 #'
-#' @export
 
 
 fit_pgw_tte = function(datstan, 

@@ -40,22 +40,26 @@ sim.fit.to.1.sample = function(pc){
 
   ### Model fitting
   if(dist.ass == "fix.gam.gam"){
-    mod = fit_pgw_tte(datstan = datstan,
+    mod = fit_mod_tte(datstan = datstan,
+                      mod = "pgw",
                       priordist = "fgg")
     mod@model_name = "fix.gam.gam" # manually, because not working automatically
   }
   if(dist.ass == "gam.gam.gam"){
-    mod = fit_pgw_tte(datstan = datstan,
+    mod = fit_mod_tte(datstan = datstan,
+                      mod = "pgw",
                       priordist = "ggg")
     mod@model_name = "gam.gam.gam" # manually, because not working automatically
   }
   if(dist.ass == "fix.log.log"){
-    mod = fit_pgw_tte(datstan = datstan,
+    mod = fit_mod_tte(datstan = datstan,
+                      mod = "pgw",
                       priordist = "fll")
     mod@model_name = "fix.log.log" # manually, because not working automatically
   }
   if(dist.ass == "log.log.log"){
-    mod = fit_pgw_tte(datstan = datstan,
+    mod = fit_mod_tte(datstan = datstan,
+                      mod = "pgw",
                       priordist = "lll")
     mod@model_name = "log.log.log" # manually, because not working automatically
   }

@@ -1,5 +1,7 @@
-#' Fit Weibull models with stan
+#' Fit Weibull model with stan
 #'
+#' Inner function of \code{\link{fit_mod_tte}}.
+#' 
 #' The function applies the \code{\link[rstan]{sampling}} command to fit a Weibull model to 
 #' time-to-event data with Gamma or Lognormal priors for the parameters of the
 #' pgW distribution.
@@ -18,10 +20,10 @@
 #' 
 #' 
 #' @details
-#' ADJUST: The posterior is proportional to the likelihood times the prior. The likelihood is
+#' The posterior is proportional to the likelihood times the prior. The likelihood is
 #' \deqn{\mathcal{L}(t| \Theta) = \prod_{i=1}^N S(t_i)^{1-d_i}\cdot f(t_i)^{d_i}} 
-#' with \eqn{S(t)} the survival function of the pgW distribution and \eqn{f(t)} the
-#' density function of the pgW distribution. The pair \eqn{(t_i, d_i)} are the observed
+#' with \eqn{S(t)} the survival function of the Weibull distribution and \eqn{f(t)} the
+#' density function of the Weibull distribution. The pair \eqn{(t_i, d_i)} are the observed
 #' time-to-event observations.
 #' 
 #' The priors are either independent univariate Gamma or Lognormal distribution
@@ -39,6 +41,7 @@
 #' # prep the data
 #' head(tte)
 #' standat = tte2standat(dat = tte,
+#'                      mod = "w",
 #'                      scale.mean = 1, 
 #'                      scale.sd = 10,
 #'                      shape.mean = 1, 
@@ -46,7 +49,7 @@
 #'                      powershape.mean = 1, 
 #'                      powershape.sd = 10)
 #' # fit the model
-#' fit = fit_pgw_tte(datstan = standat,  # (be aware that posterior sample
+#' fit = fit_w_tte(datstan = standat,  # (be aware that posterior sample
 #'                  priordist = "lll",   # is small for demo purpose)
 #'                  chains = 4,
 #'                  iter = 110,
@@ -56,7 +59,6 @@
 #' 
 #' 
 #'
-#' @export
 
 
 fit_w_tte = function(datstan, 
