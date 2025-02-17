@@ -1,19 +1,20 @@
 #' Bayesian Weibull Shape Parameter Test
 #' 
 #' @description 
-#' Combined HDI+ROPE test for the shape parameters of a distribution of the 
+#' Bayesian hypothesis test based on the shape parameters of a distribution of the 
 #' Weibull family.
 #' 
 #'
-#' @param credregions vector of length 4 with the lower and upper boundaries of the 
-#' credibility interval (CI) reflecting the posterior distribution of the pgW shape
-#' parameters \eqn{\nu} and \eqn{\gamma}; required order: 1. lower boundary of
-#' CI(\eqn{\nu}) , 2. upper boundary of CI(\eqn{\nu}) , 3. lower boundary of
-#' CI(\eqn{\gamma}) , 4. upper boundary of CI(\eqn{\gamma})
-#' @param nullregion a vector of length two denoting the lower and upper boundary of the ROPE
+#' @param credregions vector of length 2 or 4 with the lower and upper boundaries of the 
+#' credibility interval (CI) reflecting the posterior distribution of the shape
+#' parameter(s); required order: 1. lower CI boundary of first shape parameter, 
+#' 2. upper CI boundary of first shape parameter; and if existent: 3. lower CI boundary of second shape parameter, 
+#' 4. upper CI boundary of second shape parameter
+#' @param nullregion a vector of length two denoting the lower and upper boundary of the region of practical equivalence (ROPE)
 #' @param option numeric value out of \code{1,2,3}; rule to be used to combine single parameter test results
-#' @param mod modelling approach used to obtain the posterior samples of the shape
-#' parameters; default and currently only option is "pgw"
+#' @param mod a character out of \code{"w", "dw", "pgw"}; specifies the modelling 
+#' approach used to obtain the posterior samples of the shape parameter(s)
+#' 
 #' 
 #' @return 0 if \eqn{H_0} is accepted, 1 if \eqn{H_1} is rejected; see details for definition
 #' of \eqn{H_0} and \eqn{H_1}
@@ -22,7 +23,7 @@
 #'
 #' @section Test concept: 
 #' 
-#' The Bayesian Weibull shape parameter test is a hypothesis test 
+#' The Bayesian Weibull shape parameter (WSP) test is a hypothesis test 
 #' for signal detection of adverse drug reactions.
 #' It is based on the principle of non-constant hazard function \insertCite{cornelius2012}{BWSPsignal}
 #' that can be formalized as the following hypotheses \insertCite{sauzet2024}{BWSPsignal}
@@ -31,41 +32,45 @@
 #' \tabular{lcc}{
 #'         \tab \eqn{H_0} \tab \eqn{H_1} \cr
 #'  general formulation \tab constant hazard function \tab non-constant hazard function \cr
-#'  under pgW model \tab \eqn{\nu = 1 \text{ and } \gamma = 1} \tab \eqn{\nu \neq 1 \text{ or } \gamma \neq 1} \cr
 #'  under Weibull model \tab \eqn{\nu = 1} \tab \eqn{\nu \neq 1} \cr
-#'  (not implemented yet) \tab \tab \cr
 #'  under double Weibull model \tab \eqn{\nu_1 = 1 \text{ and } \nu_2 = 1} \tab \eqn{\nu \neq 1 \text{ or } \gamma \neq 1} \cr
-#'  (not implemented yet) \tab \tab \cr
+#'  under pgW model \tab \eqn{\nu = 1 \text{ and } \gamma = 1} \tab \eqn{\nu \neq 1 \text{ or } \gamma \neq 1} \cr
 #' }
 #' 
 #' 
 #' 
 #' @section Bayesian approach: 
 #' 
-#' More extensive information on the Bayesion Power Generalized Weibull shape 
-#' parameter test approach can be found in \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
+#' Information on the Bayesian 
+#' variant of the Power Generalized Weibull shape 
+#' parameter test can be found in \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
+#' The same concept applies to the construction of the Bayesian Weibull and double
+#' Weibull shape parameter test.
 #' 
 #' The region of practical equivalence (ROPE) specified in the 
 #' \code{nullregion} argument represents the expected parameter value under \eqn{H_0}.
-#' The credibility regions specified in the \code{credregions} argument represent
+#' The credibility region(s) specified in the \code{credregions} argument represent
 #' the posterior distribution of each shape parameter.
 #' 
 #' The BWSP test conducts an HDI+ROPE test (see \code{\link{hdi_plus_rope}}) for each 
-#' shape parameter and combines the interim results of all shape parameters. More 
-#' information on the HDI+ROPE test and recommendations for interval specifications
+#' shape parameter and combines the interim results of all shape parameters to a binary outcome. 
+#' More information on the HDI+ROPE test and recommendations for interval specifications
 #' can be found in \insertCite{kruschke2018}{BWSPsignal} and
 #' \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
 #' 
 #' @section Options for combination rule: 
-#' The formalized hypotheses under a model with two parameters defines the
-#' combination rule (\code{option = 1}) directly implementing the hypothesis above.
-#' Two additional, more reserved options (ie. leading to a signal in fewer cases)
-#' are implemented:
-#'
+#' HDI+ROPE testing (see \code{\link{hdi_plus_rope}}) can lead to acceptance of \eqn{H_0}, 
+#' rejection of \eqn{H_0} or no decision. 
+#' 
+#' Options to generate a binary outcome, ie. a signal or not, from HDI+ROPE test results 
+#' based on one (in case of \code{mod = "w"}) ore two shape parameters are:
 #' \tabular{ccccc}{
 #' HDI+ROPE \tab HDI+ROPE \tab combination \tab combination \tab combination \cr
 #' outcome \tab outcome \tab rule \tab rule \tab rule \cr
-#' for \eqn{\nu}\tab for \eqn{\gamma} \tab (\code{option = 1}) \tab (\code{option = 2}) \tab (\code{option = 3}) \cr
+#' for shape_1\tab for shape_2 \tab (\code{option = 1}) \tab (\code{option = 2}) \tab (\code{option = 3}) \cr
+#' rejection \tab (none) \tab signal \tab signal \tab signal \cr
+#' acceptance \tab (none) \tab - \tab - \tab - \cr
+#' no decision \tab (none) \tab signal \tab - \tab - \cr
 #' rejection \tab rejection \tab signal \tab signal \tab signal \cr
 #' acceptance \tab rejection \tab signal \tab - \tab - \cr
 #' rejection \tab acceptance \tab signal \tab - \tab - \cr
@@ -77,8 +82,8 @@
 #' no decision \tab no decision \tab signal \tab - \tab - \cr
 #' }
 #' 
-#' 
-#' 
+#' The hypotheses stated above are directly implemented in \code{option = 1}.
+#' \code{option = 2} and \code{option = 3} are more reserved ie. lead to a signal in fewer cases.
 #' 
 #' @references 
 #' \insertAllCited{}
