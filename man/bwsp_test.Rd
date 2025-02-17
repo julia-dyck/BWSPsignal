@@ -95,48 +95,94 @@ no decision \tab no decision \tab signal \tab - \tab - \cr
 }
 
 \examples{
-# Exemplary conduction of a test from data and prior to test result:
+#### Exemplary conduction of a test from data and prior to test result:
+
+# under weibull model:
+
+# 1. specify ROPE reflecting the null hypothesis:
+# we choose an 80\% confidence interval around the 
+# null value (1 for both shape parameters)
+logpars = logprior_repar(m_t = 1,s_t = 10) # get parameters of a 
+                                           # Lognormal distribution with 
+                                           # mean 1 and sd 10
+
+rope = qlnorm(p = c(0.1,0.9), meanlog = logpars[1], sdlog = logpars[2])
+
+# 2. Prior specification and model fitting:
+# we formalize a prior belief (here "no association
+# between drug and event", therefore prior mean = 1 for shape parameter)
+# and reformat our tte data to fit the model in the following
+standat = tte2standat(dat = tte,   # reformat the data
+                      mod = "w",
+                      scale.mean = 1, 
+                      scale.sd = 10,
+                      shape.mean = 1, 
+                      shape.sd = 10)
+
+fit = fit_mod_tte(datstan = standat,      # fit the model
+                  mod = "w",
+                  priordist = "lll",       
+                  chains = 4,              
+                  iter = 110,             # (be aware that posterior sample
+                  warmup = 10)            # is small for demo purpose)
+
+# 3. HDI specification and extraction:
+# extract 80\% HDIs representing posterior samples of the shape parameters
+post.sample = rstan::extract(fit, pars = c("nu"))
+nu.hdi = HDInterval::hdi(object = post.sample$nu, credMass = 0.8)
+
+# 4. conduct the BWSPtest
+bwsp_test(credregions = nu.hdi, 
+          nullregion = rope, 
+          mod = "w", 
+          option = 1)
+
+# under pgw model:
 
 # 1. specify ROPE reflecting the null hypothesis:
 # we choose an 80\% confidence interval around the 
 # null value (1 for both shape parameters)
 
 logpars = logprior_repar(m_t = 1,s_t = 10) # get parameters of a 
-                                           # Lognormal distribution with 
-                                           # mean 1 and sd 10
-                                            
+# Lognormal distribution with 
+# mean 1 and sd 10
+
 rope = qlnorm(p = c(0.1,0.9), meanlog = logpars[1], sdlog = logpars[2])
 
 # 2. Prior specification and model fitting:
 # we formalize a prior belief (here "no association
 # between drug and event", therefore prior mean = 1 for both shape parameters)
 # and reformat our tte data to fit the model in the following
+standat = tte2standat(dat = tte,          # reformat the data
+                      mod = "pgw",
+                      scale.mean = 1, 
+                      scale.sd = 10,
+                      shape.mean = 1, 
+                      shape.sd = 
+                        10,
+                      powershape.mean = 1, 
+                      powershape.sd = 10)
 
-standat = tte2standat(dat = tte,           # reformat the data
-                     scale.mean = 1, 
-                     scale.sd = 10,
-                     shape.mean = 1, 
-                     shape.sd = 10,
-                     powershape.mean = 1, 
-                     powershape.sd = 10)
-
-fit = fit_pgw_tte(datstan = standat,      # fit the model
-                 priordist = "lll",       # (be aware that posterior sample
-                 chains = 4,              # is small for demo purpose)
-                 iter = 110,
-                 warmup = 10)
+fit = fit_mod_tte(datstan = standat,     # fit the model
+                  mod = "pgw",
+                  priordist = "lll",       
+                  chains = 4,              
+                  iter = 110,            # (be aware that posterior sample
+                  warmup = 10)           # is small for demo purpose)
 
 # 3. HDI specification and extraction:
 # extract 80\% HDIs representing posterior samples of the shape parameters
-
 post.samples = rstan::extract(fit, pars = c("nu", "gamma")) 
 nu.hdi = HDInterval::hdi(object = post.samples$nu, credMass = 0.8)
 ga.hdi = HDInterval::hdi(object = post.samples$gamma, credMass = 0.8)
 
-# 4. conduct the BWSPtest
-bwsp_test(credregions = c(nu.hdi, ga.hdi), nullregion = rope, option = 1)
+# 4. conduct the BWSP test
+bwsp_test(credregions = c(nu.hdi, ga.hdi), 
+          nullregion = rope, 
+          mod = "pgw", 
+          option = 1)
 
-# leads to a signal
+# returns a signal
 
 
 }
