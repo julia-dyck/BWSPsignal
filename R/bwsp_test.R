@@ -67,11 +67,9 @@
 #' HDI+ROPE \tab HDI+ROPE \tab combination \tab combination \tab combination \cr
 #' outcome \tab outcome \tab rule \tab rule \tab rule \cr
 #' for shape_1\tab for shape_2 \tab (\code{option = 1}) \tab (\code{option = 2}) \tab (\code{option = 3}) \cr
-#' \tab \tab \tab \tab \cr
 #' rejection \tab (none) \tab signal \tab signal \tab signal \cr
 #' acceptance \tab (none) \tab - \tab - \tab - \cr
 #' no decision \tab (none) \tab signal \tab - \tab - \cr
-#' \tab \tab \tab \tab \cr
 #' rejection \tab rejection \tab signal \tab signal \tab signal \cr
 #' acceptance \tab rejection \tab signal \tab - \tab - \cr
 #' rejection \tab acceptance \tab signal \tab - \tab - \cr
