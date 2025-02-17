@@ -4,7 +4,12 @@
 \alias{bwsp_test}
 \title{Bayesian Weibull Shape Parameter Test}
 \usage{
-bwsp_test(credregions, nullregion, option = c(1, 2, 3), mod = "pgw")
+bwsp_test(
+  credregions,
+  nullregion,
+  mod = c("w", "dw", "pgw"),
+  option = c(1, 2, 3)
+)
 }
 \arguments{
 \item{credregions}{vector of length 4 with the lower and upper boundaries of the
@@ -15,17 +20,18 @@ CI(\eqn{\gamma}) , 4. upper boundary of CI(\eqn{\gamma})}
 
 \item{nullregion}{a vector of length two denoting the lower and upper boundary of the ROPE}
 
-\item{option}{numeric value out of \code{1,2,3}; rule to be used to combine single parameter test results}
-
 \item{mod}{modelling approach used to obtain the posterior samples of the shape
 parameters; default and currently only option is "pgw"}
+
+\item{option}{numeric value out of \code{1,2,3}; rule to be used to combine single parameter test results}
 }
 \value{
 0 if \eqn{H_0} is accepted, 1 if \eqn{H_1} is rejected; see details for definition
 of \eqn{H_0} and \eqn{H_1}
 }
 \description{
-Combined HDI+ROPE test for the shape parameters of the pgW distribution.
+Combined HDI+ROPE test for the shape parameters of a distribution of the
+Weibull family.
 }
 \section{Test concept}{
 

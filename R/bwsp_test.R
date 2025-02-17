@@ -1,7 +1,8 @@
 #' Bayesian Weibull Shape Parameter Test
 #' 
 #' @description 
-#' Combined HDI+ROPE test for the shape parameters of the pgW distribution.
+#' Combined HDI+ROPE test for the shape parameters of a distribution of the 
+#' Weibull family.
 #' 
 #'
 #' @param credregions vector of length 4 with the lower and upper boundaries of the 
@@ -132,65 +133,103 @@
 #'
 
 
-bwsp_test = function(credregions, nullregion, option = c(1,2,3), mod = "pgw"){
-  # later: add mod arguments c("pgW", "W", "dW") for posteriors obtained with
-  # either the pgw, the Weibull or the double Weibull modelling approach (see 
-  # Sauzet 2024 for that)
-  nu.credregion = credregions[1:2]
-  ga.credregion = credregions[3:4]
-
-  nu.ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = nu.credregion)
-  ga.ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = ga.credregion)
-  res = c(nu.ropehdi_res, ga.ropehdi_res)
-
-  if(option == 1){
-    if(sum(is.na(res)) == 2){ # both undecided
-      return(1)
-    }
-    
-    if(sum(is.na(res)) == 1){ # one undecided, other leads the combined result
-      out = res[!is.na(res)]
-      return(out)
-    }
-    
-    if(sum(is.na(res)) == 0){ # both decided
-      out = ifelse(sum(res) == 0, 0, 1)
-      return(out)
-    }
+bwsp_test = function(credregions, 
+                     nullregion, 
+                     mod = c("w", "dw", "pgw"),
+                     option = c(1,2,3)){
+  # argument check for nullregion
+  if(length(nullregion) != 2){
+    stop("Argument nullregion must be a vector of length 2.")
   }
-  if(option == 2){
-    if(sum(is.na(res)) == 2){ # both undecided
-      return(0)
-    }
-    
-    if(sum(is.na(res)) == 1){ # one undecided, other leads the combined result
-      out = res[!is.na(res)]
-      return(out)
-    }
-    
-    if(sum(is.na(res)) == 0){ # both decided
-      out = ifelse(sum(res) == 2, 1, 0)
-      return(out)
-    }
+  # argument check for mod
+  if(mod != "w" & mod != "dw" & mod != "pgw"){
+    stop("mod must be one of 'w', 'dw' or 'pgw'")
   }
-  if(option == 3){
-    if(sum(is.na(res)) == 2){ # both undecided
-      return(0)
-    }
-    
-    if(sum(is.na(res)) == 1){ # one undecided
-      return(0)
-    }
-    
-    if(sum(is.na(res)) == 0){ # both decided
-      out = ifelse(sum(res) == 2, 1, 0)
-      return(out)
-    }
+  # argument check for option 
+  if(option != 1 & option != 2 & option != 3){
+    stop("option must be one of 1, 2 or 3")
   }
-  else{
-    stop("option must be 1, 2 or 3")
   
+  # test under Weibull model
+  if(mod == "w"){
+    # argument check for credregions
+    if(length(credregions) != 2){
+      stop("Argument credregions must be a vector of length 2.")
+    }
+    shape1credregion = credregions
+    shape1ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = shape1credregion)
+    res = shape1ropehdi_res
+    # options for "w" model
+    if(option == 1){ # HDI+ROPE test rejects H0 or undecided -> signal
+      out = ifelse(is.na(res), 1, res)
+      return(out)
+    }
+    if(option == 2 | option == 3){ # HDI+ROPE test rejects H0 -> signal
+      out = ifelse(is.na(res), 0, res)
+      return(out)
+    }
+    else{
+      stop("option must be 1, 2 or 3")
+      }
   }
+  # test under double or pgw model
+  if(mod == "dw" | mod == "pgw"){
+    if(length(credregions) != 4){
+      stop("Argument credregions must be a vector of length 4.")
+    }
+    shape1credregion = credregions[1:2]
+    shape2credregion = credregions[3:4]
+    
+    shape1ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = shape1credregion)
+    shape2ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = shape2credregion)
+    res = c(shape1ropehdi_res, shape2ropehdi_res)
+    
+    if(option == 1){
+      if(sum(is.na(res)) == 2){ # both undecided
+        return(1)
+      }
+      
+      if(sum(is.na(res)) == 1){ # one undecided, other leads the combined result
+        out = res[!is.na(res)]
+        return(out)
+      }
+      
+      if(sum(is.na(res)) == 0){ # both decided
+        out = ifelse(sum(res) == 0, 0, 1)
+        return(out)
+      }
+    }
+    if(option == 2){
+      if(sum(is.na(res)) == 2){ # both undecided
+        return(0)
+      }
+      
+      if(sum(is.na(res)) == 1){ # one undecided, other leads the combined result
+        out = res[!is.na(res)]
+        return(out)
+      }
+      
+      if(sum(is.na(res)) == 0){ # both decided
+        out = ifelse(sum(res) == 2, 1, 0)
+        return(out)
+      }
+    }
+    if(option == 3){
+      if(sum(is.na(res)) == 2){ # both undecided
+        return(0)
+      }
+      
+      if(sum(is.na(res)) == 1){ # one undecided
+        return(0)
+      }
+      
+      if(sum(is.na(res)) == 0){ # both decided
+        out = ifelse(sum(res) == 2, 1, 0)
+        return(out)
+      }
+    }
+  }
+
 }
 
 
