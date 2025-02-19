@@ -84,7 +84,7 @@ standat = tte2standat(dat = tte,
                      powershape.mean = 1, 
                      powershape.sd = 10)
 # fit a pgw model
-fit = fit_pgw_tte(datstan = standat,  
+fit = fit_mod_tte(datstan = standat,  
                   mod = "pgw",         
                   priordist = "lll",  
                   chains = 4,

@@ -1,7 +1,7 @@
 #' Fit stan model to time-to-event data
 #'
 #' Fits a Bayesian model to time-to-event data
-#' for the purpose of performing signal detection tests with \code{\link{bwsptest}}
+#' for the purpose of performing signal detection tests with \code{\link{bwsp_test}}
 #' based on the posterior samples of the shape parameters of the chosen model
 #' distribution.
 #' 
@@ -32,8 +32,8 @@
 #' The function applies the \code{\link[rstan]{sampling}} command to fit a Bayesian model to 
 #' time-to-event data.
 #' The model can be a Weibull,
-#' a double Weibull ( estimating two Weibull models - one to the data as is & 
-#' one to the data censored at mid of observation period), 
+#' a double Weibull (estimating two Weibull models - one to the data as is & 
+#' one to the data censored at half of the observation period), 
 #' or a power generalized Weibull distribution.
 #' 
 #' The posterior is proportional to the likelihood times the prior. The likelihood is
@@ -42,15 +42,14 @@
 #' density function. The pair \eqn{(t_i, d_i)} are the observed
 #' time-to-event observations.
 #' 
-#' The priors are either independent univariate Gamma or Lognormal distribution
-#' for the parameters of the pgW distribution. 
-#' Implemented distributional choices for the joint prior are products of the following:
-#' \tabular{llll}{
-#' for scale \eqn{\theta} \tab for shape \eqn{\nu} \tab for powershape \eqn{\gamma} \tab abbreviation \cr
-#' fixed to prior mean \tab Gamma \tab Gamma \tab fgg \cr
-#' Gamma \tab Gamma \tab Gamma \tab ggg \cr
-#' fixed to prior mean \tab Lognormal \tab Lognormal \tab fll \cr
-#' Lognormal \tab Lognormal \tab Lognormal \tab lll \cr
+#' Implemented prior distributions for the scale and shape parameters are products 
+#' of the following univariate distributional choices:
+#' \tabular{lll}{
+#' for scale parameter(s) \eqn{\theta} \tab for shape parameter(s) \tab  abbreviation \cr
+#' fixed to prior mean \tab Gamma  \tab fgg \cr
+#' Gamma \tab Gamma \tab ggg \cr
+#' fixed to prior mean \tab Lognormal \tab fll \cr
+#' Lognormal \tab Lognormal \tab lll \cr
 #' }
 #' 
 #' @examples
@@ -65,7 +64,7 @@
 #'                      powershape.mean = 1, 
 #'                      powershape.sd = 10)
 #' # fit a pgw model
-#' fit = fit_pgw_tte(datstan = standat,  
+#' fit = fit_mod_tte(datstan = standat,  
 #'                   mod = "pgw",         
 #'                   priordist = "lll",  
 #'                   chains = 4,
