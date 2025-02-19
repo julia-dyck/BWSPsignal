@@ -19,7 +19,7 @@
 #' 
 #' @export
 
-plotpgw = function(scale = 1, shape = 1, powershape = 1,...){
+plot_pgw = function(scale = 1, shape = 1, powershape = 1,...){
 
   sim = rpgw(1000, scale, shape, powershape)
   m = mean(sim)
@@ -67,12 +67,15 @@ plotpgw = function(scale = 1, shape = 1, powershape = 1,...){
       }
   }
   graphics::par(mfrow = c(1,1))
-
- cat("empirical mean = ", m)
- cat("\n")
- cat("empirical median = ", med)
+ 
+  cat(paste0("scale = ", scale, ", shape = ", shape, ", powershape = ", powershape,
+             " lead to "))
+ #cat("\n")
+  cat("mean event time = ", m)
+  #cat("\n")
+  cat(" and median event time = ", med)
 }
 
 
-# plotpgw(scale = 2, shape = 5, powershape = 10, col = 4)
+# plot_pgw(scale = 2, shape = 5, powershape = 10, col = 4)
 
