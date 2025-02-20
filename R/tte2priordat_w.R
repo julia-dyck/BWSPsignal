@@ -1,7 +1,7 @@
 #' Prior and data setup for Bayesian Weibull model fitting
 #'
 #' @description Setup of prior specifications and reformated time-to-event
-#' data set as a list suitable for model fitting with \code{\link{fit_w_tte}}.
+#' data set as a list suitable for model fitting with \code{\link{fit_tte_w}}.
 #' 
 #' @param dat Matrix or data frame with time in the first column and event status in the second column.
 #' @param scale.mean The a priori expected mean of the scale parameter.
@@ -13,7 +13,7 @@
 #' @details The function converts time-to-event data and prior specifications for location ('.mean') and 
 #' precision ('.sd') of the Weibull parameters 
 #' to a suitable format for `rstan` model fitting
-#' which is performed within \code{\link{fit_w_tte}}.
+#' which is performed within \code{\link{fit_tte_w}}.
 #' 
 #' Prior means suitable to reflect the prior belief can be found by plotting the
 #' hazard and estimating the expected event time under different parameter combinations
