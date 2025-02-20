@@ -11,7 +11,7 @@ library(xtable)     # for table generation
 #### set working directory -----------------------------------------------------
 
 # directory where the simulation study is stored [ADJUST TO YOUR LOCAL PATH]
-setwd("C:/Users/jdyck/github_office_laptop/BWSPsignal/simulationstudy")
+setwd("C:/Users/jdyck/github_office_laptop/BWSPsignal/simulationstudy_template")
 
 
 #### specify parameter combinations for simulation study -----------------------
