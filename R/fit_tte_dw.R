@@ -1,9 +1,8 @@
-#' Fit double Weibull models with stan
+#' Fit Bayesian double Weibull models to time-to-event data
 #'
-#' Inner function of \code{\link{fit_mod_tte}}.
 #' 
 #' The function applies the \code{\link[rstan]{sampling}} command to fit two 
-#' Weibull models to time-to-event data with Gamma or Lognormal priors for the
+#' Weibull models to time-to-event (tte) data with Gamma or Lognormal priors for the
 #' parameters of the Weibull distributions - one to the tte data as is, one to the
 #' tte data censored at mid of observation period.
 #'
@@ -39,30 +38,29 @@
 #' for the parameters of the pgW distribution. 
 #' Implemented distributional choices for the joint prior are products of the following:
 #' \tabular{llll}{
-#' for scale \eqn{\theta} \tab for shape \eqn{\nu} \tab for powershape \eqn{\gamma} \tab abbreviation \cr
-#' fixed to prior mean \tab Gamma \tab Gamma \tab fgg \cr
-#' Gamma \tab Gamma \tab Gamma \tab ggg \cr
-#' fixed to prior mean \tab Lognormal \tab Lognormal \tab fll \cr
-#' Lognormal \tab Lognormal \tab Lognormal \tab lll \cr
+#' for scales  \tab for shapes  \tab abbreviation \cr
+#' fixed to prior mean \tab Gamma \tab fgg \cr
+#' Gamma \tab Gamma \tab ggg \cr
+#' fixed to prior mean \tab Lognormal \tab fll \cr
+#' Lognormal \tab Lognormal \tab lll \cr
 #' }
 #' 
 #' @examples
 #' # prep the data
 #' head(tte)
-#' standat = tte2standat(dat = tte,
-#'                         mod = "dw",
-#'                         scale.mean = 1,
-#'                         scale.sd = 10,
-#'                         shape.mean = 1,
-#'                         shape.sd = 10,
-#'                         scale_c.mean = 1,
-#'                         scale_c.sd = 10,
-#'                         shape_c.mean = 1,
-#'                         shape_c.sd = 10)
+#' standat = tte2priordat_dw(dat = tte,
+#'                           scale.mean = 1,
+#'                           scale.sd = 10,
+#'                           shape.mean = 1,
+#'                           shape.sd = 10,
+#'                           scale_c.mean = 1,
+#'                           scale_c.sd = 10,
+#'                           shape_c.mean = 1,
+#'                           shape_c.sd = 10)
 #' standat
 #' 
 #' # fit the model
-#' fit = fit_dw_tte(standat,
+#' fit = fit_tte_dw(standat,
 #'                  priordist = "lll",
 #'                  chains = 1,
 #'                  iter = 1100,
@@ -71,12 +69,12 @@
 #' # print the summary
 #' fit
 #' 
-#' 
+#' @export
 #'
 
 
 
-fit_dw_tte = function(datstan, 
+fit_tte_dw = function(datstan, 
                      priordist = c("fgg","fll","ggg","lll"),
                      chains = 4,
                      iter = 11000,

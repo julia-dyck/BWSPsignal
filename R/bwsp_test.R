@@ -106,15 +106,13 @@
 #' # we formalize a prior belief (here "no association
 #' # between drug and event", therefore prior mean = 1 for shape parameter)
 #' # and reformat our tte data to fit the model in the following
-#' standat = tte2standat(dat = tte,   # reformat the data
-#'                       mod = "w",
+#' standat = tte2priordat_w(dat = tte,   # reformat the data
 #'                       scale.mean = 1, 
 #'                       scale.sd = 10,
 #'                       shape.mean = 1, 
 #'                       shape.sd = 10)
 #' 
-#' fit = fit_mod_tte(datstan = standat,      # fit the model
-#'                   mod = "w",
+#' fit = fit_tte_w(datstan = standat,      # fit the model
 #'                   priordist = "lll",       
 #'                   chains = 4,              
 #'                   iter = 110,             # (be aware that posterior sample
@@ -147,18 +145,15 @@
 #' # we formalize a prior belief (here "no association
 #' # between drug and event", therefore prior mean = 1 for both shape parameters)
 #' # and reformat our tte data to fit the model in the following
-#' standat = tte2standat(dat = tte,          # reformat the data
-#'                       mod = "pgw",
+#' standat = tte2priordat_pgw(dat = tte,          # reformat the data
 #'                       scale.mean = 1, 
 #'                       scale.sd = 10,
 #'                       shape.mean = 1, 
-#'                       shape.sd = 
-#'                         10,
+#'                       shape.sd = 10,
 #'                       powershape.mean = 1, 
 #'                       powershape.sd = 10)
 #' 
-#' fit = fit_mod_tte(datstan = standat,     # fit the model
-#'                   mod = "pgw",
+#' fit = fit_tte_pgw(datstan = standat,     # fit the model
 #'                   priordist = "lll",       
 #'                   chains = 4,              
 #'                   iter = 110,            # (be aware that posterior sample
