@@ -28,7 +28,7 @@ pc = rbind(pc_no_adr,
            pc_with_adr)
 
 pc = pc[, 8:1]
-pc = pc_fr[order(pc$N),]
+pc = pc[order(pc$N),]
 rownames(pc) <- 1:nrow(pc)
 
 dim(pc)
