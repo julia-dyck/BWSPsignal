@@ -58,7 +58,7 @@ dev_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
 sim.setup_fit_pars = function(tte.dist,
                               prior.belief,
                               prior.dist,
-                              list.output = T){
+                              list.output = F){
   
   # table of all model fitting cases (without explicit parameter specification)
   dist_pc = expand.grid(tte.dist = tte.dist,
@@ -149,7 +149,7 @@ sim.setup_fit_pars = function(tte.dist,
       shape_c.sd = as.numeric(unlist(strsplit(shape_c.sd, ",")))
       
       belief.df_dw = rbind(belief.df_dw, 
-                            data.frame(tte.dist = "pgw",
+                            data.frame(tte.dist = "dw",
                                        prior.belief = prior.belief[row], 
                                        scale.mean_dw = scale.mean, 
                                        scale.sd_dw = scale.sd, 
@@ -204,22 +204,19 @@ sim.setup_fit_pars = function(tte.dist,
   fit_pc_pgw = dplyr::inner_join(dist_pc, belief.df_pgw, by = c("tte.dist", "prior.belief"))
   
   fit_pc = list(w = fit_pc_w, dw = fit_pc_dw, pgw = fit_pc_pgw)
-  
+  if(list.output == F){
+    return(dplyr::bind_rows(fit_pc))
+  }
   return(fit_pc)
 }
 
-test_fit = sim.setup_fit_pars(tte.dist = c("w"), ## TEST WITH ONE; TWO; THREE DISTS
+fit_pc = sim.setup_fit_pars(tte.dist = c("w", "pgw"), ## TEST WITH ONE; TWO; THREE DISTS
                    prior.dist = c("fgg", "ggg", "fll", "lll"),
-                   prior.belief = c("none", "beginning"))
+                   prior.belief = c("none", "beginning"),
+                   list.output = T)
 
-test_fit
-
-df_of_belief = data.frame(belief.description = c("none", "beginning", "middle", "end"),
-                          w_scale.mean_w)
-
-dev_fit = sim.setup_fit_pars(mod = "pgw",
-                             prior.dist = c("fgg", "ggg", "fll", "lll"),
-                             df.of.believes = NULL)
+dim(fit_pc)
+View(fit_pc)
 
 
 
