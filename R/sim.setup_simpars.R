@@ -11,24 +11,28 @@
 sim.setup_dgp_pars = function(N,           # dgp parameters
                               br,
                               adr.rate, 
+                              adr.when,
                               adr.relsd,
-                              study.period
+                              study.period 
                                ){
-
-  if(sum(adr.rate == 0) == 0){ # not rely on user to include control case
-    adr.rate = c(0, adr.rate)
-    warning("No control case included. Adding 0 to adr.rate.")
+  if(any(0 == adr.rate)){ # seperate control and adr>0 cases
+    adr.rate[-which(adr.rate==0)]
   }
-  
-  pc_with_adr = expand.grid(        # par combis with adr
+  else{ # not rely on user to include control case
+    warning("Control case (adr.rate = 0) necessary for simulation study. Adding 0 to specified vector adr.rate.")
+    adr.rate[-which(adr.rate==0)]
+  }
+  # par combis with adr.rate > 0
+  pc_with_adr = expand.grid(        
     study.period = study.period,
     adr.relsd = adr.relsd,
-    adr.rate = adr.rate,         
+    adr.rate = adr.rate, # remove 0 from adr.rate,         
     br = br,
     N = N
   )
-  
-  pc_no_adr = expand.grid(       # par combis without adr (control)
+  # par combis with adr.rate = 0 (control)
+
+  pc_no_adr = expand.grid(       
     study.period = study.period,
     adr.relsd = adr.relsd,
     adr.rate = 0,
@@ -47,11 +51,11 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
 
 dev_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
                             br = 0.1,
-                            adr.rate = c(0.5,1),
+                            adr.rate = c( 0.5,1),
                             adr.relsd = 0.05,
                             study.period = 365)
 
-
+dev_pc
 
 #### model fitting parameter specification
 
@@ -222,6 +226,18 @@ View(fit_pc)
 
 #### setup test parameters
 
-sim.setup_test_pars = function(){
+sim.setup_test_pars = function(rope.form, 
+                               post.ci.form,
+                               cred.level,
+                               sensitivity.option){
   
 }
+
+
+
+
+
+
+
+
+
