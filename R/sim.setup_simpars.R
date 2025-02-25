@@ -15,26 +15,27 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
                               adr.relsd,
                               study.period 
                                ){
-  if(any(0 == adr.rate)){ # seperate control and adr>0 cases
+  if(any(0 == adr.rate)){ # separate control and adr>0 cases
     adr.rate[-which(adr.rate==0)]
   }
-  else{ # not rely on user to include control case
+  else{ # its fine, but notify user that control case is necessary
     warning("Control case (adr.rate = 0) necessary for simulation study. Adding 0 to specified vector adr.rate.")
-    adr.rate[-which(adr.rate==0)]
   }
   # par combis with adr.rate > 0
   pc_with_adr = expand.grid(        
     study.period = study.period,
     adr.relsd = adr.relsd,
+    adr.when = adr.when,
     adr.rate = adr.rate, # remove 0 from adr.rate,         
     br = br,
     N = N
   )
-  # par combis with adr.rate = 0 (control)
+  # par combis with adr.rate = 0 (control), adr.when then also set to 0
 
   pc_no_adr = expand.grid(       
     study.period = study.period,
     adr.relsd = adr.relsd,
+    adr.when = 0,
     adr.rate = 0,
     br = br,
     N = N
@@ -43,7 +44,7 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   dgp_pc = rbind(pc_no_adr,
              pc_with_adr)
   
-  dgp_pc = dgp_pc[, 5:1]
+  dgp_pc = dgp_pc[, ncol(dgp_pc):1]
   dgp_pc = dgp_pc[order(dgp_pc$N),]
   rownames(dgp_pc) <- 1:nrow(dgp_pc)
   return(dgp_pc)
@@ -51,7 +52,8 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
 
 dev_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
                             br = 0.1,
-                            adr.rate = c( 0.5,1),
+                            adr.rate = c(0.5, 1),
+                            adr.when = c(0.25, 0.5, 0.75),
                             adr.relsd = 0.05,
                             study.period = 365)
 
@@ -107,10 +109,10 @@ sim.setup_fit_pars = function(tte.dist,
     for(row in 1:length(prior.belief)){
       cat(paste0("Please specify prior mean and standard deviation of the Weibull (w) parameters reflecting the prior belief\n `", prior.belief[row], "`:\n"))
       
-      scale.mean = readline("What is the a priori mean value for the scale?\n")
-      scale.sd <- readline("What is the a priori standard deviation for the scale?\n")
-      shape.mean <- readline("What is the a priori mean value for the shape?\n")
-      shape.sd <- readline("What is the a priori standard deviation for the shape?\n")
+      scale.mean = readline("What is the a priori mean value for the scale?\n ")
+      scale.sd <- readline("What is the a priori standard deviation for the scale?\n ")
+      shape.mean <- readline("What is the a priori mean value for the shape?\n ")
+      shape.sd <- readline("What is the a priori standard deviation for the shape?\n ")
       
       scale.mean = as.numeric(unlist(strsplit(scale.mean, ",")))
       scale.sd = as.numeric(unlist(strsplit(scale.sd, ",")))
@@ -134,14 +136,14 @@ sim.setup_fit_pars = function(tte.dist,
     for(row in 1:length(prior.belief)){
       cat(paste0("Please specify prior mean and standard deviation of the Weibull & censored Weibull (dw) parameters reflecting the prior belief\n `", prior.belief[row], "`:\n"))
       
-      scale.mean = readline("What is the a priori mean value for the uncensored Weibull scale?\n")
-      scale.sd = readline("What is the a priori standard deviation for the uncensored Weibull scale?\n")
-      shape.mean = readline("What is the a priori mean value for the uncensored Weibull shape?\n")
-      shape.sd = readline("What is the a priori standard deviation for the uncensored Weibull shape?\n")
-      scale_c.mean = readline("What is the a priori mean value for the censored Weibull scale?\n")
-      scale_c.sd = readline("What is the a priori standard deviation for the censored Weibull scale?\n")
-      shape_c.mean = readline("What is the a priori mean value for the censored Weibull shape?\n")
-      shape_c.sd = readline("What is the a priori standard deviation for the censored Weibull shape?\n")
+      scale.mean = readline("What is the a priori mean value for the uncensored Weibull scale?\n ")
+      scale.sd = readline("What is the a priori standard deviation for the uncensored Weibull scale?\n ")
+      shape.mean = readline("What is the a priori mean value for the uncensored Weibull shape?\n ")
+      shape.sd = readline("What is the a priori standard deviation for the uncensored Weibull shape?\n ")
+      scale_c.mean = readline("What is the a priori mean value for the censored Weibull scale?\n ")
+      scale_c.sd = readline("What is the a priori standard deviation for the censored Weibull scale?\n ")
+      shape_c.mean = readline("What is the a priori mean value for the censored Weibull shape?\n ")
+      shape_c.sd = readline("What is the a priori standard deviation for the censored Weibull shape?\n ")
       
       scale.mean = as.numeric(unlist(strsplit(scale.mean, ",")))
       scale.sd = as.numeric(unlist(strsplit(scale.sd, ",")))
@@ -173,12 +175,12 @@ sim.setup_fit_pars = function(tte.dist,
     for(row in 1:length(prior.belief)){
       cat(paste0("Please specify prior mean and standard deviation of the Power generalized Weibull (pgw) parameters reflecting the prior belief\n `", prior.belief[row], "`:\n"))
       
-      scale.mean = readline("What is the a priori mean value for the scale?\n")
-      scale.sd = readline("What is the a priori standard deviation for the scale?\n")
+      scale.mean = readline("What is the a priori mean value for the scale?\n ")
+      scale.sd = readline("What is the a priori standard deviation for the scale?\n ")
       shape.mean = readline("What is the a priori mean value for the shape?\n")
-      shape.sd = readline("What is the a priori standard deviation for the shape?\n")
-      powershape.mean = readline("What is the a priori mean value for the powershape?\n")
-      powershape.sd = readline("What is the a priori standard deviation for the powershape?\n")
+      shape.sd = readline("What is the a priori standard deviation for the shape?\n ")
+      powershape.mean = readline("What is the a priori mean value for the powershape?\n ")
+      powershape.sd = readline("What is the a priori standard deviation for the powershape?\n ")
       
       scale.mean = as.numeric(unlist(strsplit(scale.mean, ",")))
       scale.sd = as.numeric(unlist(strsplit(scale.sd, ",")))
@@ -217,7 +219,7 @@ sim.setup_fit_pars = function(tte.dist,
 fit_pc = sim.setup_fit_pars(tte.dist = c("w", "pgw"), ## TEST WITH ONE; TWO; THREE DISTS
                    prior.dist = c("fgg", "ggg", "fll", "lll"),
                    prior.belief = c("none", "beginning"),
-                   list.output = T)
+                   list.output = F)
 
 dim(fit_pc)
 View(fit_pc)
@@ -226,17 +228,18 @@ View(fit_pc)
 
 #### setup test parameters
 
-sim.setup_test_pars = function(rope.form, 
-                               post.ci.form,
-                               cred.level,
-                               sensitivity.option){
+sim.setup_test_pars = function(rope.form = "lognormal H0 ETI", # to be inherited from model fitting pars?
+                               post.ci.form = c("ETI", "HDI"),
+                               cred.level = seq(0.5, 0.95, by = 0.05),
+                               sensitivity.option = 1:3){
   
+  expand.grid(rope.form = rope.form,
+              post.ci.form = post.ci.form,
+              cred.level = cred.level,
+              sensitivity.option = sensitivity.option)
 }
 
-
-
-
-
+sim.setup_test_pars()
 
 
 
