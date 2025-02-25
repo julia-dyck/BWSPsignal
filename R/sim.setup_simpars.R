@@ -1,6 +1,17 @@
 #' Setup simulation scenarios
 #' 
+#' The function returns the set of simulation scenarios determined by the data generating process (dgp) parameter
+#' values of interest.
 #' 
+#' @param N A scalar or vector of sample sizes.
+#' @param br A scalar or vector of background rates.
+#' @param adr.rate A scalar or vector of adverse drug reaction rates.
+#' @param adr.when A scalar or vector of expected adverse drug reaction times.
+#' @param adr.relsd A scalar or vector of relative standard deviations from the adverse drug reaction times.
+#' @param study.period A scalar specifying the length of the study period.
+#' 
+#' @return A data frame with the simulation scenarios that will be inserted into the 
+#' \code{\link{datagen_tte}} function.
 #' 
 
 
@@ -62,9 +73,13 @@ dev_pc
 #### model fitting parameter specification
 
 sim.setup_fit_pars = function(tte.dist,
-                              prior.belief,
+                              prior.belief, 
                               prior.dist,
                               list.output = F){
+  # check whether prior.belief "none" is included (necessary as it also provides the base for ROPE specification)
+  if(!any(prior.belief == "none")){
+    stop("Prior belief 'none' must be included in prior.belief and reflect the null-hypothesis of constant hazard formalized as `prior mean of all shape parameters = 1`.")
+  }
   
   # table of all model fitting cases (without explicit parameter specification)
   dist_pc = expand.grid(tte.dist = tte.dist,
@@ -216,9 +231,9 @@ sim.setup_fit_pars = function(tte.dist,
   return(fit_pc)
 }
 
-fit_pc = sim.setup_fit_pars(tte.dist = c("w", "pgw"), ## TEST WITH ONE; TWO; THREE DISTS
+fit_pc = sim.setup_fit_pars(tte.dist = c("pgw"), 
                    prior.dist = c("fgg", "ggg", "fll", "lll"),
-                   prior.belief = c("none", "beginning"),
+                   prior.belief = c("none", "beginning", "middle", "end"),
                    list.output = F)
 
 dim(fit_pc)
