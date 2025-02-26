@@ -72,8 +72,9 @@ dev_pc
 
 #### model fitting parameter specification
 
+ 
 sim.setup_fit_pars = function(tte.dist,
-                              prior.belief, 
+                              prior.belief = c("none", "beginning", "middle", "end"),
                               prior.dist,
                               list.output = F){
   # check whether prior.belief "none" is included (necessary as it also provides the base for ROPE specification)
@@ -124,10 +125,20 @@ sim.setup_fit_pars = function(tte.dist,
     for(row in 1:length(prior.belief)){
       cat(paste0("Please specify prior mean and standard deviation of the Weibull (w) parameters reflecting the prior belief\n `", prior.belief[row], "`:\n"))
       
+      if(prior.belief[row] == "none"){
+        cat("The prior belief 'none' reflects the null-hypothesis of constant hazard formalized as `prior mean of all shape parameters = 1`.\n")
+        scale.mean = readline("What is the a priori mean value for the scale?\n ")
+        scale.sd <- readline("What is the a priori standard deviation for the scale?\n ")
+        cat("The a priori mean mean value for the shape is set to 1.\n")
+        shape.mean <- "1"
+        shape.sd <- readline("What is the a priori standard deviation for the shape?\n ")
+      }
+      else{
       scale.mean = readline("What is the a priori mean value for the scale?\n ")
       scale.sd <- readline("What is the a priori standard deviation for the scale?\n ")
       shape.mean <- readline("What is the a priori mean value for the shape?\n ")
       shape.sd <- readline("What is the a priori standard deviation for the shape?\n ")
+      }
       
       scale.mean = as.numeric(unlist(strsplit(scale.mean, ",")))
       scale.sd = as.numeric(unlist(strsplit(scale.sd, ",")))
@@ -138,8 +149,8 @@ sim.setup_fit_pars = function(tte.dist,
                  data.frame(tte.dist = "w",
                             prior.belief = prior.belief[row], 
                             scale.mean_w = scale.mean, 
-                            scale.sd_W = scale.sd, 
-                            shape.mean_W = shape.mean, 
+                            scale.sd_w = scale.sd, 
+                            shape.mean_w = shape.mean, 
                             shape.sd_w = shape.sd) 
                 )
     }
@@ -151,14 +162,29 @@ sim.setup_fit_pars = function(tte.dist,
     for(row in 1:length(prior.belief)){
       cat(paste0("Please specify prior mean and standard deviation of the Weibull & censored Weibull (dw) parameters reflecting the prior belief\n `", prior.belief[row], "`:\n"))
       
-      scale.mean = readline("What is the a priori mean value for the uncensored Weibull scale?\n ")
-      scale.sd = readline("What is the a priori standard deviation for the uncensored Weibull scale?\n ")
-      shape.mean = readline("What is the a priori mean value for the uncensored Weibull shape?\n ")
-      shape.sd = readline("What is the a priori standard deviation for the uncensored Weibull shape?\n ")
-      scale_c.mean = readline("What is the a priori mean value for the censored Weibull scale?\n ")
-      scale_c.sd = readline("What is the a priori standard deviation for the censored Weibull scale?\n ")
-      shape_c.mean = readline("What is the a priori mean value for the censored Weibull shape?\n ")
-      shape_c.sd = readline("What is the a priori standard deviation for the censored Weibull shape?\n ")
+      if(prior.belief[row] == "none"){
+        cat("The prior belief 'none' reflects the null-hypothesis of constant hazard formalized as `prior mean of all shape parameters = 1`.\n")
+        scale.mean = readline("What is the a priori mean value for the scale?\n ")
+        scale.sd <- readline("What is the a priori standard deviation for the scale?\n ")
+        cat("The a priori mean mean value for the uncensored Weibull shape is set to 1.\n")
+        shape.mean <- "1"
+        shape.sd <- readline("What is the a priori standard deviation for the shape?\n ")
+        scale_c.mean = readline("What is the a priori mean value for the censored Weibull scale?\n ")
+        scale_c.sd = readline("What is the a priori standard deviation for the censored Weibull scale?\n ")
+        cat("The a priori mean mean value for the censored Weibull shape is set to 1.\n")
+        shape_c.mean = "1"
+        shape_c.sd = readline("What is the a priori standard deviation for the censored Weibull shape?\n ")
+      }
+      else{
+        scale.mean = readline("What is the a priori mean value for the uncensored Weibull scale?\n ")
+        scale.sd = readline("What is the a priori standard deviation for the uncensored Weibull scale?\n ")
+        shape.mean = readline("What is the a priori mean value for the uncensored Weibull shape?\n ")
+        shape.sd = readline("What is the a priori standard deviation for the uncensored Weibull shape?\n ")
+        scale_c.mean = readline("What is the a priori mean value for the censored Weibull scale?\n ")
+        scale_c.sd = readline("What is the a priori standard deviation for the censored Weibull scale?\n ")
+        shape_c.mean = readline("What is the a priori mean value for the censored Weibull shape?\n ")
+        shape_c.sd = readline("What is the a priori standard deviation for the censored Weibull shape?\n ")
+      }
       
       scale.mean = as.numeric(unlist(strsplit(scale.mean, ",")))
       scale.sd = as.numeric(unlist(strsplit(scale.sd, ",")))
@@ -190,12 +216,25 @@ sim.setup_fit_pars = function(tte.dist,
     for(row in 1:length(prior.belief)){
       cat(paste0("Please specify prior mean and standard deviation of the Power generalized Weibull (pgw) parameters reflecting the prior belief\n `", prior.belief[row], "`:\n"))
       
+      if(prior.belief[row] == "none"){
+        cat("The prior belief 'none' reflects the null-hypothesis of constant hazard formalized as `prior mean of all shape parameters = 1`.\n")
+        scale.mean = readline("What is the a priori mean value for the scale?\n ")
+        scale.sd = readline("What is the a priori standard deviation for the scale?\n ")
+        cat("The a priori mean mean value for the shape is set to 1.\n")
+        shape.mean = "1"
+        shape.sd = readline("What is the a priori standard deviation for the shape?\n ")
+        cat("The a priori mean mean value for the powershape is set to 1.\n")
+        powershape.mean = "1"
+        powershape.sd = readline("What is the a priori standard deviation for the powershape?\n ")
+      }
+      else{
       scale.mean = readline("What is the a priori mean value for the scale?\n ")
       scale.sd = readline("What is the a priori standard deviation for the scale?\n ")
       shape.mean = readline("What is the a priori mean value for the shape?\n")
       shape.sd = readline("What is the a priori standard deviation for the shape?\n ")
       powershape.mean = readline("What is the a priori mean value for the powershape?\n ")
       powershape.sd = readline("What is the a priori standard deviation for the powershape?\n ")
+      }
       
       scale.mean = as.numeric(unlist(strsplit(scale.mean, ",")))
       scale.sd = as.numeric(unlist(strsplit(scale.sd, ",")))
@@ -231,7 +270,7 @@ sim.setup_fit_pars = function(tte.dist,
   return(fit_pc)
 }
 
-fit_pc = sim.setup_fit_pars(tte.dist = c("pgw"), 
+fit_pc = sim.setup_fit_pars(tte.dist = c("w"), 
                    prior.dist = c("fgg", "ggg", "fll", "lll"),
                    prior.belief = c("none", "beginning", "middle", "end"),
                    list.output = F)
@@ -243,10 +282,11 @@ View(fit_pc)
 
 #### setup test parameters
 
-sim.setup_test_pars = function(rope.form = "lognormal H0 ETI", # to be inherited from model fitting pars?
-                               post.ci.form = c("ETI", "HDI"),
+sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
                                cred.level = seq(0.5, 0.95, by = 0.05),
                                sensitivity.option = 1:3){
+  
+  message("The rope reflecting the null-hypothesis of constant hazard is defined as confidence interval with reflecting the .")
   
   expand.grid(rope.form = rope.form,
               post.ci.form = post.ci.form,
@@ -256,6 +296,11 @@ sim.setup_test_pars = function(rope.form = "lognormal H0 ETI", # to be inherited
 
 sim.setup_test_pars()
 
+#### setup tuning parameters (combine fit_pars and test_pars)
 
+sim.setup_tuning_pars = function(fit_pc, test_pc){
+  tuning_pc = merge(fit_pc, test_pc, by = c("tte.dist", "prior.belief"))
+  return(tuning_pc)
+}
 
 
