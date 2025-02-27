@@ -282,14 +282,14 @@ View(fit_pc)
 
 #### setup test parameters
 
-sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
+sim.setup_test_pars = function(
+                               post.ci.type = c("ETI", "HDI"),
                                cred.level = seq(0.5, 0.95, by = 0.05),
                                sensitivity.option = 1:3){
   
   message("The rope reflecting the null-hypothesis of constant hazard is defined as confidence interval with reflecting the .")
   
-  expand.grid(rope.form = rope.form,
-              post.ci.form = post.ci.form,
+  expand.grid(post.ci.type = post.ci.type,
               cred.level = cred.level,
               sensitivity.option = sensitivity.option)
 }
@@ -304,3 +304,14 @@ sim.setup_tuning_pars = function(fit_pc, test_pc){
 }
 
 
+sim.derive_rope = function(fit_pc){
+  # derive rope from fit_pc
+  rope = fit_pc %>% 
+    dplyr::filter(prior.belief == "none") %>% 
+    dplyr::select(tte.dist, prior.belief, scale.mean_w, scale.sd_w, shape.mean_w, shape.sd_w,
+                  scale.mean_dw, scale.sd_dw, shape.mean_dw, shape.sd_dw,
+                  scale_c.mean_dw, scale_c.sd_dw, shape_c.mean_dw, shape_c.sd_dw,
+                  scale.mean_pgw, scale.sd_pgw, shape.mean_pgw, shape.sd_pgw, powershape.mean_pgw, powershape.sd_pgw)
+  
+  return(rope)
+}
