@@ -11,16 +11,13 @@ library(xtable)     # for table generation
 #### set working directory -----------------------------------------------------
 
 # directory where the simulation study is stored [ADJUST TO YOUR LOCAL PATH]
-setwd("C:/Users/jdyck/github_office_laptop/BWSPsignal/simulationstudy_template")
+setwd("simulationstudy_template")
 
 
 #### specify parameter combinations for simulation study -----------------------
 
-# have a look at parameter combinations (pc) for simulations
-load("pc_in_various_formats.RData")
-
 # if you want to simulate new scenarios, have a look at
-file.edit("setup_parameter_combination.R") 
+file.edit("setup_parameters.R") 
 
 
 #### run simulation study ------------------------------------------------------

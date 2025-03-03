@@ -296,15 +296,87 @@ sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
 test_pc = sim.setup_test_pars()
 
 
+sim.setup_sim_pars = function(N,                 # dgp parameters
+                              br,                # |
+                              adr.rate,          # |
+                              adr.when,          # |
+                              adr.relsd,         # v
+                              study.period,      # -
+                              tte.dist,          # tuning parameters
+                              prior.belief,      # |
+                              prior.dist,        # |
+                              post.ci.type,      # |
+                              cred.level,        # v
+                              sensitivity.option,# -
+                              reps = 100         #  additional parameters
+                              resultpath = paste0(getwd(), "/results_raw")
+                              ){       
+  
+  dgp_pars = sim.setup_dgp_pars(N = N,
+                                br = br,
+                                adr.rate = adr.rate,
+                                adr.when = adr.when,
+                                adr.relsd = adr.relsd,
+                                study.period = study.period)
+  
+  fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
+                                prior.belief = prior.belief,
+                                prior.dist = prior.dist,
+                                list.output = T)
+  
+  test_pars = sim.setup_test_pars(post.ci.type = post.ci.type,
+                                  cred.level = cred.level,
+                                  sensitivity.option = sensitivity.option)
+  
+  add_pars = list(reps = reps,
+                  resultpath = resultpath
+                  )
+  
+  cat(paste0("Each combination of sample scenario and prior specification leads to a total of ",
+                 nrow(dgp_pars) * sum(nrow(fit_pars$w), nrow(fit_pars$dw), nrow(fit_pars$pgw)),
+                 " different simulation settings. ",
+                 "Each simulation scenario’s data generation and posterior estimation will be repeated ", 
+                 reps,
+                 " times. "))
+  
+  sim_pars = list(dgp = dgp_pars, fit = fit_pars, test = test_pars, add = add_pars)
+  
+  return(sim_pars)
+}
+
 #### setup tuning parameters (combine fit_pars and test_pars)
+
+
+# FOR ROXYGEN DOC
+
+
+# The tuning parameters are used to evaluate the performance of different BWSP 
+# signal detection tests applied to data scenarios of interest.
+# The set of tuning parameters consisting of the choice of the
+
+# ## distribution chosen for the tte model, must be a subset out of "w", "dw" 
+#    and pgw",
+
+# ## prior belief about an adverse event being and adverse drug reaction, and if 
+#    so, when it is expected to occur
+#    (this will trigger promts asking for prior means and standard deviations for 
+#    all parameters reflecting that belief; have a look at our vignette about 
+#    prior elicitation to formalize the prior belief),
+
+# ## prior distribution chosen for scale and shape parameters, must be a subset 
+#    out of "fgg", "ggg", "fll" and "lll",
+
+# ## type of posterior credible interval, must be a subset out of "ETI" 
+#    (equal-tailed interval) and "HDI" (highest density interval).
+
+
 
 sim.setup_tuning_pars = function(tte.dist = c("w", "dw", "pgw"),
                                  prior.belief = c("none", "beginning", "middle", "end"),
                                  prior.dist = c("fgg", "ggg", "fll", "lll"),
                                  post.ci.type = c("ETI", "HDI"),
                                  cred.level = seq(0.5, 0.95, by = 0.05),
-                                 sensitivity.option = 1:3,
-                                 list.output = F){
+                                 sensitivity.option = 1:3){
   fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
                               prior.belief = prior.belief,
                               prior.dist = prior.dist,
@@ -317,8 +389,6 @@ sim.setup_tuning_pars = function(tte.dist = c("w", "dw", "pgw"),
   
   return(tuning_pars)
 }
-
-sim.setup_tuning_pars()
 
 
 #-------------------------------------------------------------------------------

@@ -11,7 +11,9 @@ resultpath = paste0(getwd(), "/results_raw")
 
 # conduction of simulations ____________________________________________________
 
-for(pcind in 1:nrow(pc)){
+# fct with huge pc list as input sim.run(pc.list = pc)
+
+for(pcind in 1:nrow(pc$dgp)){
   for(i in 1:10){
     sim.repeat.1.scenario(batch.nr=i, reps = 2, pc = pc[pcind,],
                           save = T, path = resultpath)
