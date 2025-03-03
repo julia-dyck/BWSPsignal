@@ -61,14 +61,14 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   return(dgp_pc)
 }
 
-dev_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
+dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
                             br = 0.1,
                             adr.rate = c(0.5, 1),
                             adr.when = c(0.25, 0.5, 0.75),
                             adr.relsd = 0.05,
                             study.period = 365)
 
-dev_pc
+dgp_pc
 
 #### model fitting parameter specification
 
@@ -294,8 +294,11 @@ sim.setup_test_pars = function(
               sensitivity.option = sensitivity.option)
 }
 
-sim.setup_test_pars()
+test_pc = sim.setup_test_pars()
 
+
+#-------------------------------------------------------------------------------
+# erstmal ignorieren
 #### setup tuning parameters (combine fit_pars and test_pars)
 
 sim.setup_tuning_pars = function(fit_pc, test_pc){
