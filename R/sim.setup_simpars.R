@@ -282,12 +282,11 @@ View(fit_pc)
 
 #### setup test parameters
 
-sim.setup_test_pars = function(
-                               post.ci.type = c("ETI", "HDI"),
+sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
                                cred.level = seq(0.5, 0.95, by = 0.05),
                                sensitivity.option = 1:3){
   
-  message("The rope reflecting the null-hypothesis of constant hazard is defined as confidence interval with reflecting the .")
+  message("The rope reflecting the null-hypothesis of constant hazard is will be an equal-tailed confidence interval (ETI) based on shape parameters' prior distribution, mean, and sd specified in function sim.setup_fit_pars().")
   
   expand.grid(post.ci.type = post.ci.type,
               cred.level = cred.level,
@@ -297,15 +296,33 @@ sim.setup_test_pars = function(
 test_pc = sim.setup_test_pars()
 
 
-#-------------------------------------------------------------------------------
-# erstmal ignorieren
 #### setup tuning parameters (combine fit_pars and test_pars)
 
-sim.setup_tuning_pars = function(fit_pc, test_pc){
-  tuning_pc = merge(fit_pc, test_pc, by = c("tte.dist", "prior.belief"))
-  return(tuning_pc)
+sim.setup_tuning_pars = function(tte.dist = c("w", "dw", "pgw"),
+                                 prior.belief = c("none", "beginning", "middle", "end"),
+                                 prior.dist = c("fgg", "ggg", "fll", "lll"),
+                                 post.ci.type = c("ETI", "HDI"),
+                                 cred.level = seq(0.5, 0.95, by = 0.05),
+                                 sensitivity.option = 1:3,
+                                 list.output = F){
+  fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
+                              prior.belief = prior.belief,
+                              prior.dist = prior.dist,
+                              list.output = T)
+  
+  test_pars = sim.setup_test_pars(post.ci.type = post.ci.type,
+                                cred.level = cred.level,
+                                sensitivity.option = sensitivity.option)
+  tuning_pars = list(fit_pars = fit_pars, test_pars = test_pars)
+  
+  return(tuning_pars)
 }
 
+sim.setup_tuning_pars()
+
+
+#-------------------------------------------------------------------------------
+# erstmal ignorieren
 
 sim.derive_rope = function(fit_pc){
   # derive rope from fit_pc
