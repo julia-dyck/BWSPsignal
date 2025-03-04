@@ -349,7 +349,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
 
 
 sim.gather_pc_vect = function(dgp_pars_vect, fit_pars_vect){
-  pc_vect = c(dgp_pars_vect, fit_pars_vect)
+  pc_vect = data.frame(dgp_pars_vect, fit_pars_vect)
   return(pc_vect)
 }
 
