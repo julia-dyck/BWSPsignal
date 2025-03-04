@@ -3,9 +3,9 @@
 #' Repeat the data generation and fitting and results output for
 #' one scenario parameter combination (pc).
 #'
-#' @param batch.nr number of batch to save them under different names and 
+#' @param batch.ind batch index to save them under different names and 
 #' prevent overwriting
-#' @param reps number of repeated simulations for one scenario forming one batch
+#' @param reps.per.batch number of repeated simulations for one scenario forming one batch
 #' @param pc matrix of parameter combinations for the scenario to be simulated
 #' @param save logical: states whether output is to be saved in a specified file
 #'        (T) or in the global environment (F)
@@ -23,22 +23,17 @@
 
 
 
-sim.repeat.1.scenario = function(batch.nr, reps = 10, pc,
-                                 save = F, path = getwd()){
-  # batch.nr = number of batch to save them under different names and prevent overwriting
-  # reps = number of repetitions for this scenario
-  # save = whether output is to be saved in a specified file (T) or in the global environment (F)
-  # path = where to save the output if save = T
-  #------------------------------
+sim.repeat.1.scenario = function(batch.ind, batch.size, pc,
+                                 save = T, path = getwd()){
 
-  res.batch = t(replicate(reps,
+  res.batch = t(replicate(batch.size,
                           sim.fit.to.1.sample(pc = pc),
                           simplify = T)
                 )
 
   # save result
   if(save == T){
-    filename = paste(c(pc, "bADR_sim", batch.nr, ".RData") ,collapse="_")
+    filename = paste(c(pc, "bADR_sim", batch.ind, ".RData") ,collapse="_")
     save(res.batch, file=paste0(path, "/", filename))
   }
 
