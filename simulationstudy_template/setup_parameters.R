@@ -23,22 +23,25 @@
 # formalized as "all shape parameter means = 1".
 
 
-pc = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
+pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
                         br = 0.1,
                         adr.rate = c(0.5, 1),
                         adr.when = c(0.25, 0.5, 0.75),
                         adr.relsd = 0.05,
                         study.period = 365,
                         
-                        tte.dist = c("pgw"),          # tuning parameters
+                        tte.dist = c("w", "dw", "pgw"),          # tuning parameters
                         prior.belief = c("none", "beginning", "middle", "end"),
                         prior.dist = c("fgg", "ggg", "fll", "lll"),
                         post.ci.type = c("ETI", "HDI"),
                         cred.level = seq(0.5, 0.95, by = 0.05),
                         sensitivity.option = 1:3,
                         
-                        rep = 100
+                        reps = 100,
+                        resultpath = paste0(getwd(), "/results_raw")
                         )
 
+
+save(pc_list, file = "pc_list.RData")
 
 ## END OF DOC

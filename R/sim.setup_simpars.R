@@ -308,7 +308,10 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               post.ci.type,      # |
                               cred.level,        # v
                               sensitivity.option,# -
-                              reps = 100         #  additional parameters
+                                 
+                              reps = 100, # additional parameters
+                              batch.size = 10,
+                              batch.nr = reps/batch.size,
                               resultpath = paste0(getwd(), "/results_raw")
                               ){       
   
@@ -329,8 +332,8 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                                   sensitivity.option = sensitivity.option)
   
   add_pars = list(reps = reps,
-                  resultpath = resultpath
-                  )
+                  resultpath = resultpath)
+                  
   
   cat(paste0("Each combination of sample scenario and prior specification leads to a total of ",
                  nrow(dgp_pars) * sum(nrow(fit_pars$w), nrow(fit_pars$dw), nrow(fit_pars$pgw)),
@@ -343,6 +346,13 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
   
   return(sim_pars)
 }
+
+
+sim.gather_pc_vect = function(dgp_pars_vect, fit_pars_vect){
+  pc_vect = c(dgp_pars_vect, fit_pars_vect)
+  return(pc_vect)
+}
+
 
 #### setup tuning parameters (combine fit_pars and test_pars)
 
@@ -371,24 +381,6 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
 
 
 
-sim.setup_tuning_pars = function(tte.dist = c("w", "dw", "pgw"),
-                                 prior.belief = c("none", "beginning", "middle", "end"),
-                                 prior.dist = c("fgg", "ggg", "fll", "lll"),
-                                 post.ci.type = c("ETI", "HDI"),
-                                 cred.level = seq(0.5, 0.95, by = 0.05),
-                                 sensitivity.option = 1:3){
-  fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
-                              prior.belief = prior.belief,
-                              prior.dist = prior.dist,
-                              list.output = T)
-  
-  test_pars = sim.setup_test_pars(post.ci.type = post.ci.type,
-                                cred.level = cred.level,
-                                sensitivity.option = sensitivity.option)
-  tuning_pars = list(fit_pars = fit_pars, test_pars = test_pars)
-  
-  return(tuning_pars)
-}
 
 
 #-------------------------------------------------------------------------------
