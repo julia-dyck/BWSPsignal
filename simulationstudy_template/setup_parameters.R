@@ -25,7 +25,7 @@
 
 pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
                         br = 0.1,
-                        adr.rate = c(0.5, 1),
+                        adr.rate = c(0, 0.5, 1),
                         adr.when = c(0.25, 0.5, 0.75),
                         adr.relsd = 0.05,
                         study.period = 365,
@@ -37,7 +37,9 @@ pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
                         cred.level = seq(0.5, 0.95, by = 0.05),
                         sensitivity.option = 1:3,
                         
-                        reps = 100,
+                        reps = 100, # additional parameters
+                        batch.size = 10,
+                        batch.nr = reps/batch.size,
                         resultpath = paste0(getwd(), "/results_raw")
                         )
 
