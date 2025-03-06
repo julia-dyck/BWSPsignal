@@ -61,21 +61,21 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   return(dgp_pc)
 }
 
-dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
-                            br = 0.1,
-                            adr.rate = c(0.5, 1),
-                            adr.when = c(0.25, 0.5, 0.75),
-                            adr.relsd = 0.05,
-                            study.period = 365)
-
-dgp_pc
+# dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
+#                             br = 0.1,
+#                             adr.rate = c(0.5, 1),
+#                             adr.when = c(0.25, 0.5, 0.75),
+#                             adr.relsd = 0.05,
+#                             study.period = 365)
+# 
+# dgp_pc
 
 #### model fitting parameter specification
 
  
-sim.setup_fit_pars = function(tte.dist,
+sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
                               prior.belief = c("none", "beginning", "middle", "end"),
-                              prior.dist,
+                              prior.dist = c("fgg", "ggg", "fll", "lll"),
                               list.output = F){
   # check whether prior.belief "none" is included (necessary as it also provides the base for ROPE specification)
   if(!any(prior.belief == "none")){
@@ -270,13 +270,13 @@ sim.setup_fit_pars = function(tte.dist,
   return(fit_pc)
 }
 
-fit_pc = sim.setup_fit_pars(tte.dist = c("w"), 
-                   prior.dist = c("fgg", "ggg", "fll", "lll"),
-                   prior.belief = c("none", "beginning", "middle", "end"),
-                   list.output = F)
-
-dim(fit_pc)
-View(fit_pc)
+# fit_pc = sim.setup_fit_pars(tte.dist = c("w"), 
+#                    prior.dist = c("fgg", "ggg", "fll", "lll"),
+#                    prior.belief = c("none", "beginning", "middle", "end"),
+#                    list.output = F)
+# 
+# dim(fit_pc)
+# View(fit_pc)
 
 
 
@@ -293,7 +293,7 @@ sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
               sensitivity.option = sensitivity.option)
 }
 
-test_pc = sim.setup_test_pars()
+# test_pc = sim.setup_test_pars()
 
 
 sim.setup_sim_pars = function(N,                 # dgp parameters
@@ -332,7 +332,10 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                                   sensitivity.option = sensitivity.option)
   
   add_pars = list(reps = reps,
-                  resultpath = resultpath)
+                  batch.size = batchsize,
+                  batch.nr = reps/batch.size,
+                  resultpath = resultpath
+                  )
                   
   
   cat(paste0("Each combination of sample scenario and prior specification leads to a total of ",
