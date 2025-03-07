@@ -315,7 +315,10 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               reps = 100, # additional parameters
                               batch.size = 10,
                               batch.nr = reps/batch.size,
-                              resultpath = paste0(getwd(), "/results_raw")
+                              resultpath = paste0(getwd(), "/results_raw"),
+                              stanmod.chains = 4,
+                              stanmod.iter = 11000,
+                              stanmod.warmup = 1000
                               ){       
   
   dgp_pars = sim.setup_dgp_pars(N = N,
@@ -337,7 +340,10 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
   add_pars = list(reps = reps,
                   batch.size = batch.size,
                   batch.nr = reps/batch.size,
-                  resultpath = resultpath
+                  resultpath = resultpath,
+                  stanmod.chains = stanmod.chains,
+                  stanmod.iter = stanmod.iter,
+                  stanmod.warmup = stanmod.warmup
                   )
                   
   

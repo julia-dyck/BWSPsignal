@@ -40,7 +40,10 @@ pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
                         reps = 100, # additional parameters
                         batch.size = 10,
                         batch.nr = reps/batch.size,
-                        resultpath = paste0(getwd(), "/results_raw")
+                        resultpath = paste0(getwd(), "/results_raw"),
+                        stanmod.chains = 4,
+                        stanmod.iter = 11000,
+                        stanmod.warmup = 1000
                         )
 
 
