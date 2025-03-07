@@ -345,8 +345,27 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                   stanmod.iter = stanmod.iter,
                   stanmod.warmup = stanmod.warmup
                   )
-                  
   
+  input_args = list(N = N, 
+                    br = br, 
+                    adr.rate = adr.rate, 
+                    adr.when = adr.when, 
+                    adr.relsd = adr.relsd, 
+                    study.period = study.period,
+                    tte.dist = tte.dist, 
+                    prior.belief = prior.belief, 
+                    prior.dist = prior.dist, 
+                    post.ci.type = post.ci.type, 
+                    cred.level = cred.level, 
+                    sensitivity.option = sensitivity.option,
+                    reps = reps, 
+                    batch.size = batch.size, 
+                    resultpath = resultpath, 
+                    stanmod.chains = stanmod.chains, 
+                    stanmod.iter = stanmod.iter, 
+                    stanmod.warmup = stanmod.warmup
+                    )
+                  
   cat(paste0("Each combination of sample scenario and prior specification leads to a total of ",
                  nrow(dgp_pars) * sum(nrow(fit_pars$w), nrow(fit_pars$dw), nrow(fit_pars$pgw)),
                  " different simulation settings. ",
@@ -354,7 +373,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                  reps,
                  " times. "))
   
-  sim_pars = list(dgp = dgp_pars, fit = fit_pars, test = test_pars, add = add_pars)
+  sim_pars = list(dgp = dgp_pars, fit = fit_pars, test = test_pars, add = add_pars, input = input_args)
   
   return(sim_pars)
 }
