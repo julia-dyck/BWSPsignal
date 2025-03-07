@@ -14,9 +14,34 @@
 #' 
 
 
-sim.fit.prep = function(ttedat, pc){
+## CONCRETE SPECIFICATION DEPENDS ON tte.dist and prior.belief 
+
+sim.fit.prep = function(ttedat, pc, pc_list){
   # ttedat = data set in time-event-format generated from pc
-  # pc contains N, br, adr.rate, adr.when, adr.relsd, censor, dist.ass, adr.ass
+  # pc contains N, br, adr.rate, adr.when, adr.relsd, censor, tte.dist, prior.dist, prior.belief
+  # pc_list contains all additional parameters necessary to specify the simulation study 
+  # (eg. prior means and sds depending on prior belief, 
+  # additional parameters constant for all simulations)
+  
+  ### NEW ---------------------------------
+  # how many and which prior beliefs
+  prior.beliefs = pc_list$input$prior.belief
+  return(prior.beliefs) ## HIER WEITER
+  
+  if(pc$tte.dist == "w"){
+    if(pc$prior.belief == "none"){  ## HOW MANY BELIEVES AND WHICH NAMES DEPENDS ON INPUT IN sim.setup_simpars fct...
+      datstan = tte2priordat_w(ttedat = ttedat, 
+                               scale.mean = 1, scale.sd = 10,
+                               shape.mean = 1, shape.sd = 10,
+                               powershape.mean = 1, powershape.sd = 10)
+    }
+    datstan = tte2priordat_w(ttedat = ttedat, 
+                             scale.mean = 
+                             )
+  }
+  
+  
+  ### OLD ---------------------------------
   adr.assumption = pc[8]
 
   # 1. prior starting values reflecting hyp: "no adr risk over time"
