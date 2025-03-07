@@ -32,7 +32,7 @@ pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
                         
                         tte.dist = c("w", "dw", "pgw"),          # tuning parameters
                         prior.belief = c("none", "beginning", "middle", "end"),
-                        prior.dist = c("fgg", "ggg", "fll", "lll"),
+                        prior.dist = c("fg", "gg", "fl", "ll"),
                         post.ci.type = c("ETI", "HDI"),
                         cred.level = seq(0.5, 0.95, by = 0.05),
                         sensitivity.option = 1:3,

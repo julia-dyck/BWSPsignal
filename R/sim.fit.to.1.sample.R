@@ -18,7 +18,7 @@
 #' @param pc parameter combination 
 #'
 #' @return a data frame with 16 rows. Each row contains statistics for one of the 
-#' 4x4 prior (fll, lll, fgg, ggg) and model (no ADR expected, ADR expected around 
+#' 4x4 prior (fl, ll, fg, gg) and model (no ADR expected, ADR expected around 
 #' 1st, 2nd, 3rd quartile of observation period) alternatives.
 #'
 #'
@@ -27,7 +27,7 @@
 #'
 
 
-sim.fit.to.1.sample = function(pc){
+sim.fit.to.1.sample = function(pc, pc_list){
 
   ### Data simulation
   ttedat = datagen_tte(genpar = pc)
@@ -39,37 +39,17 @@ sim.fit.to.1.sample = function(pc){
   adr.ass = pc[8]
 
   ### Model fitting
-  if(dist.ass == "fix.gam.gam"){
     mod = fit_mod_tte(datstan = datstan,
-                      mod = "pgw",
-                      priordist = "fgg")
-    mod@model_name = "fix.gam.gam" # manually, because not working automatically
-  }
-  if(dist.ass == "gam.gam.gam"){
-    mod = fit_mod_tte(datstan = datstan,
-                      mod = "pgw",
-                      priordist = "ggg")
-    mod@model_name = "gam.gam.gam" # manually, because not working automatically
-  }
-  if(dist.ass == "fix.log.log"){
-    mod = fit_mod_tte(datstan = datstan,
-                      mod = "pgw",
-                      priordist = "fll")
-    mod@model_name = "fix.log.log" # manually, because not working automatically
-  }
-  if(dist.ass == "log.log.log"){
-    mod = fit_mod_tte(datstan = datstan,
-                      mod = "pgw",
-                      priordist = "lll")
-    mod@model_name = "log.log.log" # manually, because not working automatically
-  }
+                      tte.dist = pc$tte.dist,
+                      prior.dist = pc$prior.dist)
 
-  ### extracting relevant statistics
+  ### extracting relevant statistics #TO BE ADJUSTED YET
   stats = cbind(pc,
                 sim.stanfit.to.fitstats(stanfit.object = mod,
                                     stan.dat = datstan),
                 as.data.frame(sim.stanfit.to.poststats(stanfit.object = mod,
-                                                       cred.niveaus = seq(0.5, 0.95, by = 0.05))))
+                                                       cred.niveaus = cred.levels
+                                                         )))
 
   return(stats)
 

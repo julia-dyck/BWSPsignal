@@ -12,17 +12,17 @@
 #'
 #' @param datstan A named list of data for the stanmodel; a data frame can be 
 #' reformated with \code{\link{tte2standat}}.
-#' @param mod A character string indicating the modelling approach. Options are
+#' @param tte.dist A character string indicating the modelling approach. Options are
 #' \code{"w", "dw", "pgw"}.
-#' @param priordist A character string indicating the prior distribution for the
+#' @param prior.dist A character string indicating the prior distribution for the
 #' parameters of the pgW distribution. Options are 
-#' \code{"fgg", "fll", "ggg", "lll"} (see details).
+#' \code{"fg", "fl", "gg", "ll"} (see details).
 #' @param chains The number of Markov chains to run
 #' @param iter The total number of iterations per chain (including warmup)
 #' @param warmup The number of warmup iterations per chain
 #' 
 #' 
-#' @return A stanfit object; in case of \code{mod = "dw"} a list of two stanfit objects
+#' @return A stanfit object; in case of \code{tte.dist = "dw"} a list of two stanfit objects
 #' with \code{$uncens} containing the stanfit object
 #' obtained from the model to the tte data as is, and \code{$cens} containing the stanfit object
 #' obtained from the model to the tte data censored at mid of observation period.
@@ -46,17 +46,17 @@
 #' of the following univariate distributional choices:
 #' \tabular{lll}{
 #' for scale parameter(s) \eqn{\theta} \tab for shape parameter(s) \tab  abbreviation \cr
-#' fixed to prior mean \tab Gamma  \tab fgg \cr
-#' Gamma \tab Gamma \tab ggg \cr
-#' fixed to prior mean \tab Lognormal \tab fll \cr
-#' Lognormal \tab Lognormal \tab lll \cr
+#' fixed to prior mean \tab Gamma  \tab fg \cr
+#' Gamma \tab Gamma \tab gg \cr
+#' fixed to prior mean \tab Lognormal \tab fl \cr
+#' Lognormal \tab Lognormal \tab ll \cr
 #' }
 #' 
 #' @examples
 #' # prep the data
 #' head(tte)
 #' standat = tte2standat(dat = tte,
-#'                      mod = "pgw",
+#'                      tte.dist = "pgw",
 #'                      scale.mean = 1, 
 #'                      scale.sd = 10,
 #'                      shape.mean = 1, 
@@ -65,8 +65,8 @@
 #'                      powershape.sd = 10)
 #' # fit a pgw model
 #' fit = fit_mod_tte(datstan = standat,  
-#'                   mod = "pgw",         
-#'                   priordist = "lll",  
+#'                   tte.dist = "pgw",         
+#'                   prior.dist = "ll",  
 #'                   chains = 4,
 #'                   iter = 110,          # (be aware that posterior sample
 #'                   warmup = 10)         # is small for demo purpose)
@@ -81,34 +81,34 @@
 #'
 
 fit_mod_tte = function(datstan, 
-                       mod = c("w", "dw", "pgw"),
-                       priordist = c("fgg","fll","ggg","lll"),
+                       tte.dist = c("w", "dw", "pgw"),
+                       prior.dist = c("fg","fl","gg","ll"),
                        chains = 4,
                        iter = 11000,
                        warmup = 1000){
   if(mod == "w"){
     fit = fit_w_tte(datstan = datstan,
-                    priordist = priordist,
+                    prior.dist = prior.dist,
                     chains = chains,
                     iter = iter,
                     warmup = warmup)
   }
   else if(mod == "dw"){
     fit = fit_dw_tte(datstan = datstan,
-                     priordist = priordist,
+                     prior.dist = prior.dist,
                      chains = chains,
                      iter = iter,
                      warmup = warmup)
   }
   else if(mod == "pgw"){
     fit = fit_pgw_tte(datstan = datstan,
-                      priordist = priordist,
+                      prior.dist = prior.dist,
                       chains = chains,
                       iter = iter,
                       warmup = warmup)
   }
   else{
-    stop("Argument mod must be one of 'w', 'dw', or 'pgw'.")
+    stop("Argument tte.dist must be one of 'w', 'dw', or 'pgw'.")
   }
   return(fit)
 }

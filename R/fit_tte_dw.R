@@ -8,9 +8,9 @@
 #'
 #' @param datstan A named list of data for the stanmodel; a data frame can be 
 #' reformated with \code{\link{tte2standat}}.
-#' @param priordist A character string indicating the prior distribution for the
+#' @param prior.dist A character string indicating the prior distribution for the
 #' parameters of the pgW distribution. Options are 
-#' \code{"fgg", "fll", "ggg", "lll"} (see details).
+#' \code{"fg", "fl", "gg", "ll"} (see details).
 #' @param chains The number of Markov chains to run
 #' @param iter The total number of iterations per chain (including warmup)
 #' @param warmup The number of warmup iterations per chain
@@ -39,10 +39,10 @@
 #' Implemented distributional choices for the joint prior are products of the following:
 #' \tabular{llll}{
 #' for scales  \tab for shapes  \tab abbreviation \cr
-#' fixed to prior mean \tab Gamma \tab fgg \cr
+#' fixed to prior mean \tab Gamma \tab fg \cr
 #' Gamma \tab Gamma \tab ggg \cr
-#' fixed to prior mean \tab Lognormal \tab fll \cr
-#' Lognormal \tab Lognormal \tab lll \cr
+#' fixed to prior mean \tab Lognormal \tab fl \cr
+#' Lognormal \tab Lognormal \tab ll \cr
 #' }
 #' 
 #' @examples
@@ -61,7 +61,7 @@
 #' 
 #' # fit the model
 #' fit = fit_tte_dw(standat,
-#'                  priordist = "lll",
+#'                  priordist = "ll",
 #'                  chains = 1,
 #'                  iter = 1100,
 #'                  warmup = 100)
@@ -75,12 +75,12 @@
 
 
 fit_tte_dw = function(datstan, 
-                     priordist = c("fgg","fll","ggg","lll"),
+                     prior.dist = c("fg","fl","gg","ll"),
                      chains = 4,
                      iter = 11000,
                      warmup = 1000
 ){
-  if(priordist == "fgg"){
+  if(prior.dist == "fg"){
     output_uncens = rstan::sampling(
       object = stanmodels$w_tte_gammaprior_scalefixed,  # Stan model
       data = datstan$uncens,     # named list of data
@@ -96,7 +96,7 @@ fit_tte_dw = function(datstan,
       iter = iter         # total number of iterations per chain (including warmup)
     )
   }
-  if(priordist == "fll"){
+  if(prior.dist == "fl"){
     output_uncens = rstan::sampling(
       object = stanmodels$w_tte_lognormalprior_scalefixed,  # Stan model
       data = datstan$uncens,     # named list of data
@@ -112,7 +112,7 @@ fit_tte_dw = function(datstan,
       iter = iter         # total number of iterations per chain (including warmup)
     )
   }
-  if(priordist == "ggg"){
+  if(prior.dist == "gg"){
     output_uncens = rstan::sampling(
       object = stanmodels$w_tte_gammaprior,  # Stan model
       data = datstan$uncens,     # named list of data
@@ -128,7 +128,7 @@ fit_tte_dw = function(datstan,
       iter = iter         # total number of iterations per chain (including warmup)
     )
   }
-  if(priordist == "lll"){
+  if(prior.dist == "ll"){
     output_uncens = rstan::sampling(
       object = stanmodels$w_tte_lognormalprior,  # Stan model
       data = datstan$uncens,     # named list of data

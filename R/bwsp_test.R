@@ -113,7 +113,7 @@
 #'                       shape.sd = 10)
 #' 
 #' fit = fit_tte_w(datstan = standat,      # fit the model
-#'                   priordist = "lll",       
+#'                   priordist = "ll",       
 #'                   chains = 4,              
 #'                   iter = 110,             # (be aware that posterior sample
 #'                   warmup = 10)            # is small for demo purpose)
@@ -154,7 +154,7 @@
 #'                       powershape.sd = 10)
 #' 
 #' fit = fit_tte_pgw(datstan = standat,     # fit the model
-#'                   priordist = "lll",       
+#'                   priordist = "ll",       
 #'                   chains = 4,              
 #'                   iter = 110,            # (be aware that posterior sample
 #'                   warmup = 10)           # is small for demo purpose)
