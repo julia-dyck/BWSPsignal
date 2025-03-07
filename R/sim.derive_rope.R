@@ -9,6 +9,7 @@
 
 sim.derive_rope = function(fit_pc){
   # derive rope from fit_pc
+  # ACHTUNG: fit_pc is now a list of 3 dfs (one per tte.dist)
   rope = fit_pc %>% 
     dplyr::filter(prior.belief == "none") %>% 
     dplyr::select(tte.dist, prior.belief, scale.mean_w, scale.sd_w, shape.mean_w, shape.sd_w,
