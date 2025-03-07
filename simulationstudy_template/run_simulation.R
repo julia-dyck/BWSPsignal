@@ -20,7 +20,8 @@ for(ind.dgp in 1:nrow(pc_list$dgp)){      # go through dgp scenarios (per row)
       # repeat modelling for one scenario
       for(ind.batch in 1:pc_list$add$batch.nr){
         sim.repeat.1.scenario(pc = pc_vect,
-                              pc_list = pc_list
+                              pc_list = pc_list,
+                              batch.ind = ind.batch
                               )
       }
     }
@@ -33,7 +34,8 @@ for(ind.dgp in 1:nrow(pc_list$dgp)){      # go through dgp scenarios (per row)
       # repeat modelling for one scenario
       for(ind.batch in 1:pc_list$add$batch.nr){
         sim.repeat.1.scenario(pc = pc_vect,
-                              pc_list = pc_list
+                              pc_list = pc_list,
+                              batch.ind = ind.batch
                               )
       }
     }
@@ -46,7 +48,8 @@ for(ind.dgp in 1:nrow(pc_list$dgp)){      # go through dgp scenarios (per row)
       # repeat modelling for one scenario
       for(ind.batch in 1:pc_list$add$batch.nr){
         sim.repeat.1.scenario(pc = pc_vect,
-                              pc_list = pc_list
+                              pc_list = pc_list,
+                              batch.ind = ind.batch
                               )
       }
     }
