@@ -26,8 +26,8 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
                               adr.relsd,
                               study.period 
                                ){
-  if(any(0 == adr.rate)){ # separate control and adr>0 cases
-    adr.rate[-which(adr.rate==0)]
+  if(any(adr.rate == 0)){ # separate control and adr>0 cases
+    adr.rate = adr.rate[-(which(adr.rate==0))]
   }
   else{ # its fine, but notify user that control case is necessary
     warning("Control case (adr.rate = 0) necessary for simulation study. Adding 0 to specified vector adr.rate.")
@@ -45,8 +45,8 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
 
   pc_no_adr = expand.grid(       
     study.period = study.period,
-    adr.relsd = adr.relsd,
-    adr.when = 0,
+    adr.relsd = NA,
+    adr.when = NA,
     adr.rate = 0,
     br = br,
     N = N
@@ -61,14 +61,14 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   return(dgp_pc)
 }
 
-# dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
-#                             br = 0.1,
-#                             adr.rate = c(0.5, 1),
-#                             adr.when = c(0.25, 0.5, 0.75),
-#                             adr.relsd = 0.05,
-#                             study.period = 365)
-# 
-# dgp_pc
+dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
+                            br = 0.1,
+                            adr.rate = c(0.5, 1),
+                            adr.when = c(0.25, 0.5, 0.75),
+                            adr.relsd = c(0.05),
+                            study.period = 365)
+
+dgp_pc
 
 #### model fitting parameter specification
 
@@ -260,8 +260,11 @@ sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
   
   
   fit_pc_w = dplyr::inner_join(dist_pc, belief.df_w, by = c("tte.dist", "prior.belief"))
+  fit_pc_w$prior.dist = as.character(fit_pc_w$prior.dist)
   fit_pc_dw = dplyr::inner_join(dist_pc, belief.df_dw, by = c("tte.dist", "prior.belief"))
+  fit_pc_dw$prior.dist = as.character(fit_pc_dw$prior.dist)
   fit_pc_pgw = dplyr::inner_join(dist_pc, belief.df_pgw, by = c("tte.dist", "prior.belief"))
+  fit_pc_pgw$prior.dist = as.character(fit_pc_pgw$prior.dist)
   
   fit_pc = list(w = fit_pc_w, dw = fit_pc_dw, pgw = fit_pc_pgw)
   if(list.output == F){
@@ -332,7 +335,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                                   sensitivity.option = sensitivity.option)
   
   add_pars = list(reps = reps,
-                  batch.size = batchsize,
+                  batch.size = batch.size,
                   batch.nr = reps/batch.size,
                   resultpath = resultpath
                   )
@@ -386,17 +389,4 @@ sim.gather_pc_vect = function(dgp_pars_vect, fit_pars_vect){
 
 
 
-#-------------------------------------------------------------------------------
-# erstmal ignorieren
-
-sim.derive_rope = function(fit_pc){
-  # derive rope from fit_pc
-  rope = fit_pc %>% 
-    dplyr::filter(prior.belief == "none") %>% 
-    dplyr::select(tte.dist, prior.belief, scale.mean_w, scale.sd_w, shape.mean_w, shape.sd_w,
-                  scale.mean_dw, scale.sd_dw, shape.mean_dw, shape.sd_dw,
-                  scale_c.mean_dw, scale_c.sd_dw, shape_c.mean_dw, shape_c.sd_dw,
-                  scale.mean_pgw, scale.sd_pgw, shape.mean_pgw, shape.sd_pgw, powershape.mean_pgw, powershape.sd_pgw)
-  
-  return(rope)
-}
+## END OF DOC
