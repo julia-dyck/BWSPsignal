@@ -4,20 +4,26 @@
 \alias{sim.repeat.1.scenario}
 \title{repeat simulation for one sample scenario (pc) in simulationstudy}
 \usage{
-sim.repeat.1.scenario(batch.nr, reps = 10, pc, save = F, path = getwd())
+sim.repeat.1.scenario(pc, pc_list, batch.ind)
 }
 \arguments{
-\item{batch.nr}{number of batch to save them under different names and
-prevent overwriting}
+\item{pc}{vector containing the parameter combination for data generation and model fitting, namely:
+\itemize{
+\item N: sample size
+\item br: background rate
+\item adr.rate: adverse event rate
+\item adr.when: adverse event time
+\item adr.relsd: relative standard deviation of the adverse event time
+\item study.period: study period
+\item tte.dist: time-to-event distribution
+\item prior.dist: prior distribution
+\item prior.belief: prior belief
+}}
 
-\item{reps}{number of repeated simulations for one scenario forming one batch}
+\item{pc_list}{list containing all parameter combinations for the simulation study
+(necessary to extract further parameters for simulation study specification)}
 
-\item{pc}{matrix of parameter combinations for the scenario to be simulated}
-
-\item{save}{logical: states whether output is to be saved in a specified file
-(T) or in the global environment (F)}
-
-\item{path}{file path specifying where to save the output if save = T}
+\item{batch.ind}{integer indicating the pc batch index (for saving purposes)}
 }
 \value{
 a data frame containing all fitting and posterior sample statistics of

@@ -4,14 +4,14 @@
 \alias{sim.fit.to.1.sample}
 \title{Simstudy: apply all models to one specific sample}
 \usage{
-sim.fit.to.1.sample(pc)
+sim.fit.to.1.sample(pc, pc_list)
 }
 \arguments{
 \item{pc}{parameter combination}
 }
 \value{
 a data frame with 16 rows. Each row contains statistics for one of the
-4x4 prior (fll, lll, fgg, ggg) and model (no ADR expected, ADR expected around
+4x4 prior (fl, ll, fg, gg) and model (no ADR expected, ADR expected around
 1st, 2nd, 3rd quartile of observation period) alternatives.
 }
 \description{

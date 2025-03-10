@@ -31,13 +31,13 @@ tte2priordat_pgw(
 }
 \description{
 Setup of prior specifications and reformated time-to-event
-data set as a list suitable for model fitting with \code{\link{fit_pgw_tte}}.
+data set as a list suitable for model fitting with \code{\link{fit_tte_pgw}}.
 }
 \details{
 The function converts time-to-event data and prior specifications for location ('.mean') and
 precision ('.sd') of the power generalized Weibull parameters
 to a suitable format for \code{rstan} model fitting
-which is performed within \code{\link{fit_pgw_tte}}.
+which is performed within \code{\link{fit_tte_pgw}}.
 
 Prior means suitable to reflect the prior belief can be found by plotting the
 hazard and estimating the expected event time under different parameter combinations

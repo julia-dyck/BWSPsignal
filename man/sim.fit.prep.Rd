@@ -4,7 +4,7 @@
 \alias{sim.fit.prep}
 \title{Prepare Bayesian pgW fitting for simulation study}
 \usage{
-sim.fit.prep(ttedat, pc)
+sim.fit.prep(ttedat, pc, pc_list)
 }
 \arguments{
 \item{ttedat}{time-to-event data set}
