@@ -31,6 +31,7 @@
 #' (i.e. set smaller standard deviation in case of high certainty about prior belief vs. larger 
 #' standard deviation in case of low certainty).
 #' 
+#' @export
 
 
 tte2priordat_dw = function(dat,
