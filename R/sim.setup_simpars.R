@@ -61,14 +61,14 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   return(dgp_pc)
 }
 
-dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
-                            br = 0.1,
-                            adr.rate = c(0.5, 1),
-                            adr.when = c(0.25, 0.5, 0.75),
-                            adr.relsd = c(0.05),
-                            study.period = 365)
-
-dgp_pc
+# dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
+#                             br = 0.1,
+#                             adr.rate = c(0.5, 1),
+#                             adr.when = c(0.25, 0.5, 0.75),
+#                             adr.relsd = c(0.05),
+#                             study.period = 365)
+# 
+# dgp_pc
 
 #### model fitting parameter specification
 
