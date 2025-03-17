@@ -5,6 +5,7 @@
 \title{extract posterior summary statistics and credibility intervals}
 \usage{
 sim.stanfit.to.poststats(
+  pc,
   stanfit.object,
   cred.niveaus = seq(0.5, 0.95, by = 0.05)
 )

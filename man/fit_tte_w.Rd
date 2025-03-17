@@ -55,7 +55,7 @@ Lognormal \tab Lognormal \tab ll \cr
 \examples{
 # prep the data
 head(tte)
-standat = tte2priordat_W(dat = tte,
+standat = tte2priordat_w(dat = tte,
                          scale.mean = 1, 
                          scale.sd = 10,
                          shape.mean = 1, 
@@ -68,7 +68,5 @@ fit = fit_tte_w(datstan = standat,  # (be aware that posterior sample
                  warmup = 10)
 # print the summary
 fit
-
-
 
 }
