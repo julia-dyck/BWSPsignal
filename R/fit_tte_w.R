@@ -39,7 +39,7 @@
 #' @examples
 #' # prep the data
 #' head(tte)
-#' standat = tte2priordat_W(dat = tte,
+#' standat = tte2priordat_w(dat = tte,
 #'                          scale.mean = 1, 
 #'                          scale.sd = 10,
 #'                          shape.mean = 1, 
@@ -53,7 +53,7 @@
 #' # print the summary
 #' fit
 #' 
-#' 
+#' @export
 #'
 
 
