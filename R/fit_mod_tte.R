@@ -55,7 +55,7 @@
 #' @examples
 #' # prep the data
 #' head(tte)
-#' standat = tte2standat(dat = tte,
+#' standat = tte2priordat_pgw(dat = tte,
 #'                      tte.dist = "pgw",
 #'                      scale.mean = 1, 
 #'                      scale.sd = 10,
@@ -86,22 +86,22 @@ fit_mod_tte = function(datstan,
                        chains = 4,
                        iter = 11000,
                        warmup = 1000){
-  if(mod == "w"){
-    fit = fit_w_tte(datstan = datstan,
+  if(tte.dist == "w"){
+    fit = fit_tte_w(datstan = datstan,
                     prior.dist = prior.dist,
                     chains = chains,
                     iter = iter,
                     warmup = warmup)
   }
-  else if(mod == "dw"){
-    fit = fit_dw_tte(datstan = datstan,
+  else if(tte.dist == "dw"){
+    fit = fit_tte_dw(datstan = datstan,
                      prior.dist = prior.dist,
                      chains = chains,
                      iter = iter,
                      warmup = warmup)
   }
-  else if(mod == "pgw"){
-    fit = fit_pgw_tte(datstan = datstan,
+  else if(tte.dist == "pgw"){
+    fit = fit_tte_pgw(datstan = datstan,
                       prior.dist = prior.dist,
                       chains = chains,
                       iter = iter,
