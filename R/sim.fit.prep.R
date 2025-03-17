@@ -6,9 +6,11 @@
 #'
 #' @param ttedat time-to-event data set
 #' @param pc vector representing one parameter combination used in simulation study
+#' @param pc_list list containing all parameter combinations and additional
+#'        information necessary for simulation study
 #'
 #' @return A list containing all information to be inserted as \code{datstan} 
-#' argument into the \code{\link{fit_pgw_tte}} function.
+#' argument into the \code{\link{fit_mod_tte}} function.
 #'
 #' @export
 #' 
