@@ -4,4 +4,5 @@
 ^test_new_stanfile_setup\.R$
 ^\.gitignore$
 ^simulationstudy$
+^simulationstudy_template$
 ^\.github$
