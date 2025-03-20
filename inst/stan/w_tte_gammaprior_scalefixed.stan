@@ -14,7 +14,7 @@ data {
   #include /data/w_tte_data.stan 
   }
 parameters {
-  #include /parameters/pgw_parameters.stan
+  #include /parameters/w_scalefixed_parameters.stan
 }
 model {
   real n_alpha = gamma_expect_stdev_to_alpha(n_expect, n_stdev); // transform parametrization to predefined gamma parameterization

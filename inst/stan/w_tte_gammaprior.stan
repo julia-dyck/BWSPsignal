@@ -10,10 +10,10 @@ functions {
 }
 
 data {
-  #include /data/pgw_tte_data.stan
+  #include /data/w_tte_data.stan
 }
 parameters {
-  #include /parameters/pgw_parameters.stan
+  #include /parameters/w_parameters.stan
 }
 model {
   real t_alpha = gamma_expect_stdev_to_alpha(t_expect, t_stdev); // transform parameterization to predefined gamma parameterization
