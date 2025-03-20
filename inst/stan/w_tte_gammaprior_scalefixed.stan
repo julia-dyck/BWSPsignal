@@ -5,9 +5,8 @@
 
 
 functions {
-  // reparametrization for lognormal distribution:
+  // reparametrization for gamma distribution:
   #include /functions/gamma_repar_function.stan
-
 }
 
 data {
@@ -28,3 +27,4 @@ model {
     target += weibull_lccdf(tc[j] | t_expect, nu);
   }
 }
+
