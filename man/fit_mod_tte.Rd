@@ -74,7 +74,7 @@ Lognormal \tab Lognormal \tab ll \cr
 \examples{
 # prep the data
 head(tte)
-standat = tte2standat(dat = tte,
+standat = tte2priordat_pgw(dat = tte,
                      tte.dist = "pgw",
                      scale.mean = 1, 
                      scale.sd = 10,
