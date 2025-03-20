@@ -29,7 +29,7 @@
 
 
 
-sim.repeat.1.scenario = function(pc, pc_list, batch.ind){
+sim.repeat.1.scenario = function(pc, pc_list, batch.ind, save = T){
   batch.size = pc_list$add$batch.size
   
   
@@ -38,10 +38,20 @@ sim.repeat.1.scenario = function(pc, pc_list, batch.ind){
                                               pc_list = pc_list),
                           simplify = T)
                 )
-
-  # save result
-  filename = paste(c(pc, "bADR_sim", batch.ind, ".RData") ,collapse="_")
-  save(res.batch, file=paste0(path, "/", filename))
+  res.batch = data.frame(res.batch)
+  
+  if(save == T){
+    # save result
+    filename = paste(c(pc, "bADR_sim", batch.ind, ".RData") ,collapse="_")
+    save(res.batch, file=paste0(path, "/", filename))
+  }
+  else{ # option for testing/developing
+    return(res.batch)
+  }
 }
+
+
+
+
 
 ## END OF DOC

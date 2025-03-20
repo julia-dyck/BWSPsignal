@@ -40,10 +40,10 @@ sim.fit.to.1.sample = function(pc, pc_list){
                     tte.dist = pc$tte.dist,
                     prior.dist = pc$prior.dist)
 
-  ### extracting relevant statistics #TO BE ADJUSTED YET
+  ### extracting relevant statistics
   stats = sim.stanfit.to.poststats(pc, 
                                    stanfit.object = mod,
-                                   cred.niveaus = cred.levels
+                                   cred.niveaus = pc_list$input$cred.level
                                    )
 
   return(stats)
