@@ -27,20 +27,18 @@ namespace model_w_tte_gammaprior_scalefixed_namespace {
 using stan::model::model_base_crtp;
 using namespace stan::math;
 stan::math::profile_map profiles__;
-static constexpr std::array<const char*, 27> locations_array__ =
+static constexpr std::array<const char*, 25> locations_array__ =
   {" (found before start of program)",
-  " (in 'string', line 35, column 2 to column 22)",
   " (in 'string', line 36, column 2 to column 19)",
-  " (in 'string', line 37, column 2 to column 22)",
-  " (in 'string', line 40, column 2 to column 64)",
-  " (in 'string', line 41, column 2 to column 62)",
-  " (in 'string', line 42, column 2 to column 45)",
-  " (in 'string', line 44, column 4 to column 49)",
-  " (in 'string', line 43, column 24 to line 45, column 3)",
-  " (in 'string', line 43, column 2 to line 45, column 3)",
-  " (in 'string', line 47, column 4 to column 50)",
-  " (in 'string', line 46, column 24 to line 48, column 3)",
-  " (in 'string', line 46, column 2 to line 48, column 3)",
+  " (in 'string', line 39, column 2 to column 64)",
+  " (in 'string', line 40, column 2 to column 62)",
+  " (in 'string', line 41, column 2 to column 45)",
+  " (in 'string', line 43, column 4 to column 49)",
+  " (in 'string', line 42, column 24 to line 44, column 3)",
+  " (in 'string', line 42, column 2 to line 44, column 3)",
+  " (in 'string', line 46, column 4 to column 50)",
+  " (in 'string', line 45, column 24 to line 47, column 3)",
+  " (in 'string', line 45, column 2 to line 47, column 3)",
   " (in 'string', line 23, column 2 to column 28)",
   " (in 'string', line 24, column 2 to column 28)",
   " (in 'string', line 25, column 20 to column 30)",
@@ -82,7 +80,7 @@ gamma_expect_stdev_to_alpha(const T0__& expect, const T1__& stdev,
   // suppress unused var warning
   (void) DUMMY_VAR__;
   try {
-    current_statement__ = 23;
+    current_statement__ = 21;
     return (stan::math::pow(expect, 2) / stan::math::pow(stdev, 2));
   } catch (const std::exception& e) {
     stan::lang::rethrow_located(e, locations_array__[current_statement__]);
@@ -103,7 +101,7 @@ gamma_expect_stdev_to_beta(const T0__& expect, const T1__& stdev,
   // suppress unused var warning
   (void) DUMMY_VAR__;
   try {
-    current_statement__ = 25;
+    current_statement__ = 23;
     return (expect / stan::math::pow(stdev, 2));
   } catch (const std::exception& e) {
     stan::lang::rethrow_located(e, locations_array__[current_statement__]);
@@ -144,27 +142,27 @@ public:
     try {
       int pos__ = std::numeric_limits<int>::min();
       pos__ = 1;
-      current_statement__ = 13;
+      current_statement__ = 11;
       context__.validate_dims("data initialization", "N_status_e", "int",
         std::vector<size_t>{});
       N_status_e = std::numeric_limits<int>::min();
-      current_statement__ = 13;
+      current_statement__ = 11;
       N_status_e = context__.vals_i("N_status_e")[(1 - 1)];
-      current_statement__ = 13;
+      current_statement__ = 11;
       stan::math::check_greater_or_equal(function__, "N_status_e",
         N_status_e, 1);
-      current_statement__ = 14;
+      current_statement__ = 12;
       context__.validate_dims("data initialization", "N_status_c", "int",
         std::vector<size_t>{});
       N_status_c = std::numeric_limits<int>::min();
-      current_statement__ = 14;
+      current_statement__ = 12;
       N_status_c = context__.vals_i("N_status_c")[(1 - 1)];
-      current_statement__ = 14;
+      current_statement__ = 12;
       stan::math::check_greater_or_equal(function__, "N_status_c",
         N_status_c, 0);
-      current_statement__ = 15;
+      current_statement__ = 13;
       stan::math::validate_non_negative_index("te", "N_status_e", N_status_e);
-      current_statement__ = 16;
+      current_statement__ = 14;
       context__.validate_dims("data initialization", "te", "double",
         std::vector<size_t>{static_cast<size_t>(N_status_e)});
       te_data__ = Eigen::Matrix<double,-1,1>::Constant(N_status_e,
@@ -173,24 +171,24 @@ public:
         N_status_e);
       {
         std::vector<local_scalar_t__> te_flat__;
-        current_statement__ = 16;
+        current_statement__ = 14;
         te_flat__ = context__.vals_r("te");
-        current_statement__ = 16;
+        current_statement__ = 14;
         pos__ = 1;
-        current_statement__ = 16;
+        current_statement__ = 14;
         for (int sym1__ = 1; sym1__ <= N_status_e; ++sym1__) {
-          current_statement__ = 16;
+          current_statement__ = 14;
           stan::model::assign(te, te_flat__[(pos__ - 1)],
             "assigning variable te", stan::model::index_uni(sym1__));
-          current_statement__ = 16;
+          current_statement__ = 14;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 16;
+      current_statement__ = 14;
       stan::math::check_greater_or_equal(function__, "te", te, 0);
-      current_statement__ = 17;
+      current_statement__ = 15;
       stan::math::validate_non_negative_index("tc", "N_status_c", N_status_c);
-      current_statement__ = 18;
+      current_statement__ = 16;
       context__.validate_dims("data initialization", "tc", "double",
         std::vector<size_t>{static_cast<size_t>(N_status_c)});
       tc_data__ = Eigen::Matrix<double,-1,1>::Constant(N_status_c,
@@ -199,57 +197,57 @@ public:
         N_status_c);
       {
         std::vector<local_scalar_t__> tc_flat__;
-        current_statement__ = 18;
+        current_statement__ = 16;
         tc_flat__ = context__.vals_r("tc");
-        current_statement__ = 18;
+        current_statement__ = 16;
         pos__ = 1;
-        current_statement__ = 18;
+        current_statement__ = 16;
         for (int sym1__ = 1; sym1__ <= N_status_c; ++sym1__) {
-          current_statement__ = 18;
+          current_statement__ = 16;
           stan::model::assign(tc, tc_flat__[(pos__ - 1)],
             "assigning variable tc", stan::model::index_uni(sym1__));
-          current_statement__ = 18;
+          current_statement__ = 16;
           pos__ = (pos__ + 1);
         }
       }
-      current_statement__ = 18;
+      current_statement__ = 16;
       stan::math::check_greater_or_equal(function__, "tc", tc, 0);
-      current_statement__ = 19;
+      current_statement__ = 17;
       context__.validate_dims("data initialization", "t_expect", "double",
         std::vector<size_t>{});
       t_expect = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 19;
+      current_statement__ = 17;
       t_expect = context__.vals_r("t_expect")[(1 - 1)];
-      current_statement__ = 19;
+      current_statement__ = 17;
       stan::math::check_greater_or_equal(function__, "t_expect", t_expect, 0);
-      current_statement__ = 20;
+      current_statement__ = 18;
       context__.validate_dims("data initialization", "t_stdev", "double",
         std::vector<size_t>{});
       t_stdev = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 20;
+      current_statement__ = 18;
       t_stdev = context__.vals_r("t_stdev")[(1 - 1)];
-      current_statement__ = 20;
+      current_statement__ = 18;
       stan::math::check_greater_or_equal(function__, "t_stdev", t_stdev, 0);
-      current_statement__ = 21;
+      current_statement__ = 19;
       context__.validate_dims("data initialization", "n_expect", "double",
         std::vector<size_t>{});
       n_expect = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 21;
+      current_statement__ = 19;
       n_expect = context__.vals_r("n_expect")[(1 - 1)];
-      current_statement__ = 21;
+      current_statement__ = 19;
       stan::math::check_greater_or_equal(function__, "n_expect", n_expect, 0);
-      current_statement__ = 22;
+      current_statement__ = 20;
       context__.validate_dims("data initialization", "n_stdev", "double",
         std::vector<size_t>{});
       n_stdev = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 22;
+      current_statement__ = 20;
       n_stdev = context__.vals_r("n_stdev")[(1 - 1)];
-      current_statement__ = 22;
+      current_statement__ = 20;
       stan::math::check_greater_or_equal(function__, "n_stdev", n_stdev, 0);
     } catch (const std::exception& e) {
       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
     }
-    num_params_r__ = 1 + 1 + 1;
+    num_params_r__ = 1;
   }
   inline std::string model_name() const final {
     return "model_w_tte_gammaprior_scalefixed";
@@ -278,37 +276,29 @@ public:
     // suppress unused var warning
     (void) function__;
     try {
-      local_scalar_t__ theta = DUMMY_VAR__;
-      current_statement__ = 1;
-      theta = in__.template read_constrain_lb<local_scalar_t__,
-                jacobian__>(0, lp__);
       local_scalar_t__ nu = DUMMY_VAR__;
-      current_statement__ = 2;
+      current_statement__ = 1;
       nu = in__.template read_constrain_lb<local_scalar_t__, jacobian__>(0,
              lp__);
-      local_scalar_t__ gamma = DUMMY_VAR__;
-      current_statement__ = 3;
-      gamma = in__.template read_constrain_lb<local_scalar_t__,
-                jacobian__>(0, lp__);
       {
         local_scalar_t__ n_alpha = DUMMY_VAR__;
-        current_statement__ = 4;
+        current_statement__ = 2;
         n_alpha = gamma_expect_stdev_to_alpha(n_expect, n_stdev, pstream__);
         local_scalar_t__ n_beta = DUMMY_VAR__;
-        current_statement__ = 5;
+        current_statement__ = 3;
         n_beta = gamma_expect_stdev_to_beta(n_expect, n_stdev, pstream__);
-        current_statement__ = 6;
+        current_statement__ = 4;
         lp_accum__.add(stan::math::gamma_lpdf<false>(nu, n_alpha, n_beta));
-        current_statement__ = 9;
+        current_statement__ = 7;
         for (int i = 1; i <= N_status_e; ++i) {
-          current_statement__ = 7;
+          current_statement__ = 5;
           lp_accum__.add(stan::math::weibull_lpdf<false>(
                            stan::model::rvalue(te, "te",
                              stan::model::index_uni(i)), t_expect, nu));
         }
-        current_statement__ = 12;
+        current_statement__ = 10;
         for (int j = 1; j <= N_status_c; ++j) {
-          current_statement__ = 10;
+          current_statement__ = 8;
           lp_accum__.add(stan::math::weibull_lccdf(
                            stan::model::rvalue(tc, "tc",
                              stan::model::index_uni(j)), t_expect, nu));
@@ -351,21 +341,11 @@ public:
     // suppress unused var warning
     (void) function__;
     try {
-      double theta = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 1;
-      theta = in__.template read_constrain_lb<local_scalar_t__,
-                jacobian__>(0, lp__);
       double nu = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 2;
+      current_statement__ = 1;
       nu = in__.template read_constrain_lb<local_scalar_t__, jacobian__>(0,
              lp__);
-      double gamma = std::numeric_limits<double>::quiet_NaN();
-      current_statement__ = 3;
-      gamma = in__.template read_constrain_lb<local_scalar_t__,
-                jacobian__>(0, lp__);
-      out__.write(theta);
       out__.write(nu);
-      out__.write(gamma);
       if (stan::math::logical_negation(
             (stan::math::primitive_value(emit_transformed_parameters__) ||
             stan::math::primitive_value(emit_generated_quantities__)))) {
@@ -394,18 +374,10 @@ public:
     try {
       int pos__ = std::numeric_limits<int>::min();
       pos__ = 1;
-      local_scalar_t__ theta = DUMMY_VAR__;
-      current_statement__ = 1;
-      theta = in__.read<local_scalar_t__>();
-      out__.write_free_lb(0, theta);
       local_scalar_t__ nu = DUMMY_VAR__;
-      current_statement__ = 2;
+      current_statement__ = 1;
       nu = in__.read<local_scalar_t__>();
       out__.write_free_lb(0, nu);
-      local_scalar_t__ gamma = DUMMY_VAR__;
-      current_statement__ = 3;
-      gamma = in__.read<local_scalar_t__>();
-      out__.write_free_lb(0, gamma);
     } catch (const std::exception& e) {
       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
     }
@@ -422,28 +394,14 @@ public:
     (void) DUMMY_VAR__;
     try {
       current_statement__ = 1;
-      context__.validate_dims("parameter initialization", "theta", "double",
-        std::vector<size_t>{});
-      current_statement__ = 2;
       context__.validate_dims("parameter initialization", "nu", "double",
-        std::vector<size_t>{});
-      current_statement__ = 3;
-      context__.validate_dims("parameter initialization", "gamma", "double",
         std::vector<size_t>{});
       int pos__ = std::numeric_limits<int>::min();
       pos__ = 1;
-      local_scalar_t__ theta = DUMMY_VAR__;
-      current_statement__ = 1;
-      theta = context__.vals_r("theta")[(1 - 1)];
-      out__.write_free_lb(0, theta);
       local_scalar_t__ nu = DUMMY_VAR__;
-      current_statement__ = 2;
+      current_statement__ = 1;
       nu = context__.vals_r("nu")[(1 - 1)];
       out__.write_free_lb(0, nu);
-      local_scalar_t__ gamma = DUMMY_VAR__;
-      current_statement__ = 3;
-      gamma = context__.vals_r("gamma")[(1 - 1)];
-      out__.write_free_lb(0, gamma);
     } catch (const std::exception& e) {
       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
     }
@@ -452,7 +410,7 @@ public:
   get_param_names(std::vector<std::string>& names__, const bool
                   emit_transformed_parameters__ = true, const bool
                   emit_generated_quantities__ = true) const {
-    names__ = std::vector<std::string>{"theta", "nu", "gamma"};
+    names__ = std::vector<std::string>{"nu"};
     if (emit_transformed_parameters__) {}
     if (emit_generated_quantities__) {}
   }
@@ -460,8 +418,7 @@ public:
   get_dims(std::vector<std::vector<size_t>>& dimss__, const bool
            emit_transformed_parameters__ = true, const bool
            emit_generated_quantities__ = true) const {
-    dimss__ = std::vector<std::vector<size_t>>{std::vector<size_t>{},
-                std::vector<size_t>{}, std::vector<size_t>{}};
+    dimss__ = std::vector<std::vector<size_t>>{std::vector<size_t>{}};
     if (emit_transformed_parameters__) {}
     if (emit_generated_quantities__) {}
   }
@@ -469,9 +426,7 @@ public:
   constrained_param_names(std::vector<std::string>& param_names__, bool
                           emit_transformed_parameters__ = true, bool
                           emit_generated_quantities__ = true) const final {
-    param_names__.emplace_back(std::string() + "theta");
     param_names__.emplace_back(std::string() + "nu");
-    param_names__.emplace_back(std::string() + "gamma");
     if (emit_transformed_parameters__) {}
     if (emit_generated_quantities__) {}
   }
@@ -479,17 +434,15 @@ public:
   unconstrained_param_names(std::vector<std::string>& param_names__, bool
                             emit_transformed_parameters__ = true, bool
                             emit_generated_quantities__ = true) const final {
-    param_names__.emplace_back(std::string() + "theta");
     param_names__.emplace_back(std::string() + "nu");
-    param_names__.emplace_back(std::string() + "gamma");
     if (emit_transformed_parameters__) {}
     if (emit_generated_quantities__) {}
   }
   inline std::string get_constrained_sizedtypes() const {
-    return std::string("[{\"name\":\"theta\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"nu\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"gamma\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"}]");
+    return std::string("[{\"name\":\"nu\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"}]");
   }
   inline std::string get_unconstrained_sizedtypes() const {
-    return std::string("[{\"name\":\"theta\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"nu\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"},{\"name\":\"gamma\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"}]");
+    return std::string("[{\"name\":\"nu\",\"type\":{\"name\":\"real\"},\"block\":\"parameters\"}]");
   }
   // Begin method overload boilerplate
   template <typename RNG> inline void
@@ -498,7 +451,7 @@ public:
               emit_transformed_parameters = true, const bool
               emit_generated_quantities = true, std::ostream*
               pstream = nullptr) const {
-    const size_t num_params__ = ((1 + 1) + 1);
+    const size_t num_params__ = 1;
     const size_t num_transformed = emit_transformed_parameters * (0);
     const size_t num_gen_quantities = emit_generated_quantities * (0);
     const size_t num_to_write = num_params__ + num_transformed +
@@ -515,7 +468,7 @@ public:
               emit_transformed_parameters = true, bool
               emit_generated_quantities = true, std::ostream*
               pstream = nullptr) const {
-    const size_t num_params__ = ((1 + 1) + 1);
+    const size_t num_params__ = 1;
     const size_t num_transformed = emit_transformed_parameters * (0);
     const size_t num_gen_quantities = emit_generated_quantities * (0);
     const size_t num_to_write = num_params__ + num_transformed +
