@@ -89,7 +89,7 @@ fit_tte_dw = function(datstan,
       iter = iter         # total number of iterations per chain (including warmup)
     )
     output_cens = rstan::sampling(
-      object = stanmodels$w_tte_gammaprior_scalefixed_censored,  # Stan model
+      object = stanmodels$w_tte_gammaprior_scalefixed,  # Stan model
       data = datstan$cens,     # named list of data
       chains = chains,    # number of Markov chains
       warmup = warmup,    # number of warmup iterations per chain
