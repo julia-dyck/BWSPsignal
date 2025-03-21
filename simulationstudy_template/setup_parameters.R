@@ -49,4 +49,31 @@ pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
 
 save(pc_list, file = "pc_list.RData")
 
+# setup pc list for testing
+pc_list = sim.setup_sim_pars(N = c(500),       # dgp parameters
+                             br = 0.1,
+                             adr.rate = c(0, 1),
+                             adr.when = c(0.25),
+                             adr.relsd = 0.05,
+                             study.period = 365,
+                             
+                             tte.dist = c("w", "dw"),          # tuning parameters
+                             prior.belief = c("none", "beginning"),
+                             prior.dist = c("fg"),
+                             post.ci.type = c("ETI", "HDI"),
+                             cred.level = seq(0.5, 0.95, by = 0.05),
+                             sensitivity.option = 1:3,
+                             
+                             reps = 6, # additional parameters
+                             batch.size = 2,
+                             batch.nr = reps/batch.size,
+                             resultpath = paste0(getwd(), "/results_test"),
+                             stanmod.chains = 1,
+                             stanmod.iter = 1100,
+                             stanmod.warmup = 100
+)
+
+
+save(pc_list, file = "pc_list_for_testing.RData")
+
 ## END OF DOC
