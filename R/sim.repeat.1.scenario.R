@@ -42,6 +42,7 @@ sim.repeat.1.scenario = function(pc, pc_list, batch.ind, save = T){
   
   if(save == T){
     # save result
+    path = pc_list$add$resultpath
     filename = paste(c(pc, "bADR_sim", batch.ind, ".RData") ,collapse="_")
     save(res.batch, file=paste0(path, "/", filename))
   }
@@ -51,7 +52,8 @@ sim.repeat.1.scenario = function(pc, pc_list, batch.ind, save = T){
 }
 
 
-
+# # testing
+# repeated.runs = sim.repeat.1.scenario(pc = pc, pc_list = pc_list, batch.ind = 1, save = F)
 
 
 ## END OF DOC
