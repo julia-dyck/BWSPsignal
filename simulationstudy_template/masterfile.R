@@ -22,10 +22,8 @@ file.edit("setup_parameters.R")
 
 #### run simulation study ------------------------------------------------------
 
-file.edit("run_simulation.R") # to run all specified pc 100 times
-
-file.edit("run_simulation_gap_filler.R") # when partly run, but not complete
-
+load("pc_list.RData")
+sim.run(pc_list = pc_list)
 
 #### merge results -------------------------------------------------------------
 
