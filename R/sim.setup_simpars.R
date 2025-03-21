@@ -13,6 +13,7 @@
 #' @return A data frame with the simulation scenarios that will be inserted into the 
 #' \code{\link{datagen_tte}} function.
 #' 
+#' @export
 
 
 
@@ -72,6 +73,9 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
 
 #### model fitting parameter specification
 
+#'
+#'
+#' @export
  
 sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
                               prior.belief = c("none", "beginning", "middle", "end"),
@@ -284,6 +288,9 @@ sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
 
 
 #### setup test parameters
+#'
+#'
+#'@export
 
 sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
                                cred.level = seq(0.5, 0.95, by = 0.05),
@@ -298,6 +305,9 @@ sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
 
 # test_pc = sim.setup_test_pars()
 
+#'
+#'
+#' @export
 
 sim.setup_sim_pars = function(N,                 # dgp parameters
                               br,                # |
@@ -378,6 +388,10 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
   return(sim_pars)
 }
 
+
+#'
+#'
+#' @export
 
 sim.gather_pc_vect = function(dgp_pars_vect, fit_pars_vect){
   pc_vect = data.frame(dgp_pars_vect, fit_pars_vect)
