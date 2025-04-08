@@ -1,43 +1,124 @@
-#' merge result table batches from simulationstudy
+#' @title merge result table batches from simulation study
+#' 
+#' @description Merges result table batches from simulation study obtained from using 
+#' \code{\link{sim.run}}.
 #'
-#' @param pc_table table of scenarios
-#' @param wd_load path in which the result batches are stored
-#' @param wd_save path in which the merged result table will be stored
-#' @param nr_batches number of batch files per scenario
-#' @param save logical indicating whether to automatically save the merged result in
-#' \code{wd_save} or just return it the session environment (by default \code{FALSE}) 
-#'
-#' @return one result dataframe containing all simulations (one per row); the 
-#' pc specifications are in the first 8 columns, remaining specifications contain
-#' statistics on prior specifications and posterior sample
+#' @param pc_list list of parameter combinations obtained from \code{\link{sim.setup_simpars}}
+#' @param save if \code{TRUE} (default), merged table is saved in same path where batches are stored; 
+#' else, it is returned to global environment
+#' 
+#' @return Dataframe containing all simulation results (one repetition of one 
+#' simulation scenario per row). The 
+#' simulation parameters are stored in the first 9 columns. The remaining columns 
+#' contain 
+#' 
+#' * posterior summary statistics and percentiles (ie information on the 
+#' posterior distribution) for each shape parameter and 
+#' 
+#' * posterior credibility 
+#' intervals (as specified in \code{$test} list element obtained from \code{\link{sim.setup_simpars}).
 #'
 #'
 #' @export
 
-
-sim.merge.results = function(pc_table,
-                            wd_load,
-                            wd_save,
-                            nr_batches = 10, 
-                            save = F){
-  # prepare output matrix format
-  load_for_dims = sim.load.scenario(wd = wd_load, pc = pc_table[1,], batchnr = 1)
-  ncol_out = ncol(load_for_dims) # nr of cols of the merged results table
-  nr_scenarios = nrow(pc_table)
-  merged_res = matrix(nrow = 0, ncol = ncol_out)
-
-  for(i in 1:nr_scenarios){
-    for(j in 1:nr_batches){
-      merged_res = rbind(merged_res, sim.load.scenario(wd = wd_load, pc = pc_table[i,], batchnr = j))
+sim.merge_results = function(pc_list, save = T){
+  # prepare ncols of merged df per tte.dist
+  ncols_parvect = 10
+  ncols_post.summary = 5 # per shape parameter
+  ncols_eti = 2*length(pc_list$input$cred.level) # per shape parameter
+  ncols_hdi = 2*length(pc_list$input$cred.level) # per shape parameter
+  ncols_per = 101 # per shape parameter
+  ncols_per.shape = ncols_post.summary + ncols_eti + ncols_hdi +  ncols_per
+  
+  # for w
+  ncols = ncols_parvect + 1*ncols_per.shape
+  # setup empty df
+  merged.res.w =  data.frame()
+  
+  # adjust ncols of df (no. shapes depends on tte.dist)
+  ncols = ncols_parvect + 2*ncols_per.shape # 2 = length(nu1, nu2)
+  # setup empty df
+  merged.res.dw =  data.frame()
+  
+  # for pgw
+  ncols = ncols_parvect + 2*ncols_per.shape # 2 = length(nu, ga)
+  # setup empty df
+  merged.res.pgw = data.frame()
+  
+  # go through all pc combinations in pc_list:
+  
+  for(ind.dgp in 1:nrow(pc_list$dgp)){      # go through dgp scenarios (per row)
+    if(nrow(pc_list$fit$w)>0){
+      for(ind.fitw in 1:nrow(pc_list$fit$w)){ # go through weibull fitting parameter combis
+        # set up one dgp+fit combination
+        pc_vect = sim.gather_pc_vect(pc_list$dgp[ind.dgp,], pc_list$fit$w[ind.fitw,c("tte.dist", "prior.dist", "prior.belief")])
+        # go through batches for one parcombi
+        for(ind.batch in 1:pc_list$add$batch.nr){
+          tryCatch({
+            # try merge as new row to existing part
+            merged.res.w = dplyr::bind_rows(merged.res.w,
+                                 sim.load.scenario(pc = pc_vect, wd= pc_list$add$resultpath, batchnr = ind.batch))
+            return(batch)
+          },
+          error=function(cond) {
+            # if not, return a warning 
+            warning(paste0(paste(c(pc_vect, "bADR_sim", ind.batch, ".RData") ,collapse="_"), " not found."))
+          }
+          )
+          
+        }
+      }
+    }
+    
+    if(nrow(pc_list$fit$dw)>0){
+      for(ind.fitdw in 1:nrow(pc_list$fit$dw)){
+        # set up one dgp+fit combination
+        pc_vect = sim.gather_pc_vect(pc_list$dgp[ind.dgp,], pc_list$fit$dw[ind.fitdw,c("tte.dist", "prior.dist", "prior.belief")])
+        # go through batches for one parcombi
+        for(ind.batch in 1:pc_list$add$batch.nr){
+          tryCatch({
+            # try merge as new row to existing part
+            merged.res.dw = dplyr::bind_rows(merged.res.dw,
+                                 sim.load.scenario(pc = pc_vect, wd= pc_list$add$resultpath, batchnr = ind.batch))
+          },
+          error=function(cond) {
+            # if not, return a warning 
+            warning(paste0(paste(c(pc_vect, "bADR_sim", ind.batch, ".RData") ,collapse="_"), " not found."))
+          }
+          )
+        }
+      }
+    }
+    
+    if(nrow(pc_list$fit$pgw)>0){
+      for(ind.fitpgw in 1:nrow(pc_list$fit$pgw)){
+        # set up one dgp+fit combination
+        pc_vect = sim.gather_pc_vect(pc_list$dgp[ind.dgp,], pc_list$fit$pgw[ind.fitpgw,c("tte.dist", "prior.dist", "prior.belief")])
+        # go through batches for one parcombi
+        for(ind.batch in 1:pc_list$add$batch.nr){
+          tryCatch({
+            # try merge as new row to existing part
+            merged.res.pgw = dplyr::bind_rows(merged.res.pgw,
+                                 sim.load.scenario(pc = pc_vect, wd= pc_list$add$resultpath, batchnr = ind.batch))
+          },
+          error=function(cond) {
+            # if not, return a warning 
+            warning(paste0(paste(c(pc_vect, "bADR_sim", ind.batch, ".RData") ,collapse="_"), " not found."))
+          }
+          )
+        }
+      }
     }
   }
-  merged_res = data.frame(merged_res)
+  
+  # merge output for all tte.dists
+  merged.res = dplyr::bind_rows(merged.res.w, merged.res.dw, merged.res.pgw)
   if(save == T){
-    save(merged_res, file = paste0(wd_save, "/merged_res.RData"))
+    # save result
+    path = pc_list$add$resultpath
+    filename = "merged.res.RData"
+    save(merge.res, file=paste0(path, "/", filename))
   }
-  else{
-    return(merged_res)
-  }
-
+  return(merged.res)
+  
 }
-
