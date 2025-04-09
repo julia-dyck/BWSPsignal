@@ -2,6 +2,11 @@
 #' 
 #' @param pc_list list of parameter combinations obtained from setup_parameters.R
 #' 
+#' Runs simulations for all data generating processes, model and test alternatives
+#' specified in pc_list. If part of the simulations is already run and saved in the 
+#' detemined resultpath, only missing simulations are run and saved.
+#' 
+#' 
 #' 
 #' @export
 #' 
