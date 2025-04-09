@@ -1,12 +1,5 @@
 #### investigate which scenarios did not converge how often
 
-# REMARK: for new simulations, adjust 
-#         - runs.per.sc
-#         - all pc.notrun.[dist abbreviation] objects
-#         - all total.notrun.[dist abbreviation] objects
-#         - all prop.notrun.[dist abbreviation] objects
-#         - entries of the dataframe nonconv.tab
-
 
 #### prep. for calculating relative proportions of not converged runs ----------
 runs.per.sc = 100 # 100 runs per scenario
