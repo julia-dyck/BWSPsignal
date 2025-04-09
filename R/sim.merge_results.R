@@ -117,7 +117,7 @@ sim.merge_results = function(pc_list, save = T){
     # save result
     path = pc_list$add$resultpath
     filename = "merged.res.RData"
-    save(merge.res, file=paste0(path, "/", filename))
+    save(merged.res, file=paste0(path, "/", filename))
   }
   return(merged.res)
   
