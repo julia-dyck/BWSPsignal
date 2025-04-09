@@ -25,6 +25,7 @@ file.edit("setup_parameters.R")
 load("pc_list.RData")
 sim.run(pc_list = pc_list)
 
+
 #### merge results -------------------------------------------------------------
 
 load("pc_list.RData")
@@ -32,6 +33,7 @@ load("pc_list.RData")
 sim.merge_results(pc_list, save = T)
 # load merged results into environment
 paste0(pc_list$add$resultpath, "/merged.res.RData")
+
 
 #### convergence issues, execution times and effective sample sizes ------------
    # for different prior distributional choices
