@@ -39,7 +39,7 @@ paste0(pc_list$add$resultpath, "/merged.res.RData")
    # for different prior distributional choices
 
 ## no of simulation runs with convergence issues
-file.edit("eval_cancelled_simulation_runs.R")
+eval.non_conv(pc_list)
 
 ## execution times 
 file.edit("eval_execution_times.R")
