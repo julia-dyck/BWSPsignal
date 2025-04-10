@@ -4,13 +4,14 @@
 #' data generating process specification and one fitting parameter specification.
 #'
 #'
-#' @param dgp_pars_vect  vector containing 6 elements, namely:
-#' * the sample size N,
-#' * the background rate br,
-#' * the ADR rate adr,
-#' * the ADR mean time quantile percentage,
-#' * the ADR relative standard deviation from the mean time,
-#' * the study end time point.
+#' @param dgp_pars_vect  vector containing 6 elements, namely \enumerate{
+#'       \item the sample size N,
+#'       \item the background rate br,
+#'       \item the ADR rate adr,
+#'       \item the ADR mean time quantile percentage,
+#'       \item the ADR relative standard deviation from the mean time,
+#'       \item the study end time point.
+#'       }
 #' @param fit_pars_vect vector containing 3 elements, namely:
 #' * the time-to-event distribution (either \code{"w", "dw"} or \code{"pgw"}),
 #' * the prior distribution (either \code{"fl", "ll", "fg"} or \code{"gg"}),
