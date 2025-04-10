@@ -383,20 +383,20 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                  reps,
                  " times. "))
   
-  sim_pars = list(dgp = dgp_pars, fit = fit_pars, test = test_pars, add = add_pars, input = input_args)
+  pc_table = list()  # parameters in table format s.t. one row = one simulation scenario
+  pc_table$w = dplyr::cross_join(dgp_pars, fit_pars$w[c("tte.dist", "prior.dist", "prior.belief")])
+  pc_table$dw = dplyr::cross_join(dgp_pars, fit_pars$dw[c("tte.dist", "prior.dist", "prior.belief")])
+  pc_table$dw = dplyr::cross_join(dgp_pars, fit_pars$dw[c("tte.dist", "prior.dist", "prior.belief")])
+  
+  pc_table = dplyr::bind_rows(pc_table)
+  
+  
+  sim_pars = list(dgp = dgp_pars, fit = fit_pars, test = test_pars, add = add_pars, input = input_args, pc_table = pc_table)
   
   return(sim_pars)
 }
 
 
-#'
-#'
-#' @export
-
-sim.gather_pc_vect = function(dgp_pars_vect, fit_pars_vect){
-  pc_vect = data.frame(dgp_pars_vect, fit_pars_vect)
-  return(pc_vect)
-}
 
 
 #### setup tuning parameters (combine fit_pars and test_pars)
