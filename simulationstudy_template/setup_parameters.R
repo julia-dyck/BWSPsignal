@@ -67,13 +67,13 @@ pc_list = sim.setup_sim_pars(N = c(500),       # dgp parameters
                              reps = 6, # additional parameters
                              batch.size = 2,
                              batch.nr = reps/batch.size,
-                             resultpath = paste0(getwd(), "/results_test"),
+                             resultpath = paste0(getwd(), "/simulationstudy_template/results_test"),
                              stanmod.chains = 1,
                              stanmod.iter = 1100,
                              stanmod.warmup = 100
 )
 
 
-save(pc_list, file = "pc_list_for_testing.RData")
+save(pc_list, file = paste0(getwd(), "/simulationstudy_template/pc_list_for_testing.RData"))
 
 ## END OF DOC
