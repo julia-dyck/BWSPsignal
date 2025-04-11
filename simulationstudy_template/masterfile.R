@@ -32,7 +32,7 @@ load("pc_list.RData")
 # merge result batches and save
 sim.merge_results(pc_list, save = T)
 # load merged results into environment
-paste0(pc_list$add$resultpath, "/merged.res.RData")
+load(paste0(pc_list$add$resultpath, "/res.RData"))
 
 
 #### convergence issues, execution times and effective sample sizes ------------
