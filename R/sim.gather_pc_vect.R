@@ -12,10 +12,11 @@
 #'       \item the ADR relative standard deviation from the mean time,
 #'       \item the study end time point.
 #'       }
-#' @param fit_pars_vect vector containing 3 elements, namely:
-#' * the time-to-event distribution (either \code{"w", "dw"} or \code{"pgw"}),
-#' * the prior distribution (either \code{"fl", "ll", "fg"} or \code{"gg"}),
-#' * prior belief (one of the characters specified in \link\code{sim.setup_simpars}}).
+#' @param fit_pars_vect vector containing 3 elements, namely \enumerate{
+#'       \item the time-to-event distribution (either \code{"w", "dw"} or \code{"pgw"}),
+#'       \item the prior distribution (either \code{"fl", "ll", "fg"} or \code{"gg"}),
+#'       \item prior belief (one of the characters specified in \link\code{sim.setup_simpars}).
+#'       }
 #' 
 
 sim.gather_pc_vect = function(dgp_pars_vect, fit_pars_vect){
