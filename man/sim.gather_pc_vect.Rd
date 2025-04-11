@@ -15,6 +15,12 @@ sim.gather_pc_vect(dgp_pars_vect, fit_pars_vect)
 \item the ADR relative standard deviation from the mean time,
 \item the study end time point.
 }}
+
+\item{fit_pars_vect}{vector containing 3 elements, namely \enumerate{
+\item the time-to-event distribution (either \code{"w", "dw"} or \code{"pgw"}),
+\item the prior distribution (either \code{"fl", "ll", "fg"} or \code{"gg"}),
+\item prior belief (one of the characters specified in \link\code{sim.setup_simpars}).
+}}
 }
 \description{
 Inner function to extract one simulation scenario's parameter from one
