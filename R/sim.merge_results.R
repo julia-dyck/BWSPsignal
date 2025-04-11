@@ -112,13 +112,13 @@ sim.merge_results = function(pc_list, save = T){
   }
   
   # merge output for all tte.dists
-  merged.res = dplyr::bind_rows(merged.res.w, merged.res.dw, merged.res.pgw)
+  res = dplyr::bind_rows(merged.res.w, merged.res.dw, merged.res.pgw)
   if(save == T){
     # save result
     path = pc_list$add$resultpath
-    filename = "merged.res.RData"
-    save(merged.res, file=paste0(path, "/", filename))
+    filename = "res.RData"
+    save(res, file=paste0(path, "/", filename))
   }
-  return(merged.res)
+  return(res)
   
 }
