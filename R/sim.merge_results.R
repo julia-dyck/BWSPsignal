@@ -119,6 +119,7 @@ sim.merge_results = function(pc_list, save = T){
     filename = "res.RData"
     save(res, file=paste0(path, "/", filename))
   }
-  return(res)
-  
+  else{
+    return(res)
+  }
 }
