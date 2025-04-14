@@ -5,7 +5,7 @@
 #' and the proportion of repetitions that were not run
 #' to guide the
 #' tte and prior distributional choices (along with \code{\link{eval.execution_times}} 
-#' and \code{\link{eval.eff_sample_size}}
+#' and \code{\link{eval.eff_sample_sizes}}
 #'
 #' @param pc_list list containing simulation parameters (see \code{\link{sim.setup_simpars}})
 #' 
