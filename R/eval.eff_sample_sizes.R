@@ -65,4 +65,72 @@ pdf(file = paste0(getwd(), "/fig_boxplot-effective-sample-sizes.pdf"),
 
 dev.off()
 
+
+## new as fct
+
+
+eval.eff_sample_sizes = function(pc_list){
+  
+  if (!exists("res")) { 
+    # obtain res table
+    tryCatch({
+      load(paste0(pc_list$add$resultpath, "/res.RData"))
+      message("res.RData successfully loaded")
+    }, error = function(cond) {
+      sim.merge_results(pc_list, save = T)
+      load(paste0(pc_list$add$resultpath, "/res.RData"))
+      print(" batches merged and loaded")
+    })
+  }
+  else{
+    message("Object `res` loaded in current environment is used to extract execution times.")
+  }
+  
+  # select relevant variables
+  n_eff.df = res[, c("tte.dist", "prior.dist", "nu.po.n_eff", "ga.po.n_eff")]
+  # adjust format
+  n_eff.df$tte.dist <- as.factor(unlist(n_eff.df$tte.dist))
+  n_eff.df$prior.dist <- as.factor(unlist(n_eff.df$prior.dist))
+  n_eff.df$nu.po.n_eff = as.numeric(unlist(n_eff.df$nu.po.n_eff)) 
+  n_eff.df$ga.po.n_eff = as.numeric(unlist(n_eff.df$ga.po.n_eff)) 
+  
+  # execution time dist per tte.dist and prior.dist
+  ## WHAT DO WE REALLY NEED; MEAN; NO OF SIMS WITH NEFF < 10000; LOOK AT MANUSCRIPT
+  n_eff.summaries = dplyr::summarise(
+    dplyr::group_by(n_eff.df, tte.dist, prior.dist),
+    shape1.min = min(nu.po.n_eff, na.rm = TRUE),
+    shape1.first_qu = quantile(nu.po.n_eff, 0.25, na.rm = TRUE),
+    shape1.median = median(nu.po.n_eff, na.rm = TRUE),
+    shape1.mean = mean(nu.po.n_eff, na.rm = TRUE),
+    shape1.third_qu = quantile(nu.po.n_eff, 0.75, na.rm = TRUE),
+    shape1.max = max(nu.po.n_eff, na.rm = TRUE),
+    shape1.
+    .groups = "drop"
+  )
+  
+  # plot ## SUBSTITUTE RUN:MIN BY nu.po.n_eff & ga.po.n_eff
+  p = ggplot2::ggplot(n_eff.df, ggplot2::aes(x = prior.dist, y = run.min, fill= tte.dist)) +
+    ggplot2::geom_boxplot() +
+    ggplot2::facet_wrap(~ tte.dist) +
+    ggplot2::labs(
+      x = "Prior Distribution",
+      y = "Run Time (min)",
+      title = "Execution time in minutes") +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(legend.position = "top")
+  
+  return(list(summary = time.summaries,     # for overview
+              plot = p,                     # for option to take plot as is and manipulate if further
+              res.n_eff.table = n_eff.df  # for option to plot manually in preferred format
+  ))
+}
+
+
+
+
+
+
+
+
+
 ## END OF DOC
