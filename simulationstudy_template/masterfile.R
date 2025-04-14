@@ -39,10 +39,10 @@ load(paste0(pc_list$add$resultpath, "/res.RData"))
    # for different prior distributional choices
 
 ## no of simulation runs with convergence issues
-eval.non_conv(pc_list)
+eval.non_conv_cases(pc_list)
 
 ## execution times 
-file.edit("eval_execution_times.R")
+eval.execution_times(pc_list)
 
 ## effective sample sizes
 file.edit("eval_effective_sample_sizes.R")
