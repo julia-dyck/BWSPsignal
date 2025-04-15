@@ -17,5 +17,5 @@ and cleaned data (\verb{$res.ex_times.table}) which is the base for summary and 
 Summarizes execution times of the models fitted during the simulation study grouped
 by time-to-event (tte) and prior distribution types to guide the
 tte and prior distributional choices (along with \code{\link{eval.non_conv_cases}}
-and \code{\link{eval.eff_sample_size}}.
+and \code{\link{eval.eff_sample_sizes}}.
 }

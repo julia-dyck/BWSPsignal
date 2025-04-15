@@ -7,7 +7,7 @@ and \code{prior.dist}, and calculates the total planned and total not run repeti
 and the proportion of repetitions that were not run
 to guide the
 tte and prior distributional choices (along with \code{\link{eval.execution_times}}
-and \code{\link{eval.eff_sample_size}}}
+and \code{\link{eval.eff_sample_sizes}}}
 \usage{
 eval.non_conv_cases(pc_list)
 }
@@ -30,5 +30,5 @@ and \code{prior.dist}, and calculates the total planned and total not run repeti
 and the proportion of repetitions that were not run
 to guide the
 tte and prior distributional choices (along with \code{\link{eval.execution_times}}
-and \code{\link{eval.eff_sample_size}}
+and \code{\link{eval.eff_sample_sizes}}
 }
