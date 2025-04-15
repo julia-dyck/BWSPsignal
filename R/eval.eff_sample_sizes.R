@@ -69,7 +69,7 @@ dev.off()
 ## new as fct
 
 
-eval.eff_sample_sizes = function(pc_list){
+eval.eff_sample_sizes = function(pc_list, threshold = 10000){
   
   if (!exists("res")) { 
     # obtain res table
@@ -98,15 +98,26 @@ eval.eff_sample_sizes = function(pc_list){
   ## WHAT DO WE REALLY NEED; MEAN; NO OF SIMS WITH NEFF < 10000; LOOK AT MANUSCRIPT
   n_eff.summaries = dplyr::summarise(
     dplyr::group_by(n_eff.df, tte.dist, prior.dist),
+    # statistics on n_eff for shape 1
     shape1.min = min(nu.po.n_eff, na.rm = TRUE),
     shape1.first_qu = quantile(nu.po.n_eff, 0.25, na.rm = TRUE),
     shape1.median = median(nu.po.n_eff, na.rm = TRUE),
     shape1.mean = mean(nu.po.n_eff, na.rm = TRUE),
     shape1.third_qu = quantile(nu.po.n_eff, 0.75, na.rm = TRUE),
     shape1.max = max(nu.po.n_eff, na.rm = TRUE),
-    shape1.
+    shape1.n_eff_above_thr = table(nu.po.n_eff > threshold)[2] / sum(table(nu.po.n_eff > threshold)),
+    # statistics on n_eff for shape 2
+    shape2.min = min(ga.po.n_eff, na.rm = TRUE),
+    shape2.first_qu = quantile(ga.po.n_eff, 0.25, na.rm = TRUE),
+    shape2.median = median(ga.po.n_eff, na.rm = TRUE),
+    shape2.mean = mean(ga.po.n_eff, na.rm = TRUE),
+    shape2.third_qu = quantile(ga.po.n_eff, 0.75, na.rm = TRUE),
+    shape2.max = max(ga.po.n_eff, na.rm = TRUE),
+    shape2.n_eff_above_thr = table(ga.po.n_eff > threshold)[2] / sum(table(ga.po.n_eff > threshold)),
+    
     .groups = "drop"
   )
+  return(n_eff.summaries)
   
   # plot ## SUBSTITUTE RUN:MIN BY nu.po.n_eff & ga.po.n_eff
   p = ggplot2::ggplot(n_eff.df, ggplot2::aes(x = prior.dist, y = run.min, fill= tte.dist)) +
@@ -127,8 +138,8 @@ eval.eff_sample_sizes = function(pc_list){
 
 
 
-
-
+n_eff.out = eval.eff_sample_sizes(pc_list, threshold = 10000)
+View(n_eff.out)
 
 
 
