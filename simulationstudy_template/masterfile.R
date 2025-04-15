@@ -45,7 +45,7 @@ eval.non_conv_cases(pc_list)
 eval.execution_times(pc_list)
 
 ## effective sample sizes ## HIER WEITER
-file.edit("eval_effective_sample_sizes.R")
+eval.eff_sample_sizes(pc_list, threshold = 10000)
 
 
 #### AUC performance -----------------------------------------------------------

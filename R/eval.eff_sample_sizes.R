@@ -1,72 +1,21 @@
-#### investigation of the effective sample sizes 
+#' Evaluate effective sample sizes by tte and prior distribution
+#'
+#' Summarizes and visualizes effective sample sizes of the stan models fitted during 
+#' the simulation study, grouped by time-to-event (tte) and prior distribution types. 
+#' This helps assess which of the tte and prior distribution choices can be expected 
+#' to be sufficient for HDI+ROPE testing, along with other diagnostics such as 
+#' \code{\link{eval.non_conv_cases}} and \code{\link{eval.ex_times}}.
+#'
+#' @param pc_list list containing simulation parameters (see \code{\link{sim.setup_simpars}})
+#' @param threshold numeric threshold for acceptable effective sample size (default: 10000 as recommended by Kruschke, 2015)
+#'
+#' @return list with summary statistics (`$summary`), a ggplot2 object (`$plot`), 
+#' and the cleaned data (`$df`) used for both.
+#' 
+#' 
+#'
+#' @export
 
-# Note:
-# posterior sample size in each estimation: 10 000 iterations (without burn in)
-# per chain & 4 chains -> 40 000 iterations in total
-
-# threshold value for effective sample size (ESS) (acc. to Kruschke, 2015)
-# \approx 10 000 for each shape parameter 
-
-#### summary of ESS per prior distributional choice ----------------------------
-
-# dist.ass.factor = res$dist.ass %>% as.numeric() %>% as.factor()
-# 
-# ## for shape parameter nu 
-# nu.n_eff.numeric = res$nu.po.n_eff %>% as.numeric()
-# 
-# nu.n_eff_summary = aggregate(nu.n_eff.numeric, list(dist.ass.factor), FUN=summary) %>%
-#   t()
-# colnames(nu.n_eff_summary) = unique(pc$dist.ass)
-# nu.n_eff_summary # summary of ESS per dist. ass. over all simulation runs
-# 
-# nu.n_eff_thr = aggregate(nu.n_eff.numeric > 10000, list(dist.ass.factor), FUN=table) %>%
-#   t()
-# colnames(nu.n_eff_thr) = unique(pc$dist.ass)
-# nu.n_eff_thr # no of simulation runs exceeding the recommended ESS of 10 000 
-#              # (stratified wrt prior distributional choice).
-# 
-# 
-# ## for shape parameter gamma 
-# ga.n_eff.numeric = res$ga.po.n_eff %>% as.numeric()
-# 
-# ga.n_eff_summary = aggregate(ga.n_eff.numeric, list(dist.ass.factor), FUN=summary) %>%
-#   t() 
-# colnames(ga.n_eff_summary) = unique(pc$dist.ass)
-# ga.n_eff_summary # summary of ESS per dist. ass. over all simulation runs
-# 
-# ga.n_eff_thr = aggregate(nu.n_eff.numeric > 10000, list(dist.ass.factor), FUN=table) %>%
-#   t()
-# colnames(ga.n_eff_thr) = unique(pc$dist.ass)
-# ga.n_eff_thr # no of simulation runs exceeding the recommended ESS of 10 000 
-#              # (stratified wrt prior distributional choice).
-# 
-# 
-# #### boxplot of effective sample sizes -----------------------------------------
-# 
-# n_eff.df = data.frame(dist.ass = rep(dist.ass.factor,2),
-#                       n_eff = c(nu.n_eff.numeric, ga.n_eff.numeric),
-#                       parameter = c(rep("nu", length(nu.n_eff.numeric)),
-#                         rep("gamma", length(ga.n_eff.numeric))))
-# 
-# p = ggplot(n_eff.df, aes(dist.ass, n_eff, fill = parameter)) +
-#   geom_boxplot() +
-#   scale_x_discrete(labels = xlabs) +
-#   theme_bw() +
-#   theme(legend.position = "bottom") +
-#   labs(x = "", y = "") +
-#   geom_hline(yintercept = 10000, linetype="dashed",
-#            color = "black", linewidth = 1)
-# 
-# p
-# 
-# pdf(file = paste0(getwd(), "/fig_boxplot-effective-sample-sizes.pdf"),
-#     width = 600, height = 400,
-#     pointsize = 12)
-# 
-# dev.off()
-# 
-
-## new as fct
 
 
 eval.eff_sample_sizes = function(pc_list, threshold = 10000){
@@ -108,50 +57,61 @@ eval.eff_sample_sizes = function(pc_list, threshold = 10000){
 
   # Reorder columns
   n_eff.long <- n_eff.long[, c("tte.dist", "prior.dist", "parameter", "n_eff")]
-  return(n_eff.long)
+  
   # Unlist all columns to remove any list-columns
   for (col in names(n_eff.long)) {
     n_eff.long[[col]] <- unlist(n_eff.long[[col]])
   }
+  n_eff.long$n_eff <- as.numeric(n_eff.long$n_eff)
   
   # execution time dist per tte.dist and prior.dist
   ## WHAT DO WE REALLY NEED; MEAN; NO OF SIMS WITH NEFF < 10000; LOOK AT MANUSCRIPT
-  n_eff.summaries = dplyr::summarise(
-    dplyr::group_by(n_eff.long, tte.dist, prior.dist, parameter),
-    # summary statistics
-    min = min(n_eff, na.rm = TRUE),
-    first_qu = quantile(n_eff, 0.25, na.rm = TRUE),
-    median = median(n_eff, na.rm = TRUE),
-    mean = mean(n_eff, na.rm = TRUE),
-    third_qu = quantile(n_eff, 0.75, na.rm = TRUE),
-    max = max(n_eff, na.rm = TRUE),
-    n_eff_above_thr = table(n_eff > threshold)[2] / sum(table(n_eff > threshold)),
-    .groups = "drop"
+  
+  n_eff.summaries <- suppressWarnings(
+    dplyr::summarise(
+      dplyr::group_by(n_eff.long, tte.dist, prior.dist, parameter),
+      # min = min(n_eff, na.rm = TRUE),
+      # first_qu = quantile(n_eff, 0.25, na.rm = TRUE),
+      # median = median(n_eff, na.rm = TRUE),
+      # mean = mean(n_eff, na.rm = TRUE),
+      # third_qu = quantile(n_eff, 0.75, na.rm = TRUE),
+      # max = max(n_eff, na.rm = TRUE),
+      prob.above.thr = sum(n_eff > threshold, na.rm = TRUE) / dplyr::n(),
+      .groups = "drop"
+    )
   )
   
-  return(n_eff.summaries)
+  #return(n_eff.summaries)
   
-  # plot ## SUBSTITUTE RUN:MIN BY nu.po.n_eff & ga.po.n_eff
-  p = ggplot2::ggplot(n_eff.df, ggplot2::aes(x = prior.dist, y = run.min, fill= tte.dist)) +
-    ggplot2::geom_boxplot() +
-    ggplot2::facet_wrap(~ tte.dist) +
+  # p = ggplot2::ggplot(n_eff.long, ggplot2::aes(x = prior.dist, y = n_eff, fill = parameter)) +
+  #   ggplot2::geom_boxplot(position = ggplot2::position_dodge(width = 0.8)) +
+  #   ggplot2::facet_wrap(~ tte.dist, ncol = 1) +
+  #   ggplot2::labs(x = "prior.dist", y = "n_eff grouped by tte.dist", fill = "parameter") +
+  #   ggplot2::theme_minimal() +
+  #   ggplot2::theme(strip.text = ggplot2::element_text(face = "bold"))
+  # 
+  
+  n_eff.long$group <- interaction(n_eff.long$tte.dist, n_eff.long$prior.dist, sep = " - ")
+  
+  p <- ggplot2::ggplot(n_eff.long, ggplot2::aes(x = group, y = n_eff, fill = parameter)) +
+    ggplot2::geom_boxplot(position = ggplot2::position_dodge(width = 0.8), width = 0.5) +
+    ggplot2::geom_hline(yintercept = 10000, linetype = "dashed", color = "black", size = 1) +
     ggplot2::labs(
-      x = "Prior Distribution",
-      y = "Run Time (min)",
-      title = "Execution time in minutes") +
+      x = "tte.dist - prior.dist combination",
+      y = "n_eff",
+      title = "Effective sample sizes",
+      fill = "Parameter"
+    ) +
     ggplot2::theme_minimal() +
+    
     ggplot2::theme(legend.position = "top")
   
-  return(list(summary = time.summaries,     # for overview
+  return(list(summary = n_eff.summaries,     # for overview
               plot = p,                     # for option to take plot as is and manipulate if further
-              res.n_eff.table = n_eff.df  # for option to plot manually in preferred format
+              df = n_eff.long  # for option to plot manually in preferred format
   ))
 }
 
-
-
-#n_eff.out = eval.eff_sample_sizes(pc_list, threshold = 10000)
-#View(n_eff.out)
 
 
 
