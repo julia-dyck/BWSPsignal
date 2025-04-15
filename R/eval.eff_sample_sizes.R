@@ -9,62 +9,62 @@
 
 #### summary of ESS per prior distributional choice ----------------------------
 
-dist.ass.factor = res$dist.ass %>% as.numeric() %>% as.factor()
-
-## for shape parameter nu 
-nu.n_eff.numeric = res$nu.po.n_eff %>% as.numeric()
-
-nu.n_eff_summary = aggregate(nu.n_eff.numeric, list(dist.ass.factor), FUN=summary) %>%
-  t()
-colnames(nu.n_eff_summary) = unique(pc$dist.ass)
-nu.n_eff_summary # summary of ESS per dist. ass. over all simulation runs
-
-nu.n_eff_thr = aggregate(nu.n_eff.numeric > 10000, list(dist.ass.factor), FUN=table) %>%
-  t()
-colnames(nu.n_eff_thr) = unique(pc$dist.ass)
-nu.n_eff_thr # no of simulation runs exceeding the recommended ESS of 10 000 
-             # (stratified wrt prior distributional choice).
-
-
-## for shape parameter gamma 
-ga.n_eff.numeric = res$ga.po.n_eff %>% as.numeric()
-
-ga.n_eff_summary = aggregate(ga.n_eff.numeric, list(dist.ass.factor), FUN=summary) %>%
-  t() 
-colnames(ga.n_eff_summary) = unique(pc$dist.ass)
-ga.n_eff_summary # summary of ESS per dist. ass. over all simulation runs
-
-ga.n_eff_thr = aggregate(nu.n_eff.numeric > 10000, list(dist.ass.factor), FUN=table) %>%
-  t()
-colnames(ga.n_eff_thr) = unique(pc$dist.ass)
-ga.n_eff_thr # no of simulation runs exceeding the recommended ESS of 10 000 
-             # (stratified wrt prior distributional choice).
-
-
-#### boxplot of effective sample sizes -----------------------------------------
-
-n_eff.df = data.frame(dist.ass = rep(dist.ass.factor,2),
-                      n_eff = c(nu.n_eff.numeric, ga.n_eff.numeric),
-                      parameter = c(rep("nu", length(nu.n_eff.numeric)),
-                        rep("gamma", length(ga.n_eff.numeric))))
-
-p = ggplot(n_eff.df, aes(dist.ass, n_eff, fill = parameter)) +
-  geom_boxplot() +
-  scale_x_discrete(labels = xlabs) +
-  theme_bw() +
-  theme(legend.position = "bottom") +
-  labs(x = "", y = "") +
-  geom_hline(yintercept = 10000, linetype="dashed",
-           color = "black", linewidth = 1)
-
-p
-
-pdf(file = paste0(getwd(), "/fig_boxplot-effective-sample-sizes.pdf"),
-    width = 600, height = 400,
-    pointsize = 12)
-
-dev.off()
-
+# dist.ass.factor = res$dist.ass %>% as.numeric() %>% as.factor()
+# 
+# ## for shape parameter nu 
+# nu.n_eff.numeric = res$nu.po.n_eff %>% as.numeric()
+# 
+# nu.n_eff_summary = aggregate(nu.n_eff.numeric, list(dist.ass.factor), FUN=summary) %>%
+#   t()
+# colnames(nu.n_eff_summary) = unique(pc$dist.ass)
+# nu.n_eff_summary # summary of ESS per dist. ass. over all simulation runs
+# 
+# nu.n_eff_thr = aggregate(nu.n_eff.numeric > 10000, list(dist.ass.factor), FUN=table) %>%
+#   t()
+# colnames(nu.n_eff_thr) = unique(pc$dist.ass)
+# nu.n_eff_thr # no of simulation runs exceeding the recommended ESS of 10 000 
+#              # (stratified wrt prior distributional choice).
+# 
+# 
+# ## for shape parameter gamma 
+# ga.n_eff.numeric = res$ga.po.n_eff %>% as.numeric()
+# 
+# ga.n_eff_summary = aggregate(ga.n_eff.numeric, list(dist.ass.factor), FUN=summary) %>%
+#   t() 
+# colnames(ga.n_eff_summary) = unique(pc$dist.ass)
+# ga.n_eff_summary # summary of ESS per dist. ass. over all simulation runs
+# 
+# ga.n_eff_thr = aggregate(nu.n_eff.numeric > 10000, list(dist.ass.factor), FUN=table) %>%
+#   t()
+# colnames(ga.n_eff_thr) = unique(pc$dist.ass)
+# ga.n_eff_thr # no of simulation runs exceeding the recommended ESS of 10 000 
+#              # (stratified wrt prior distributional choice).
+# 
+# 
+# #### boxplot of effective sample sizes -----------------------------------------
+# 
+# n_eff.df = data.frame(dist.ass = rep(dist.ass.factor,2),
+#                       n_eff = c(nu.n_eff.numeric, ga.n_eff.numeric),
+#                       parameter = c(rep("nu", length(nu.n_eff.numeric)),
+#                         rep("gamma", length(ga.n_eff.numeric))))
+# 
+# p = ggplot(n_eff.df, aes(dist.ass, n_eff, fill = parameter)) +
+#   geom_boxplot() +
+#   scale_x_discrete(labels = xlabs) +
+#   theme_bw() +
+#   theme(legend.position = "bottom") +
+#   labs(x = "", y = "") +
+#   geom_hline(yintercept = 10000, linetype="dashed",
+#            color = "black", linewidth = 1)
+# 
+# p
+# 
+# pdf(file = paste0(getwd(), "/fig_boxplot-effective-sample-sizes.pdf"),
+#     width = 600, height = 400,
+#     pointsize = 12)
+# 
+# dev.off()
+# 
 
 ## new as fct
 
@@ -79,44 +79,56 @@ eval.eff_sample_sizes = function(pc_list, threshold = 10000){
     }, error = function(cond) {
       sim.merge_results(pc_list, save = T)
       load(paste0(pc_list$add$resultpath, "/res.RData"))
-      print(" batches merged and loaded")
+      message(" batches merged and loaded")
     })
   }
   else{
-    message("Object `res` loaded in current environment is used to extract execution times.")
+    message("Object `res` loaded in current environment is used to extract effective sample sizes.")
   }
   
-  # select relevant variables
-  n_eff.df = res[, c("tte.dist", "prior.dist", "nu.po.n_eff", "ga.po.n_eff")]
-  # adjust format
-  n_eff.df$tte.dist <- as.factor(unlist(n_eff.df$tte.dist))
-  n_eff.df$prior.dist <- as.factor(unlist(n_eff.df$prior.dist))
-  n_eff.df$nu.po.n_eff = as.numeric(unlist(n_eff.df$nu.po.n_eff)) 
-  n_eff.df$ga.po.n_eff = as.numeric(unlist(n_eff.df$ga.po.n_eff)) 
+  # NULL values ~> NA
+  res$nu.po.n_eff <- lapply(res$nu.po.n_eff, function(x) if (length(x) == 0) NA else x)
+  res$ga.po.n_eff <- lapply(res$ga.po.n_eff, function(x) if (length(x) == 0) NA else x)
+  
+  # Select and rename relevant cols for nu
+  n_eff.nu <- dplyr::select(res, tte.dist, prior.dist, nu.po.n_eff)
+  n_eff.nu <- dplyr::rename(n_eff.nu, n_eff = nu.po.n_eff)
+  #n_eff.nu$n_eff = ifelse(is.null(n_eff.nu$n_eff), NA, n_eff.nu$n_eff)
+  n_eff.nu$parameter <- "shape1"
+  
+  # Select and rename relevant cols for ga
+  n_eff.ga <- dplyr::select(res, tte.dist, prior.dist, ga.po.n_eff)
+  n_eff.ga <- dplyr::rename(n_eff.ga, n_eff = ga.po.n_eff)
+  # Replace NULLs with NAs in a list-column ### HIER WEITER
+  res$ga.po.n_eff <- lapply(res$ga.po.n_eff, function(x) if (is.null(x)) NA else x)
+  n_eff.ga$parameter <- "shape2"
+  
+  # Combine into long format
+  n_eff.long <- rbind(n_eff.nu, n_eff.ga)
+
+  # Reorder columns
+  n_eff.long <- n_eff.long[, c("tte.dist", "prior.dist", "parameter", "n_eff")]
+  return(n_eff.long)
+  # Unlist all columns to remove any list-columns
+  for (col in names(n_eff.long)) {
+    n_eff.long[[col]] <- unlist(n_eff.long[[col]])
+  }
   
   # execution time dist per tte.dist and prior.dist
   ## WHAT DO WE REALLY NEED; MEAN; NO OF SIMS WITH NEFF < 10000; LOOK AT MANUSCRIPT
   n_eff.summaries = dplyr::summarise(
-    dplyr::group_by(n_eff.df, tte.dist, prior.dist),
-    # statistics on n_eff for shape 1
-    shape1.min = min(nu.po.n_eff, na.rm = TRUE),
-    shape1.first_qu = quantile(nu.po.n_eff, 0.25, na.rm = TRUE),
-    shape1.median = median(nu.po.n_eff, na.rm = TRUE),
-    shape1.mean = mean(nu.po.n_eff, na.rm = TRUE),
-    shape1.third_qu = quantile(nu.po.n_eff, 0.75, na.rm = TRUE),
-    shape1.max = max(nu.po.n_eff, na.rm = TRUE),
-    shape1.n_eff_above_thr = table(nu.po.n_eff > threshold)[2] / sum(table(nu.po.n_eff > threshold)),
-    # statistics on n_eff for shape 2
-    shape2.min = min(ga.po.n_eff, na.rm = TRUE),
-    shape2.first_qu = quantile(ga.po.n_eff, 0.25, na.rm = TRUE),
-    shape2.median = median(ga.po.n_eff, na.rm = TRUE),
-    shape2.mean = mean(ga.po.n_eff, na.rm = TRUE),
-    shape2.third_qu = quantile(ga.po.n_eff, 0.75, na.rm = TRUE),
-    shape2.max = max(ga.po.n_eff, na.rm = TRUE),
-    shape2.n_eff_above_thr = table(ga.po.n_eff > threshold)[2] / sum(table(ga.po.n_eff > threshold)),
-    
+    dplyr::group_by(n_eff.long, tte.dist, prior.dist, parameter),
+    # summary statistics
+    min = min(n_eff, na.rm = TRUE),
+    first_qu = quantile(n_eff, 0.25, na.rm = TRUE),
+    median = median(n_eff, na.rm = TRUE),
+    mean = mean(n_eff, na.rm = TRUE),
+    third_qu = quantile(n_eff, 0.75, na.rm = TRUE),
+    max = max(n_eff, na.rm = TRUE),
+    n_eff_above_thr = table(n_eff > threshold)[2] / sum(table(n_eff > threshold)),
     .groups = "drop"
   )
+  
   return(n_eff.summaries)
   
   # plot ## SUBSTITUTE RUN:MIN BY nu.po.n_eff & ga.po.n_eff
@@ -138,8 +150,8 @@ eval.eff_sample_sizes = function(pc_list, threshold = 10000){
 
 
 
-n_eff.out = eval.eff_sample_sizes(pc_list, threshold = 10000)
-View(n_eff.out)
+#n_eff.out = eval.eff_sample_sizes(pc_list, threshold = 10000)
+#View(n_eff.out)
 
 
 
