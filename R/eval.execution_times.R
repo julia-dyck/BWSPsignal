@@ -49,20 +49,24 @@ eval.execution_times = function(pc_list){
     .groups = "drop"
   )
   
+  
+  # group variable for plot
+  time.df$group <- interaction(time.df$tte.dist, time.df$prior.dist, sep = " - ")
+  
+  
   # plot
-  p = ggplot2::ggplot(time.df, ggplot2::aes(x = prior.dist, y = run.min, fill= tte.dist)) +
-    ggplot2::geom_boxplot() +
-    ggplot2::facet_wrap(~ tte.dist) +
+  p = ggplot2::ggplot(time.df, ggplot2::aes(x = group, y = run.min)) +
+    ggplot2::geom_boxplot(width = 0.5, fill = "lightgrey") +
     ggplot2::labs(
-      x = "Prior Distribution",
+      x = "tte.dist - prior.dist combination",
       y = "Run Time (min)",
-      title = "Execution time in minutes") +
-    ggplot2::theme_minimal() +
-    ggplot2::theme(legend.position = "top")
+      title = "Execution time in minutes"
+    ) +
+    ggplot2::theme_minimal()
   
   return(list(summary = time.summaries,     # for overview
               plot = p,                     # for option to take plot as is and manipulate if further
-              res.ex_times.table = time.df  # for option to plot manually in preferred format
+              df = time.df  # for option to plot manually in preferred format
               ))
 }
 
