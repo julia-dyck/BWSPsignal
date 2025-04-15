@@ -3,6 +3,7 @@
 export(bwsp_test)
 export(datagen_tte)
 export(dpgw)
+export(eval.eff_sample_sizes)
 export(eval.execution_times)
 export(eval.non_conv_cases)
 export(fit_mod_tte)
