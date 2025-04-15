@@ -38,7 +38,10 @@ sim.fit.to.1.sample = function(pc, pc_list){
   ### Model fitting
   mod = fit_mod_tte(datstan = datstan,
                     tte.dist = pc$tte.dist,
-                    prior.dist = pc$prior.dist)
+                    prior.dist = pc$prior.dist,
+                    chains = pc_list$add$stanmod.chains,
+                    iter = pc_list$add$stanmod.iter,
+                    warmup = pc_list$add$stanmod.warmup)
 
   ### extracting relevant statistics
   stats = sim.stanfit.to.poststats(pc, 
