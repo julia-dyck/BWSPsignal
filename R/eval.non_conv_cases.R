@@ -1,4 +1,4 @@
-#### Investigate number of non-convergence cases in simulation
+#### Investigate number of non-convergence cases by tte and prior distribution
 #'
 #' Based on simulation study batch files the function groups the data by `tte.dist`
 #' and `prior.dist`, and calculates the total planned and total not run repetitions,
