@@ -2,17 +2,12 @@
 % Please edit documentation in R/eval.non_conv_cases.R
 \name{eval.non_conv_cases}
 \alias{eval.non_conv_cases}
-\title{Based on simulation study batch files the function groups the data by \code{tte.dist}
-and \code{prior.dist}, and calculates the total planned and total not run repetitions,
-and the proportion of repetitions that were not run
-to guide the
-tte and prior distributional choices (along with \code{\link{eval.execution_times}}
-and \code{\link{eval.eff_sample_sizes}}}
+\title{Evaluate number of non-convergence cases by tte and prior distribution}
 \usage{
 eval.non_conv_cases(pc_list)
 }
 \arguments{
-\item{pc_list}{list containing simulation parameters (see \code{\link{sim.setup_simpars}})}
+\item{pc_list}{a list containing simulation parameters (see \code{\link{sim.setup_simpars}})}
 }
 \value{
 A data frame with the following columns:
@@ -30,5 +25,5 @@ and \code{prior.dist}, and calculates the total planned and total not run repeti
 and the proportion of repetitions that were not run
 to guide the
 tte and prior distributional choices (along with \code{\link{eval.execution_times}}
-and \code{\link{eval.eff_sample_sizes}}
+and \code{\link{eval.eff_sample_sizes}}).
 }

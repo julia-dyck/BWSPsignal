@@ -2,17 +2,19 @@
 #'
 #' Summarizes and visualizes effective sample sizes of the stan models fitted during 
 #' the simulation study, grouped by time-to-event (tte) and prior distribution types. 
-#' This helps assess which of the tte and prior distribution choices can be expected 
-#' to be sufficient for HDI+ROPE testing, along with other diagnostics such as 
-#' \code{\link{eval.non_conv_cases}} and \code{\link{eval.ex_times}}.
+#' This helps assess which of the tte and prior distribution choices is suitable 
+#' for HDI+ROPE testing (along with other diagnostics such as 
+#' \code{\link{eval.non_conv_cases}} and \code{\link{eval.execution_times}}).
 #'
-#' @param pc_list list containing simulation parameters (see \code{\link{sim.setup_simpars}})
-#' @param threshold numeric threshold for acceptable effective sample size (default: 10000 as recommended by Kruschke, 2015)
+#' @param pc_list a list containing simulation parameters (see \code{\link{sim.setup_simpars}})
+#' @param threshold numeric threshold for effective sample size acceptable for 
+#' HDI+ROPE testing (10000 by default as recommended by \insertCite{kruschke2015;textual}{BWSPsignal})
 #'
-#' @return list with summary statistics (`$summary`), a ggplot2 object (`$plot`), 
-#' and the cleaned data (`$df`) used for both.
+#' @return A list with summary statistics (`$summary`), a ggplot2 object (`$plot`), 
+#' and the data (`$df`) on which summary and plot are based.
 #' 
-#' 
+#' @references
+#'   \insertAllCited{}
 #'
 #' @export
 

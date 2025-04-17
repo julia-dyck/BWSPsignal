@@ -1,14 +1,14 @@
 #' Evaluate execution times by tte and prior distribution
 #'
-#' Summarizes execution times of the models fitted during the simulation study grouped
+#' Summarizes and visualizes execution times of the models fitted during the simulation study grouped
 #' by time-to-event (tte) and prior distribution types to guide the
 #' tte and prior distributional choices (along with \code{\link{eval.non_conv_cases}} 
-#' and \code{\link{eval.eff_sample_sizes}}.
+#' and \code{\link{eval.eff_sample_sizes}}).
 #'
-#' @param pc_list list containing simulation parameters (see \code{\link{sim.setup_simpars}})
+#' @param pc_list a list containing simulation parameters (see \code{\link{sim.setup_simpars}})
 #'
-#' @return list with summary statistics (`$summary`), a ggplot2 object (`$plot`), 
-#' and cleaned data (`$res.ex_times.table`) which is the base for summary and plot.
+#' @return A list with summary statistics (`$summary`), a ggplot2 object (`$plot`), 
+#' and the data (`$df`) on which summary and plot are based.
 #'
 #' @export
 

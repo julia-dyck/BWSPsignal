@@ -1,13 +1,13 @@
-#### Investigate number of non-convergence cases by tte and prior distribution
+#' Evaluate number of non-convergence cases by tte and prior distribution
 #'
 #' Based on simulation study batch files the function groups the data by `tte.dist`
 #' and `prior.dist`, and calculates the total planned and total not run repetitions,
 #' and the proportion of repetitions that were not run
 #' to guide the
 #' tte and prior distributional choices (along with \code{\link{eval.execution_times}} 
-#' and \code{\link{eval.eff_sample_sizes}}
+#' and \code{\link{eval.eff_sample_sizes}}).
 #'
-#' @param pc_list list containing simulation parameters (see \code{\link{sim.setup_simpars}})
+#' @param pc_list a list containing simulation parameters (see \code{\link{sim.setup_simpars}})
 #' 
 #' @return A data frame with the following columns:
 #'   - `tte.dist`: The time-to-event distribution.

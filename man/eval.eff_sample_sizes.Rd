@@ -7,18 +7,22 @@
 eval.eff_sample_sizes(pc_list, threshold = 10000)
 }
 \arguments{
-\item{pc_list}{list containing simulation parameters (see \code{\link{sim.setup_simpars}})}
+\item{pc_list}{a list containing simulation parameters (see \code{\link{sim.setup_simpars}})}
 
-\item{threshold}{numeric threshold for acceptable effective sample size (default: 10000 as recommended by Kruschke, 2015)}
+\item{threshold}{numeric threshold for effective sample size acceptable for
+HDI+ROPE testing (10000 by default as recommended by \insertCite{kruschke2015;textual}{BWSPsignal})}
 }
 \value{
-list with summary statistics (\verb{$summary}), a ggplot2 object (\verb{$plot}),
-and the cleaned data (\verb{$df}) used for both.
+A list with summary statistics (\verb{$summary}), a ggplot2 object (\verb{$plot}),
+and the data (\verb{$df}) on which summary and plot are based.
 }
 \description{
 Summarizes and visualizes effective sample sizes of the stan models fitted during
 the simulation study, grouped by time-to-event (tte) and prior distribution types.
-This helps assess which of the tte and prior distribution choices can be expected
-to be sufficient for HDI+ROPE testing, along with other diagnostics such as
-\code{\link{eval.non_conv_cases}} and \code{\link{eval.ex_times}}.
+This helps assess which of the tte and prior distribution choices is suitable
+for HDI+ROPE testing (along with other diagnostics such as
+\code{\link{eval.non_conv_cases}} and \code{\link{eval.execution_times}}).
+}
+\references{
+\insertAllCited{}
 }
