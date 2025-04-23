@@ -21,7 +21,10 @@ eval.calc_auc = function(pc_list){
   # ## tte.dist, 
   # ## prior.dist (+ prior mean + sd under prior.believe = "none"), 
   rope.infos = dplyr::filter(do.call(dplyr::bind_rows, pc_list$fit), prior.belief == "none")
-  rope.infos = mutate(rope.l = )
+  rope.infos = dplyr::mutate(rope.infos, 
+                             rope.lower = NA, 
+                             rope.upper = NA)
+  return(rope.infos)
   
   
   # go through pc_list$test rows
@@ -29,3 +32,6 @@ eval.calc_auc = function(pc_list){
   
   
 }
+
+
+eval.calc_auc(pc_list)
