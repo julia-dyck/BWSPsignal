@@ -5,20 +5,24 @@
 \title{Bayesian Weibull Shape Parameter Test}
 \usage{
 bwsp_test(
-  credregions,
+  credregion,
   nullregion,
   mod = c("w", "dw", "pgw"),
   option = c(1, 2, 3)
 )
 }
 \arguments{
-\item{credregions}{vector of length 2 or 4 with the lower and upper boundaries of the
+\item{credregion}{vector of length 2 or 4 with the lower and upper boundaries of the
 credibility interval (CI) reflecting the posterior distribution of the shape
 parameter(s); required order: 1. lower CI boundary of first shape parameter,
 2. upper CI boundary of first shape parameter; and if existent: 3. lower CI boundary of second shape parameter,
 4. upper CI boundary of second shape parameter}
 
-\item{nullregion}{a vector of length two denoting the lower and upper boundary of the region of practical equivalence (ROPE)}
+\item{nullregion}{vector of length 2 or 4 with the lower and upper boundaries of the
+region of practical equivalence (ROPE) reflecting the null hypothesis region of the shape
+parameter(s); required order: 1. lower ROPE boundary of first shape parameter,
+2. upper ROPE boundary of first shape parameter; and if existent: 3. lower ROPE boundary of second shape parameter,
+4. upper ROPE boundary of second shape parameter}
 
 \item{mod}{a character out of \code{"w", "dw", "pgw"}; specifies the modelling
 approach used to obtain the posterior samples of the shape parameter(s)}
@@ -63,7 +67,7 @@ Weibull shape parameter test.
 
 The region of practical equivalence (ROPE) specified in the
 \code{nullregion} argument represents the expected parameter value under \eqn{H_0}.
-The credibility region(s) specified in the \code{credregions} argument represent
+The credibility region(s) specified in the \code{credregion} argument represent
 the posterior distribution of each shape parameter.
 
 Information on the HDI+ROPE test and recommendations for interval specifications
@@ -124,8 +128,9 @@ standat = tte2priordat_w(dat = tte,   # reformat the data
                       shape.mean = 1, 
                       shape.sd = 10)
 
-fit = fit_tte_w(datstan = standat,      # fit the model
-                  priordist = "ll",       
+fit = fit_mod_tte(datstan = standat,      # fit the model
+                  tte.dist = "w", 
+                  prior.dist = "ll",       
                   chains = 4,              
                   iter = 110,             # (be aware that posterior sample
                   warmup = 10)            # is small for demo purpose)
@@ -136,7 +141,7 @@ post.sample = rstan::extract(fit, pars = c("nu"))
 nu.hdi = HDInterval::hdi(object = post.sample$nu, credMass = 0.8)
 
 # 4. conduct the BWSPtest
-bwsp_test(credregions = nu.hdi, 
+bwsp_test(credregion = nu.hdi, 
           nullregion = rope, 
           mod = "w", 
           option = 1)
@@ -165,8 +170,9 @@ standat = tte2priordat_pgw(dat = tte,          # reformat the data
                       powershape.mean = 1, 
                       powershape.sd = 10)
 
-fit = fit_tte_pgw(datstan = standat,     # fit the model
-                  priordist = "ll",       
+fit = fit_mod_tte(datstan = standat,     # fit the model
+                  tte.dist = "pgw",
+                  prior.dist = "ll",       
                   chains = 4,              
                   iter = 110,            # (be aware that posterior sample
                   warmup = 10)           # is small for demo purpose)
@@ -178,7 +184,7 @@ nu.hdi = HDInterval::hdi(object = post.samples$nu, credMass = 0.8)
 ga.hdi = HDInterval::hdi(object = post.samples$gamma, credMass = 0.8)
 
 # 4. conduct the BWSP test
-bwsp_test(credregions = c(nu.hdi, ga.hdi), 
+bwsp_test(credregion = c(nu.hdi, ga.hdi), 
           nullregion = rope, 
           mod = "pgw", 
           option = 1)

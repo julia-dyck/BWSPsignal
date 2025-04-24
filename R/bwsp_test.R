@@ -5,12 +5,16 @@
 #' Weibull family.
 #' 
 #'
-#' @param credregions vector of length 2 or 4 with the lower and upper boundaries of the 
+#' @param credregion vector of length 2 or 4 with the lower and upper boundaries of the 
 #' credibility interval (CI) reflecting the posterior distribution of the shape
 #' parameter(s); required order: 1. lower CI boundary of first shape parameter, 
 #' 2. upper CI boundary of first shape parameter; and if existent: 3. lower CI boundary of second shape parameter, 
 #' 4. upper CI boundary of second shape parameter
-#' @param nullregion a vector of length two denoting the lower and upper boundary of the region of practical equivalence (ROPE)
+#' @param nullregion vector of length 2 or 4 with the lower and upper boundaries of the 
+#' region of practical equivalence (ROPE) reflecting the null hypothesis region of the shape
+#' parameter(s); required order: 1. lower ROPE boundary of first shape parameter, 
+#' 2. upper ROPE boundary of first shape parameter; and if existent: 3. lower ROPE boundary of second shape parameter, 
+#' 4. upper ROPE boundary of second shape parameter
 #' @param option numeric value out of \code{1,2,3}; rule to be used to deduct a 
 #' binary outcome (signal/no signal) from the HDI+ROPE test results of each shape parameter (see details)
 #' @param mod a character out of \code{"w", "dw", "pgw"}; specifies the modelling 
@@ -50,7 +54,7 @@
 #' 
 #' The region of practical equivalence (ROPE) specified in the 
 #' \code{nullregion} argument represents the expected parameter value under \eqn{H_0}.
-#' The credibility region(s) specified in the \code{credregions} argument represent
+#' The credibility region(s) specified in the \code{credregion} argument represent
 #' the posterior distribution of each shape parameter.
 #' 
 #' Information on the HDI+ROPE test and recommendations for interval specifications
@@ -112,8 +116,9 @@
 #'                       shape.mean = 1, 
 #'                       shape.sd = 10)
 #' 
-#' fit = fit_tte_w(datstan = standat,      # fit the model
-#'                   priordist = "ll",       
+#' fit = fit_mod_tte(datstan = standat,      # fit the model
+#'                   tte.dist = "w", 
+#'                   prior.dist = "ll",       
 #'                   chains = 4,              
 #'                   iter = 110,             # (be aware that posterior sample
 #'                   warmup = 10)            # is small for demo purpose)
@@ -124,7 +129,7 @@
 #' nu.hdi = HDInterval::hdi(object = post.sample$nu, credMass = 0.8)
 #' 
 #' # 4. conduct the BWSPtest
-#' bwsp_test(credregions = nu.hdi, 
+#' bwsp_test(credregion = nu.hdi, 
 #'           nullregion = rope, 
 #'           mod = "w", 
 #'           option = 1)
@@ -153,8 +158,9 @@
 #'                       powershape.mean = 1, 
 #'                       powershape.sd = 10)
 #' 
-#' fit = fit_tte_pgw(datstan = standat,     # fit the model
-#'                   priordist = "ll",       
+#' fit = fit_mod_tte(datstan = standat,     # fit the model
+#'                   tte.dist = "pgw",
+#'                   prior.dist = "ll",       
 #'                   chains = 4,              
 #'                   iter = 110,            # (be aware that posterior sample
 #'                   warmup = 10)           # is small for demo purpose)
@@ -166,7 +172,7 @@
 #' ga.hdi = HDInterval::hdi(object = post.samples$gamma, credMass = 0.8)
 #' 
 #' # 4. conduct the BWSP test
-#' bwsp_test(credregions = c(nu.hdi, ga.hdi), 
+#' bwsp_test(credregion = c(nu.hdi, ga.hdi), 
 #'           nullregion = rope, 
 #'           mod = "pgw", 
 #'           option = 1)
@@ -178,14 +184,11 @@
 #'
 
 
-bwsp_test = function(credregions, 
+bwsp_test = function(credregion, 
                      nullregion, 
                      mod = c("w", "dw", "pgw"),
                      option = c(1,2,3)){
-  # argument check for nullregion
-  if(length(nullregion) != 2){
-    stop("Argument nullregion must be a vector of length 2.")
-  }
+  
   # argument check for mod
   if(mod != "w" & mod != "dw" & mod != "pgw"){
     stop("mod must be one of 'w', 'dw' or 'pgw'")
@@ -197,11 +200,15 @@ bwsp_test = function(credregions,
   
   # test under Weibull model
   if(mod == "w"){
-    # argument check for credregions
-    if(length(credregions) != 2){
-      stop("Argument credregions must be a vector of length 2.")
+    # argument check for nullregion
+    if(length(nullregion) != 2){
+      stop("Argument nullregion must be a vector of length 2.")
     }
-    shape1credregion = credregions
+    # argument check for credregion
+    if(length(credregion) != 2){
+      stop("Argument credregion must be a vector of length 2.")
+    }
+    shape1credregion = credregion
     shape1ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = shape1credregion)
     res = shape1ropehdi_res
     # options for "w" model
@@ -219,14 +226,28 @@ bwsp_test = function(credregions,
   }
   # test under double or pgw model
   if(mod == "dw" | mod == "pgw"){
-    if(length(credregions) != 4){
-      stop("Argument credregions must be a vector of length 4.")
-    }
-    shape1credregion = credregions[1:2]
-    shape2credregion = credregions[3:4]
     
-    shape1ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = shape1credregion)
-    shape2ropehdi_res = hdi_plus_rope(nullregion = nullregion, credregion = shape2credregion)
+    # argument check for nullregion
+    if(length(nullregion) != 2 && length(nullregion) != 4){
+      stop("Argument nullregion must be a vector of length 2 or 4.")
+    }
+    if(length(nullregion) == 2){
+      warning("Argument nullregion is a vector of length 2. 
+              Assuming that the same null region applies to both shape parameters.")
+      nullregion = c(nullregion, nullregion)
+    }
+    # argument check for credregion
+    if(length(credregion) != 4){
+      stop("Argument credregion must be a vector of length 4.")
+    }
+    shape1nullregion = nullregion[1:2]
+    shape2nullregion = nullregion[3:4]
+    
+    shape1credregion = credregion[1:2]
+    shape2credregion = credregion[3:4]
+    
+    shape1ropehdi_res = hdi_plus_rope(nullregion = shape1nullregion, credregion = shape1credregion)
+    shape2ropehdi_res = hdi_plus_rope(nullregion = shape2nullregion, credregion = shape2credregion)
     res = c(shape1ropehdi_res, shape2ropehdi_res)
     
     if(option == 1){
