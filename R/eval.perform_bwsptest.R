@@ -21,12 +21,11 @@ eval.calc_auc = function(pc_list){
   # ## tte.dist, 
   # ## prior.dist (+ prior mean + sd under prior.believe = "none"), 
   rope.infos = dplyr::filter(do.call(dplyr::bind_rows, pc_list$fit), prior.belief == "none")
-  rope.infos = dplyr::mutate(rope.infos, 
-                             rope.lower = NA, 
-                             rope.upper = NA)
   return(rope.infos)
   
-  
+  ropes = cbind(rope.infos,   # preserve the matching infos
+                apply(rope.infos, 1 , sim.)
+                
   # go through pc_list$test rows
   # extract ci_boundaries depending on post.ci.type & cred.level (using regex?)
   
@@ -34,4 +33,4 @@ eval.calc_auc = function(pc_list){
 }
 
 
-# eval.calc_auc(pc_list)
+# rope.infos = eval.calc_auc(pc_list)
