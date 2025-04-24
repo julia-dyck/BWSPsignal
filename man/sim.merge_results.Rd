@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim.merge_results.R
 \name{sim.merge_results}
 \alias{sim.merge_results}
-\title{merge result table batches from simulation study}
+\title{Merge result table batches from simulation study}
 \usage{
 sim.merge_results(pc_list, save = T)
 }
@@ -17,12 +17,12 @@ Dataframe containing all simulation results (one repetition of one
 simulation scenario per row). The
 simulation parameters are stored in the first 9 columns. The remaining columns
 contain
-\itemize{
+\enumerate{
 \item posterior summary statistics and percentiles (ie information on the
 posterior distribution) for each shape parameter and
 \item posterior credibility
 intervals (as specified in \code{$test} list element obtained from \code{\link{sim.setup_simpars}).
-}
+      }
 }
 \description{
 Merges result table batches from simulation study obtained from using

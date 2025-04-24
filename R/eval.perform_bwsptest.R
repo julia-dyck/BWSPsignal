@@ -34,4 +34,4 @@ eval.calc_auc = function(pc_list){
 }
 
 
-eval.calc_auc(pc_list)
+# eval.calc_auc(pc_list)

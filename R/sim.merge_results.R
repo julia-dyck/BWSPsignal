@@ -1,6 +1,6 @@
-#' @title merge result table batches from simulation study
+#' Merge result table batches from simulation study
 #' 
-#' @description Merges result table batches from simulation study obtained from using 
+#' Merges result table batches from simulation study obtained from using 
 #' \code{\link{sim.run}}.
 #'
 #' @param pc_list list of parameter combinations obtained from \code{\link{sim.setup_simpars}}
@@ -11,12 +11,12 @@
 #' simulation scenario per row). The 
 #' simulation parameters are stored in the first 9 columns. The remaining columns 
 #' contain 
-#' 
-#' * posterior summary statistics and percentiles (ie information on the 
-#' posterior distribution) for each shape parameter and 
-#' 
-#' * posterior credibility 
-#' intervals (as specified in \code{$test} list element obtained from \code{\link{sim.setup_simpars}).
+#' \enumerate{
+#'       \item posterior summary statistics and percentiles (ie information on the 
+#'       posterior distribution) for each shape parameter and 
+#'       \item posterior credibility 
+#'       intervals (as specified in \code{$test} list element obtained from \code{\link{sim.setup_simpars}).
+#'       }
 #'
 #'
 #' @export

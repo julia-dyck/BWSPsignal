@@ -13,8 +13,8 @@
 #' 
 #' @details
 #' Expectation (mean) and standard deviation of a Gamma distributed random variable \eqn{X} 
-#' parametrized in terms of the shape parameter $\alpha$ 
-#' and rate parameter $\beta$ are given by
+#' parametrized in terms of the shape parameter \eqn{\alpha}
+#' and rate parameter \eqn{\beta} are given by
 #' 
 #' \deqn{E(X) = \frac{\alpha}{\beta}}
 #' \deqn{sd(X) = \frac{\alpha}{\beta^2}}
@@ -25,8 +25,8 @@
 #' 
 #' \deqn{\sigma = \frac{\mu}{\sigma^2}}
 #' 
-#' is possible such that the shape parameter $\alpha$ 
-#' and rate parameter $\beta$ of the Gamma distribution are 
+#' is possible such that the shape parameter \eqn{\alpha} 
+#' and rate parameter \eqn{\beta} of the Gamma distribution are 
 #' obtained.
 #' 
 #' @examples
