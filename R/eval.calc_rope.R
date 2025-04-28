@@ -50,8 +50,8 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     # flatten and name
     ropes.vect = unlist(ropes.list)
     rope.names = c(rbind(
-      paste0("nu.rope.", cred.levels, "l"),
-      paste0("nu.rope.", cred.levels, "u")
+      paste0("nu.rope", cred.levels, "l"),
+      paste0("nu.rope", cred.levels, "u")
     ))
     names(ropes.vect) = rope.names
     ropes.vect.nu = ropes.vect
@@ -59,8 +59,8 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     # add empty ga cols
     ropes.vect.ga = rep(NA, length(cred.levels) * 2)
     rope.names = c(rbind(
-      paste0("ga.rope.", cred.levels, "l"),
-      paste0("ga.rope.", cred.levels, "u")
+      paste0("ga.rope", cred.levels, "l"),
+      paste0("ga.rope", cred.levels, "u")
     ))
     names(ropes.vect.ga) = rope.names
     
@@ -106,8 +106,8 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     # flatten and name
     ropes.vect = unlist(ropes.list)
     rope.names = c(rbind(
-      paste0("nu.rope.", cred.levels, "l"),
-      paste0("nu.rope.", cred.levels, "u")
+      paste0("nu.rope", cred.levels, "l"),
+      paste0("nu.rope", cred.levels, "u")
     ))
     names(ropes.vect) = rope.names
     ropes.vect.nu = ropes.vect
@@ -146,8 +146,8 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     # flatten and name
     ropes.vect = unlist(ropes.list)
     rope.names = c(rbind(
-      paste0("ga.rope.", cred.levels, "l"),
-      paste0("ga.rope.", cred.levels, "u")
+      paste0("ga.rope", cred.levels, "l"),
+      paste0("ga.rope", cred.levels, "u")
     ))
     names(ropes.vect) = rope.names
     ropes.vect.ga = ropes.vect
@@ -192,8 +192,8 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     # flatten and name
     ropes.vect = unlist(ropes.list)
     rope.names = c(rbind(
-      paste0("nu.rope.", cred.levels, "l"),
-      paste0("nu.rope.", cred.levels, "u")
+      paste0("nu.rope", cred.levels, "l"),
+      paste0("nu.rope", cred.levels, "u")
     ))
     names(ropes.vect) = rope.names
     ropes.vect.nu = ropes.vect
@@ -232,8 +232,8 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     # flatten and name
     ropes.vect = unlist(ropes.list)
     rope.names = c(rbind(
-      paste0("ga.rope.", cred.levels, "l"),
-      paste0("ga.rope.", cred.levels, "u")
+      paste0("ga.rope", cred.levels, "l"),
+      paste0("ga.rope", cred.levels, "u")
     ))
     names(ropes.vect) = rope.names
     ropes.vect.ga = ropes.vect
