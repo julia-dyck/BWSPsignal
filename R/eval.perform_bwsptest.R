@@ -1,6 +1,7 @@
 
 eval.calc_auc = function(pc_list){
-  # load res
+  # 1. -------------------------------------------------------------------------
+  #### load res table
   if (!exists("res")) { 
     # obtain res table
     tryCatch({
@@ -16,21 +17,39 @@ eval.calc_auc = function(pc_list){
     message("Object `res` loaded in current environment is used to extract effective sample sizes.")
   }
   
+  # 2. -------------------------------------------------------------------------
+  #### add ropes for all bwsp tests to be performed
   
-  # add rope lower and upper bound for to each row depending on 
-  # ## tte.dist, 
-  # ## prior.dist (+ prior mean + sd under prior.believe = "none"), 
   rope.infos = dplyr::filter(do.call(dplyr::bind_rows, pc_list$fit), prior.belief == "none")
-  return(rope.infos)
   
-  ropes = cbind(rope.infos,   # preserve the matching infos
-                apply(rope.infos, 1 , sim.)
-                
-  # go through pc_list$test rows
-  # extract ci_boundaries depending on post.ci.type & cred.level (using regex?)
+  # calculate ropes for each tte.dist & prior.dist combi
+  ropes = do.call(rbind, lapply(1:nrow(rope.infos), function(i) {
+    # extract row
+    rope.infos.row = rope.infos[i, ]
+    # apply eval.calc_rope
+    ropes = eval.calc_rope(cred.levels = pc_list$input$cred.level, rope.infos.row = rope.infos.row)
+    return(ropes)
+  }))
+  
+  rope.infos$prior.belief <- NULL # to not mess up the merge
+  # remove cols unnecessary? (at the same time, they do not hurt)
+  rope.infos = cbind(rope.infos, ropes)
+  
+  res.ext = merge(res, rope.infos, by = c("tte.dist", "prior.dist"), all.x = TRUE) #merge
+  
+  # 3. -------------------------------------------------------------------------
+  #### perform all bwsp tests and save binary test result per row and per test specification as new res cols
+  
+  
+  
+  
+  return(res.ext)           
+  
+  
+  
   
   
 }
 
 
-# rope.infos = eval.calc_auc(pc_list)
+res.ext = eval.calc_auc(pc_list)
