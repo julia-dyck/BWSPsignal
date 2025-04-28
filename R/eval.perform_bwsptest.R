@@ -40,16 +40,79 @@ eval.calc_auc = function(pc_list){
   # 3. -------------------------------------------------------------------------
   #### perform all bwsp tests and save binary test result per row and per test specification as new res cols
   
+  # names of the lower and upper interval bounds you need
+  cred.levels = pc_list$input$cred.level
+   
+  # posterior CI types
+  types = tolower(pc_list$input$post.ci.type)
+  
+  # define the different sensitivity options
+  options = pc_list$input$sensitivity.option
   
   
+  # loop over sensitivity options
+  for (opt in options) {
+    
+    # loop over types (hdi, eti)
+    for (type in types) {
+      
+      # loop over credibility levels
+      for (lev in cred.levels) {
+        
+        # create the column names dynamically for credregion
+        cred_cols = c(
+          paste0("nu.", type, lev, "l"),
+          paste0("nu.", type, lev, "u"),
+          paste0("ga.", type, lev, "l"),
+          paste0("ga.", type, lev, "u")
+        )
+        
+        # create the column names dynamically for nullregion
+        null_cols = c(
+          paste0("nu.", "rope", lev, "l"),
+          paste0("nu.", "rope", lev, "u"),
+          paste0("ga.", "rope", lev, "l"),
+          paste0("ga.", "rope", lev, "u")
+        )
+        
+        # define a new column name for the result
+        bwsp_col = paste0("bwsp_", type, "_", lev, "_opt", opt)
+        
+        # apply the test rowwise
+        res.ext[[bwsp_col]] = apply(
+          res.ext[, c(cred_cols, null_cols, "tte.dist")], 
+          MARGIN = 1,
+          FUN = function(x) {
+            # first 4 entries = credregion, next 4 entries = nullregion
+            credregion = as.numeric(unlist(x[1:4]))
+            nullregion = as.numeric(unlist(x[5:8]))
+            tte.dist = x[9]
+            
+            if(tte.dist == "dw" || tte.dist == "pgw"){
+              bwsp_test(
+                credregion = credregion,
+                nullregion = nullregion,
+                option = opt,
+                mod =  tte.dist
+              )
+            } else if(tte.dist == "w"){
+              bwsp_test(
+                credregion = credregion[1:2],
+                nullregion = nullregion[1:2],
+                option = opt,
+                mod =  tte.dist
+              )
+            }
+          }
+        ) # end of apply
+      } # end of loop over cred.levels
+    } # end of loop over cred.levels
+  } # end of loop over options
   
-  return(res.ext)           
-  
-  
-  
+  return(res.ext)  ## TODO: CHECK WHETHER THE TESTS REALLY ARE CONDUCTED CORRECTLY 
   
   
 }
 
-
-res.ext = eval.calc_auc(pc_list)
+tests = eval.calc_auc(pc_list)
+View(tests)
