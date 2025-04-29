@@ -248,19 +248,19 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
   
 }
 
-# test
-
-rbind(
-eval.calc_rope(cred.levels = c(0.8, 0.9, 0.95), 
-               rope.infos.row = rope.infos[1,]) ,
-
-eval.calc_rope(cred.levels = c(0.8, 0.9, 0.95), 
-              rope.infos.row = rope.infos[2,]) ,
-
-eval.calc_rope(cred.levels = c(0.8, 0.9, 0.95), 
-              rope.infos.row = rope.infos[3,]) ,
-
-eval.calc_rope(cred.levels = c(0.8, 0.9, 0.95),
-              rope.infos.row = rope.infos[4,]) 
-)
+# # test
+# 
+# rbind(
+# eval.calc_rope(cred.levels = c(0.8, 0.9, 0.95), 
+#                rope.infos.row = rope.infos[1,]) ,
+# 
+# eval.calc_rope(cred.levels = c(0.8, 0.9, 0.95), 
+#               rope.infos.row = rope.infos[2,]) ,
+# 
+# eval.calc_rope(cred.levels = c(0.8, 0.9, 0.95), 
+#               rope.infos.row = rope.infos[3,]) ,
+# 
+# eval.calc_rope(cred.levels = c(0.8, 0.9, 0.95),
+#               rope.infos.row = rope.infos[4,]) 
+# )
 
