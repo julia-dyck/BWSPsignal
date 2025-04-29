@@ -7,7 +7,7 @@
 #' @param br A scalar or vector of background rates.
 #' @param adr.rate A scalar or vector of adverse drug reaction rates.
 #' @param adr.when A scalar or vector of expected event times (relative number, e.g. 0.5 matches half of study period).
-#' @param adr.when.names A vector of description/short name of expected event times (ie. name of simulated truth)
+#' @param adr.when.names A vector of description/short name of expected event times (ie. name of simulated truth) matching the \code{adr.when} vector.
 #' @param adr.relsd A scalar or vector of relative standard deviations from the adverse drug reaction times.
 #' @param study.period A scalar specifying the length of the study period.
 #' 
@@ -62,7 +62,9 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   
   dgp_pc = rbind(pc_no_adr,
              pc_with_adr)
-  
+  # dgp_pc$adr.when.names = 
+    # match to position of adr.when
+    
   dgp_pc = dgp_pc[, ncol(dgp_pc):1]
   dgp_pc = dgp_pc[order(dgp_pc$N),]
   rownames(dgp_pc) <- 1:nrow(dgp_pc)
