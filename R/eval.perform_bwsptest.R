@@ -109,7 +109,14 @@ eval.calc_auc = function(pc_list){
     } # end of loop over cred.levels
   } # end of loop over options
   
-  return(res.ext)  ## TODO: CHECK WHETHER THE TESTS REALLY ARE CONDUCTED CORRECTLY 
+  # 4. -------------------------------------------------------------------------
+  #### calculate AUC for each simulation scenario (= one row of pc_list$pc_table)
+  # Keep only the relevant scenario columns and test columns
+  grouping_vars = c("tte.dist", "prior.dist", "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "prior.belief")
+  
+  # Identify all test result columns
+  bwsp_cols = grep("^bwsp_", names(res.ext), value = TRUE)
+  
   
   
 }
