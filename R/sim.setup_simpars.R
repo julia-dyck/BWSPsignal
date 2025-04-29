@@ -6,7 +6,8 @@
 #' @param N A scalar or vector of sample sizes.
 #' @param br A scalar or vector of background rates.
 #' @param adr.rate A scalar or vector of adverse drug reaction rates.
-#' @param adr.when A scalar or vector of expected adverse drug reaction times.
+#' @param adr.when A scalar or vector of expected event times (relative number, e.g. 0.5 matches half of study period).
+#' @param adr.when.names A vector of description/short name of expected event times (ie. name of simulated truth)
 #' @param adr.relsd A scalar or vector of relative standard deviations from the adverse drug reaction times.
 #' @param study.period A scalar specifying the length of the study period.
 #' 
@@ -22,8 +23,9 @@
 
 sim.setup_dgp_pars = function(N,           # dgp parameters
                               br,
-                              adr.rate, 
+                              adr.rate,
                               adr.when,
+                              adr.when.names,
                               adr.relsd,
                               study.period 
                                ){
@@ -31,8 +33,13 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
     adr.rate = adr.rate[-(which(adr.rate==0))]
   }
   else{ # its fine, but notify user that control case is necessary
-    warning("Control case (adr.rate = 0) necessary for simulation study. Adding 0 to specified vector adr.rate.")
+    warning("Control case (adr.rate = 0) necessary for simulation study. Value 0 is added to specified vector adr.rate.")
   }
+  
+  if(length(adr.when) != length(adr.when.names)){
+    stop("Length of adr.when and adr.when.names must be equal.")
+  }
+  
   # par combis with adr.rate > 0
   pc_with_adr = expand.grid(        
     study.period = study.period,
