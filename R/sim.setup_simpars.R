@@ -25,7 +25,6 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
                               br,
                               adr.rate,
                               adr.when,
-                              adr.when.name,
                               adr.relsd,
                               study.period 
                                ){
@@ -37,10 +36,6 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
     warning("Control case (adr.rate = 0) necessary for simulation study. Value 0 is added to specified vector adr.rate.")
   }
   
-  if(length(adr.when) != length(adr.when.name)){
-    stop("Length of adr.when and adr.when.names must be equal.")
-  }
-  
   # par combis with adr.rate > 0
   pc_with_adr = expand.grid(        
     study.period = study.period,
@@ -50,8 +45,6 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
     br = br,
     N = N
   )
-  adr.when_plus_name = data.frame(adr.when = adr.when, adr.when.name = adr.when.name)
-  pc_with_adr = dplyr::left_join(pc_with_adr, adr.when_plus_name, by = "adr.when")
   
   # par combis with adr.rate = 0 (control), adr.when then also set to 0
 
@@ -75,15 +68,14 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   return(dgp_pc)
 }
 
-dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
-                            br = 0.1,
-                            adr.rate = c(0.5, 1),
-                            adr.when = c(0.25, 0.5, 0.75),
-                            adr.when.name = c("beginning", "middle", "end"),
-                            adr.relsd = c(0.05),
-                            study.period = 365)
-
-dgp_pc
+# dgp_pc = sim.setup_dgp_pars(N = c(500, 3000, 5000),
+#                             br = 0.1,
+#                             adr.rate = c(0.5, 1),
+#                             adr.when = c(0.25, 0.5, 0.75),
+#                             adr.relsd = c(0.05),
+#                             study.period = 365)
+# 
+# dgp_pc
 
 #### model fitting parameter specification
 
@@ -327,10 +319,11 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               br,                # |
                               adr.rate,          # |
                               adr.when,          # |
+                              adr.when.name,     # |
                               adr.relsd,         # v
                               study.period,      # -
                               tte.dist,          # tuning parameters
-                              prior.belief,      # |
+                              # prior.belief,      # | (needs to match adr.when.name)
                               prior.dist,        # |
                               post.ci.type,      # |
                               cred.level,        # v
@@ -343,17 +336,20 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               stanmod.chains = 4,
                               stanmod.iter = 11000,
                               stanmod.warmup = 1000
-                              ){       
+                              ){   
+  
+  adr.when.label = data.frame(adr.when.name = adr.when.name, adr.when = adr.when)
   
   dgp_pars = sim.setup_dgp_pars(N = N,
                                 br = br,
                                 adr.rate = adr.rate,
                                 adr.when = adr.when,
+                                adr.when.name = adr.when.name,
                                 adr.relsd = adr.relsd,
                                 study.period = study.period)
   
   fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
-                                prior.belief = prior.belief,
+                                prior.belief = c("none", adr.when.name),
                                 prior.dist = prior.dist,
                                 list.output = T)
   
@@ -367,17 +363,19 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                   resultpath = resultpath,
                   stanmod.chains = stanmod.chains,
                   stanmod.iter = stanmod.iter,
-                  stanmod.warmup = stanmod.warmup
+                  stanmod.warmup = stanmod.warmup,
+                  adr.when.label = adr.when.label
                   )
   
   input_args = list(N = N, 
                     br = br, 
                     adr.rate = adr.rate, 
-                    adr.when = adr.when, 
+                    adr.when = adr.when,
+                    adr.when.name = adr.when.name,
                     adr.relsd = adr.relsd, 
                     study.period = study.period,
                     tte.dist = tte.dist, 
-                    prior.belief = prior.belief, 
+                    prior.belief = c("none", adr.when.name), 
                     prior.dist = prior.dist, 
                     post.ci.type = post.ci.type, 
                     cred.level = cred.level, 
