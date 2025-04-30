@@ -52,7 +52,6 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
     study.period = study.period,
     adr.relsd = NA,
     adr.when = NA,
-    adr.when.name = "none",
     adr.rate = 0,
     br = br,
     N = N
@@ -139,7 +138,7 @@ sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
         cat("The prior belief 'none' reflects the null-hypothesis of constant hazard formalized as `prior mean of all shape parameters = 1`.\n")
         scale.mean = readline("What is the a priori mean value for the scale?\n ")
         scale.sd <- readline("What is the a priori standard deviation for the scale?\n ")
-        cat("The a priori mean mean value for the shape is set to 1.\n")
+        cat("The a priori mean value for the shape is set to 1.\n")
         shape.mean <- "1"
         shape.sd <- readline("What is the a priori standard deviation for the shape?\n ")
       }
@@ -176,12 +175,12 @@ sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
         cat("The prior belief 'none' reflects the null-hypothesis of constant hazard formalized as `prior mean of all shape parameters = 1`.\n")
         scale.mean = readline("What is the a priori mean value for the scale?\n ")
         scale.sd <- readline("What is the a priori standard deviation for the scale?\n ")
-        cat("The a priori mean mean value for the uncensored Weibull shape is set to 1.\n")
+        cat("The a priori mean value for the uncensored Weibull shape is set to 1.\n")
         shape.mean <- "1"
         shape.sd <- readline("What is the a priori standard deviation for the shape?\n ")
         scale_c.mean = readline("What is the a priori mean value for the censored Weibull scale?\n ")
         scale_c.sd = readline("What is the a priori standard deviation for the censored Weibull scale?\n ")
-        cat("The a priori mean mean value for the censored Weibull shape is set to 1.\n")
+        cat("The a priori mean value for the censored Weibull shape is set to 1.\n")
         shape_c.mean = "1"
         shape_c.sd = readline("What is the a priori standard deviation for the censored Weibull shape?\n ")
       }
@@ -230,7 +229,7 @@ sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
         cat("The prior belief 'none' reflects the null-hypothesis of constant hazard formalized as `prior mean of all shape parameters = 1`.\n")
         scale.mean = readline("What is the a priori mean value for the scale?\n ")
         scale.sd = readline("What is the a priori standard deviation for the scale?\n ")
-        cat("The a priori mean mean value for the shape is set to 1.\n")
+        cat("The a priori mean value for the shape is set to 1.\n")
         shape.mean = "1"
         shape.sd = readline("What is the a priori standard deviation for the shape?\n ")
         cat("The a priori mean mean value for the powershape is set to 1.\n")
@@ -302,7 +301,7 @@ sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
                                cred.level = seq(0.5, 0.95, by = 0.05),
                                sensitivity.option = 1:3){
   
-  message("The rope reflecting the null-hypothesis of constant hazard is will be an equal-tailed confidence interval (ETI) based on shape parameters' prior distribution, mean, and sd specified in function sim.setup_fit_pars().")
+  # message("The rope reflecting the null-hypothesis of constant hazard is will be an equal-tailed confidence interval (ETI) based on shape parameters' prior distribution, mean, and sd specified in function sim.setup_fit_pars().")
   
   expand.grid(post.ci.type = post.ci.type,
               cred.level = cred.level,
@@ -312,6 +311,15 @@ sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
 # test_pc = sim.setup_test_pars()
 
 #'
+#'
+#' @param N A scalar or vector of sample sizes.
+#' @param br A scalar or vector of background rates.
+#' @param adr.rate A scalar or vector of adverse drug reaction rates.
+#' @param adr.when A scalar or vector of expected event times (relative number, e.g. 0.5 matches half of study period).
+#' @param adr.when.name A vector of description/short name of expected event times (ie. name of simulated truth)
+#' @param adr.relsd A scalar or vector of relative standard deviations from the adverse drug reaction times.
+#' @param study.period A scalar specifying the length of the study period.
+#' ...
 #'
 #' @export
 
@@ -338,13 +346,12 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               stanmod.warmup = 1000
                               ){   
   
-  adr.when.label = data.frame(adr.when.name = adr.when.name, adr.when = adr.when)
+  adr.when.label = data.frame(adr.when.name = c("none", adr.when.name), adr.when = c(NA,adr.when))
   
   dgp_pars = sim.setup_dgp_pars(N = N,
                                 br = br,
+                                adr.when,
                                 adr.rate = adr.rate,
-                                adr.when = adr.when,
-                                adr.when.name = adr.when.name,
                                 adr.relsd = adr.relsd,
                                 study.period = study.period)
   
@@ -408,7 +415,28 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
   return(sim_pars)
 }
 
-
+pc_list_testsetup = sim.setup_sim_pars(N = 500,                 # dgp parameters
+                                       br = 0.1,                # |
+                                       adr.rate = 0:1,          # |
+                                       adr.when = 0.25,          # |
+                                       adr.when.name = "beginning",     # |
+                                       adr.relsd = 0.05,         # v
+                                       study.period = 365,      # -
+                                       tte.dist = c("w", "dw"),          # tuning parameters
+                                       # prior.belief,      # | (needs to match adr.when.name)
+                                       prior.dist = c("fg", "ll"),        # |
+                                       post.ci.type = c("ETI", "HDI"),      # |
+                                       cred.level = seq(0.5,0.95, by = 0.05),        # v
+                                       sensitivity.option = 1:3,# -
+                                       
+                                       reps = 6, # additional parameters
+                                       batch.size = 2,
+                                       batch.nr = reps/batch.size,
+                                       resultpath = paste0(getwd(), "/results_test"),
+                                       stanmod.chains = 4,
+                                       stanmod.iter = 11000,
+                                       stanmod.warmup = 1000
+)
 
 
 #### setup tuning parameters (combine fit_pars and test_pars)
