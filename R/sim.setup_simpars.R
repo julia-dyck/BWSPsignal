@@ -59,7 +59,8 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   
   dgp_pc = rbind(pc_no_adr,
              pc_with_adr)
-
+  
+  
   dgp_pc = dgp_pc[, ncol(dgp_pc):1]
   dgp_pc = dgp_pc[order(dgp_pc$N),]
   rownames(dgp_pc) <- 1:nrow(dgp_pc)
