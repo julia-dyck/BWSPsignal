@@ -1,5 +1,21 @@
+# moment matrix im richtigen format für den Auto fall:
 
-eval.calc_auc = function(pc_list){
+eval.dist.mat = function(pc_list){
+  dist.mat = matrix(1, nrow = nrow(pc_list$add$adr.when.label), 
+                    ncol = nrow(pc_list$add$adr.when.label))
+  diag(dist.mat) = 0
+  colnames(dist.mat) = pc_list$input$prior.belief
+  rownames(dist.mat) = pc_list$input$prior.belief
+  
+  return(dist.mat)
+}
+
+
+
+eval.calc_auc = function(pc_list, 
+                         belief.correctness.dist.mat = eval.dist.mat(pc_list))
+                         # think of a better name !!!
+                           {
   # 1. -------------------------------------------------------------------------
   #### load res table
   if (!exists("res")) { 
@@ -117,6 +133,9 @@ eval.calc_auc = function(pc_list){
   # Identify all test result columns
   bwsp_cols = grep("^bwsp_", names(res.ext), value = TRUE)
   
+  # Information on assumed distance levels between adr.when.label (rowwise) and 
+  # prior.belief (columnwise)
+  d.mat = belief.correctness.dist.mat
   
   
 }
