@@ -12,7 +12,26 @@
 #' @param adr.when.name A vector of description/short name of expected event times (ie. name of simulated truth)
 #' @param adr.relsd A scalar or vector of relative standard deviations from the adverse drug reaction times.
 #' @param study.period A scalar specifying the length of the study period.
-#' ...
+#' @param tte.dist A character string indicating the modelling approach. Options are
+#' \code{"w", "dw", "pgw"} (see also \link\code{fit_mod_tte}).
+#' @param prior.dist A character string indicating the prior distribution for the
+#' parameters of the pgW distribution. Options are 
+#' \code{"fg", "fl", "gg", "ll"} (see also \link\code{fit_mod_tte}).
+#' @param post.ci.type A character string indicating whether to extract equal tailed
+#' intervals (\code{"ETI"}) or highest posterior density intervals (\code{HDI}) as
+#' credibilty interval/region for BWSP testing (see \link\code{bwsp_test}).
+#' @param cred.level A scalar or vector of credibility levels to be tried for construction
+#' of region of practical equivalence (ROPE) and posterior credibility interval (CI).
+#' @param sensitivity.option
+#' @param reps The number of repetitions for each simulation scenario.
+#' @param batch.size The number of simulation repetitions to be saved in a batch
+#' @param batch.nr per default \code{reps/batch.size}; the number of batch files 
+#' in resultpath.
+#' @param resultpath The directory where intermediate results of the simulation
+#' are saved.
+#' @param stanmod.chains The number of Markov chains to run.
+#' @param stanmod.iter The total number of iterations per chain (including warmup).
+#' @param standmod.warmup The number of warmup iterations per chain.
 #' 
 #' 
 #' @details
@@ -32,7 +51,8 @@
 #' \item type of posterior credible interval, must be a subset out of "ETI" 
 #' (equal-tailed interval) and "HDI" (highest density interval).
 #' 
-#' 
+#' Batch saving is done to prevent losing simulation results in case of an
+#' interuption of simulation.
 #'
 #' @export
 
@@ -40,7 +60,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               br,                # |
                               adr.rate,          # |
                               adr.when,          # |
-                              adr.when.label,     # |
+                              adr.when.label,    # |
                               adr.relsd,         # v
                               study.period,      # -
                               tte.dist,          # tuning parameters
@@ -49,7 +69,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               cred.level,        # v
                               sensitivity.option,# -
                               
-                              reps = 100, # additional parameters
+                              reps = 100,        # additional parameters
                               batch.size = 10,
                               batch.nr = reps/batch.size,
                               resultpath = paste0(getwd(), "/results_raw"),
