@@ -7,7 +7,7 @@
 
 sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
                               prior.belief = c("none", "beginning", "middle", "end"),
-                              prior.dist = c("fgg", "ggg", "fll", "lll"),
+                              prior.dist = c("fg", "gg", "fl", "ll"),
                               list.output = F){
   # check whether prior.belief "none" is included (necessary as it also provides the base for ROPE specification)
   if(!any(prior.belief == "none")){
