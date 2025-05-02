@@ -1,20 +1,8 @@
-# moment matrix im richtigen format für den Auto fall:
-
-eval.dist.mat = function(pc_list){
-  dist.mat = matrix(1, nrow = nrow(pc_list$add$adr.when.label), 
-                    ncol = nrow(pc_list$add$adr.when.label))
-  diag(dist.mat) = 0
-  colnames(dist.mat) = pc_list$input$prior.belief
-  rownames(dist.mat) = pc_list$input$prior.belief
-  
-  return(dist.mat)
-}
 
 
 
 eval.calc_auc = function(pc_list, 
-                         belief.correctness.dist.mat = eval.dist.mat(pc_list))
-                         # think of a better name !!!
+                         dist.to.truth = eval.default_mat(pc_list))
                            {
   # 1. -------------------------------------------------------------------------
   #### load res table
@@ -124,6 +112,9 @@ eval.calc_auc = function(pc_list,
       } # end of loop over cred.levels
     } # end of loop over cred.levels
   } # end of loop over options
+  return(res.ext)
+  
+
   
   # 4. -------------------------------------------------------------------------
   #### calculate AUC for each simulation scenario (= one row of pc_list$pc_table)
@@ -133,9 +124,17 @@ eval.calc_auc = function(pc_list,
   # Identify all test result columns
   bwsp_cols = grep("^bwsp_", names(res.ext), value = TRUE)
   
-  # Information on assumed distance levels between adr.when.label (rowwise) and 
-  # prior.belief (columnwise)
-  d.mat = belief.correctness.dist.mat
+  
+  
+  
+  
+  
+  
+  # 5. -------------------------------------------------------------------------
+  #### add distance to truth as grouping variable 
+
+  # distance to truth depending on matrix in argument distance  to truth:
+  
   
   
 }
