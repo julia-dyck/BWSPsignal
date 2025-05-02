@@ -78,7 +78,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               stanmod.warmup = 1000
 ){   
   
-  adr.when.label = data.frame(adr.when.label = c("none", adr.when.label), adr.when = c(NA,adr.when))
+  adr.when.label = data.frame(adr.when.label = c(adr.when.label), adr.when = c(adr.when))
   
   dgp_pars = sim.setup_dgp_pars(N = N,
                                 br = br,
@@ -135,10 +135,15 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
              " times. "))
   
   pc_table = list()  # parameters in table format s.t. one row = one simulation scenario
-  pc_table$w = dplyr::cross_join(dgp_pars, fit_pars$w[c("tte.dist", "prior.dist", "prior.belief")])
-  pc_table$dw = dplyr::cross_join(dgp_pars, fit_pars$dw[c("tte.dist", "prior.dist", "prior.belief")])
-  pc_table$dw = dplyr::cross_join(dgp_pars, fit_pars$dw[c("tte.dist", "prior.dist", "prior.belief")])
-  
+  if(!is.null(fit_pars$w)){
+    pc_table$w = dplyr::cross_join(dgp_pars, fit_pars$w[c("tte.dist", "prior.dist", "prior.belief")])
+  }
+  if(!is.null(fit_pars$dw)){
+    pc_table$dw = dplyr::cross_join(dgp_pars, fit_pars$dw[c("tte.dist", "prior.dist", "prior.belief")])
+  }
+  if(!is.null(fit_pars$pgw)){
+    pc_table$pgw = dplyr::cross_join(dgp_pars, fit_pars$pgw[c("tte.dist", "prior.dist", "prior.belief")])
+  }
   pc_table = dplyr::bind_rows(pc_table)
   
   
