@@ -5,8 +5,10 @@
 
 
 eval.calc_auc = function(pc_list, 
-                         dist.to.truth = eval.default_mat(pc_list))
+                         dist.to.truth = sim.dist_to_truth_mat_default(pc_list))
                            {
+  require(dplyr) # for the pipe operator
+  
   # 1. -------------------------------------------------------------------------
   #### load res table
   if (!exists("res")) { 
@@ -115,16 +117,38 @@ eval.calc_auc = function(pc_list,
       } # end of loop over cred.levels
     } # end of loop over cred.levels
   } # end of loop over options
+
+  
   return(res.ext)
   
 
   
   # 4. -------------------------------------------------------------------------
   #### calculate AUC for each simulation scenario (= one row of pc_list$pc_table)
-  # Keep only the relevant scenario columns and test columns
+  
+  ## control cases are not in there, as they are assigned to each ADR-positive
+  # scenario (pc.pos) when calculating the AUC
+  pc.pos = filter(pc_list$pc_table, adr.rate > 0) #TEST THAT
+  
+  # number of tests to be performed
+  nr.combined.tests = length(grep("^bwsp_", names(res.ext))) #TEST THAT
+  # or nrow(pc_list$test)
+  
+  # setup matrix for AUC results
+  aucs = matrix(rep(0, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
+  colnames(aucs) = paste0("auc", 1:nr.combined.tests)
+  
+  #add label column (binary indicating whether adr or none-adr scenario) to 
+  # identify
+  res.ext = dplyr::mutate(res.ext, adr.label = ifelse(adr.rate > 0, 1, 0))
+  
+  
+  ## HIER WEITER
+  
+  
   grouping_vars = c("tte.dist", "prior.dist", "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "prior.belief")
   
-  # Identify all test result columns
+  # Identify all bwsp_test result columns
   bwsp_cols = grep("^bwsp_", names(res.ext), value = TRUE)
   
   
