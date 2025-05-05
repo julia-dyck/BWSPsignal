@@ -79,7 +79,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               stanmod.warmup = 1000
 ){   
   
-  adr.when.label = data.frame(adr.when.label = c(adr.when.label), adr.when = c(adr.when))
+  adr.when.label.df = data.frame(adr.when.label = c(adr.when.label), adr.when = c(adr.when))
   
   dgp_pars = sim.setup_dgp_pars(N = N,
                                 br = br,
@@ -104,7 +104,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                   stanmod.chains = stanmod.chains,
                   stanmod.iter = stanmod.iter,
                   stanmod.warmup = stanmod.warmup,
-                  adr.when.label = adr.when.label
+                  adr.when.label = adr.when.label.df
   )
   
   input_args = list(N = N, 
@@ -152,30 +152,6 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
   
   return(sim_pars)
 }
-
-pc_list_testsetup = sim.setup_sim_pars(N = 500,
-                                       br = 0.1,
-                                       adr.rate = 0:1,
-                                       adr.when = 0.25,
-                                       adr.when.label = c("beginning", "middle"),
-                                       adr.relsd = 0.05,
-                                       study.period = 365,
-
-                                       tte.dist = c("w", "dw", "pgw"),
-                                       prior.dist = c("gg", "ll"),
-
-                                       post.ci.type = c("ETI", "HDI"),
-                                       cred.level = seq(0.5,0.95, by = 0.05),
-                                       sensitivity.option = 1:3,
-
-                                       reps = 6, # additional parameters
-                                       batch.size = 2,
-                                       batch.nr = reps/batch.size,
-                                       resultpath = paste0(getwd(), "/results_test"),
-                                       stanmod.chains = 4,
-                                       stanmod.iter = 11000,
-                                       stanmod.warmup = 1000
-)
 
 
 ## END OF DOC

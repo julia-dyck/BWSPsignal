@@ -26,21 +26,22 @@
 pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
                         br = 0.1,
                         adr.rate = c(0, 0.5, 1),
+                        adr.when.label = c("beginning", "middle", "end"),
                         adr.when = c(0.25, 0.5, 0.75),
                         adr.relsd = 0.05,
                         study.period = 365,
                         
                         tte.dist = c("w", "dw", "pgw"),          # tuning parameters
-                        prior.belief = c("none", "beginning", "middle", "end"),
                         prior.dist = c("fg", "gg", "fl", "ll"),
+                        
                         post.ci.type = c("ETI", "HDI"),
                         cred.level = seq(0.5, 0.95, by = 0.05),
                         sensitivity.option = 1:3,
                         
                         reps = 100, # additional parameters
                         batch.size = 10,
-                        batch.nr = reps/batch.size,
-                        resultpath = paste0(getwd(), "/results_raw"),
+                        
+                        resultpath = paste0(getwd(), "/simulationstudy_template/results_raw"),
                         stanmod.chains = 4,
                         stanmod.iter = 11000,
                         stanmod.warmup = 1000
@@ -49,31 +50,31 @@ pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
 
 save(pc_list, file = "pc_list.RData")
 
-# setup pc list for testing
-pc_list = sim.setup_sim_pars(N = c(500),       # dgp parameters
-                             br = 0.1,
-                             adr.rate = c(0, 1),
-                             adr.when = c(0.25),
-                             adr.relsd = 0.05,
-                             study.period = 365,
-                             
-                             tte.dist = c("w", "dw"),          # tuning parameters
-                             prior.belief = c("none", "beginning"),
-                             prior.dist = c("fg"),
-                             post.ci.type = c("ETI", "HDI"),
-                             cred.level = seq(0.5, 0.95, by = 0.05),
-                             sensitivity.option = 1:3,
-                             
-                             reps = 6, # additional parameters
-                             batch.size = 2,
-                             batch.nr = reps/batch.size,
-                             resultpath = paste0(getwd(), "/simulationstudy_template/results_test"),
-                             stanmod.chains = 1,
-                             stanmod.iter = 1100,
-                             stanmod.warmup = 100
+pc_list_testsetup = sim.setup_sim_pars(N = 500,
+                                       br = 0.1,
+                                       adr.rate = 0:1,
+                                       adr.when = c(0.25, 0.5),
+                                       adr.when.label = c("beginning", "middle"),
+                                       adr.relsd = 0.05,
+                                       study.period = 365,
+                                       
+                                       tte.dist = c("w", "dw", "pgw"),
+                                       prior.dist = c("gg", "ll"),
+                                       
+                                       post.ci.type = c("ETI", "HDI"),
+                                       cred.level = seq(0.5,0.95, by = 0.05),
+                                       sensitivity.option = 1:3,
+                                       
+                                       reps = 6, # additional parameters
+                                       batch.size = 2,
+                                       
+                                       resultpath = paste0(getwd(), "/simulationstudy_template/results_test"),
+                                       stanmod.chains = 4,
+                                       stanmod.iter = 11000,
+                                       stanmod.warmup = 1000
 )
 
 
-save(pc_list, file = paste0(getwd(), "/simulationstudy_template/pc_list_for_testing.RData"))
+save(pc_list, file = paste0(getwd(), "/simulationstudy_template/pc_list_for_testing_tower.RData"))
 
 ## END OF DOC
