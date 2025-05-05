@@ -1,4 +1,7 @@
-
+#'
+#'
+#'
+#' @export
 
 
 eval.calc_auc = function(pc_list, 
@@ -139,5 +142,5 @@ eval.calc_auc = function(pc_list,
   
 }
 
-tests = eval.calc_auc(pc_list)
-View(tests)
+# tests = eval.calc_auc(pc_list)
+# View(tests)

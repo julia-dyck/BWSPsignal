@@ -22,7 +22,7 @@
 #' credibilty interval/region for BWSP testing (see \link\code{bwsp_test}).
 #' @param cred.level A scalar or vector of credibility levels to be tried for construction
 #' of region of practical equivalence (ROPE) and posterior credibility interval (CI).
-#' @param sensitivity.option
+#' @param sensitivity.option A scalar or vector of sensitivity options to be tried for the BWSP test.
 #' @param reps The number of repetitions for each simulation scenario.
 #' @param batch.size The number of simulation repetitions to be saved in a batch
 #' @param batch.nr per default \code{reps/batch.size}; the number of batch files 
@@ -50,6 +50,7 @@
 #' out of "fgg", "ggg", "fll" and "lll",
 #' \item type of posterior credible interval, must be a subset out of "ETI" 
 #' (equal-tailed interval) and "HDI" (highest density interval).
+#' }
 #' 
 #' Batch saving is done to prevent losing simulation results in case of an
 #' interuption of simulation.
@@ -159,14 +160,14 @@ pc_list_testsetup = sim.setup_sim_pars(N = 500,
                                        adr.when.label = c("beginning", "middle"),
                                        adr.relsd = 0.05,
                                        study.period = 365,
-                                       
+
                                        tte.dist = c("w", "dw", "pgw"),
                                        prior.dist = c("gg", "ll"),
-                                       
+
                                        post.ci.type = c("ETI", "HDI"),
                                        cred.level = seq(0.5,0.95, by = 0.05),
                                        sensitivity.option = 1:3,
-                                       
+
                                        reps = 6, # additional parameters
                                        batch.size = 2,
                                        batch.nr = reps/batch.size,
