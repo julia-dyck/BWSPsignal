@@ -8,8 +8,6 @@ sim.setup_sim_pars(
   N,
   br,
   adr.rate,
-  adr.when,
-  adr.when.label,
   adr.relsd,
   study.period,
   tte.dist,
@@ -32,8 +30,6 @@ sim.setup_sim_pars(
 \item{br}{A scalar or vector of background rates.}
 
 \item{adr.rate}{A scalar or vector of adverse drug reaction rates.}
-
-\item{adr.when}{A scalar or vector of expected event times (relative number, e.g. 0.5 matches half of study period).}
 
 \item{adr.relsd}{A scalar or vector of relative standard deviations from the adverse drug reaction times.}
 
@@ -69,8 +65,6 @@ are saved.}
 
 \item{stanmod.iter}{The total number of iterations per chain (including warmup).}
 
-\item{adr.when.name}{A vector of description/short name of expected event times (ie. name of simulated truth)}
-
 \item{standmod.warmup}{The number of warmup iterations per chain.}
 }
 \description{
@@ -86,11 +80,9 @@ The set of tuning parameters consisting of the choice of the
 \enumerate{
 \item distribution chosen for the tte model, must be a subset out of "w", "dw"
 and pgw",
-\item prior belief about an adverse event being and adverse drug reaction, and if
-so, when it is expected to occur
-(this will trigger promts asking for prior means and standard deviations for
-all parameters reflecting that belief; have a look at our vignette about
-prior elicitation to formalize the prior belief),
+\item specification of prior means and standard deviations to reflect the
+prior belief about an expected event time toward the beginning/1st quarter,
+middle/2nd quarter or end/3rd quarter of the study period,
 prior distribution chosen for scale and shape parameters, must be a subset
 out of "fgg", "ggg", "fll" and "lll",
 \item type of posterior credible interval, must be a subset out of "ETI"

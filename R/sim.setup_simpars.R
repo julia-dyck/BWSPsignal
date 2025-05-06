@@ -8,8 +8,6 @@
 #' @param N A scalar or vector of sample sizes.
 #' @param br A scalar or vector of background rates.
 #' @param adr.rate A scalar or vector of adverse drug reaction rates.
-#' @param adr.when A scalar or vector of expected event times (relative number, e.g. 0.5 matches half of study period).
-#' @param adr.when.name A vector of description/short name of expected event times (ie. name of simulated truth)
 #' @param adr.relsd A scalar or vector of relative standard deviations from the adverse drug reaction times.
 #' @param study.period A scalar specifying the length of the study period.
 #' @param tte.dist A character string indicating the modelling approach. Options are
@@ -41,11 +39,9 @@
 #' \enumerate{
 #' \item distribution chosen for the tte model, must be a subset out of "w", "dw" 
 #' and pgw",
-#' \item prior belief about an adverse event being and adverse drug reaction, and if 
-#' so, when it is expected to occur
-#' (this will trigger promts asking for prior means and standard deviations for 
-#' all parameters reflecting that belief; have a look at our vignette about 
-#' prior elicitation to formalize the prior belief),
+#' \item specification of prior means and standard deviations to reflect the 
+#' prior belief about an expected event time toward the beginning/1st quarter,
+#' middle/2nd quarter or end/3rd quarter of the study period,
 #' prior distribution chosen for scale and shape parameters, must be a subset 
 #' out of "fgg", "ggg", "fll" and "lll",
 #' \item type of posterior credible interval, must be a subset out of "ETI" 
@@ -60,8 +56,6 @@
 sim.setup_sim_pars = function(N,                 # dgp parameters
                               br,                # |
                               adr.rate,          # |
-                              adr.when,          # |
-                              adr.when.label,    # |
                               adr.relsd,         # v
                               study.period,      # -
                               tte.dist,          # tuning parameters
@@ -79,17 +73,15 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               stanmod.warmup = 1000
 ){   
   
-  adr.when.label.df = data.frame(adr.when.label = c(adr.when.label), adr.when = c(adr.when))
-  
   dgp_pars = sim.setup_dgp_pars(N = N,
                                 br = br,
-                                adr.when,
+                                adr.when = c(0, 0.25, 0.5, 0.75), # fixed (reduce complexity)
                                 adr.rate = adr.rate,
                                 adr.relsd = adr.relsd,
                                 study.period = study.period)
   
   fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
-                                prior.belief = c("none", adr.when.label),
+                                prior.belief = c("none", "beginning", "middle", "end"), # fixed (matching adr.when)
                                 prior.dist = prior.dist,
                                 list.output = T)
   
@@ -103,8 +95,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                   resultpath = resultpath,
                   stanmod.chains = stanmod.chains,
                   stanmod.iter = stanmod.iter,
-                  stanmod.warmup = stanmod.warmup,
-                  adr.when.label = adr.when.label.df
+                  stanmod.warmup = stanmod.warmup
   )
   
   input_args = list(N = N, 

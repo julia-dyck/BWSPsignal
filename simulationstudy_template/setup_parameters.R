@@ -26,8 +26,6 @@
 pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),       # dgp parameters
                         br = 0.1,
                         adr.rate = c(0, 0.5, 1),
-                        adr.when.label = c("beginning", "middle", "end"),
-                        adr.when = c(0.25, 0.5, 0.75),
                         adr.relsd = 0.05,
                         study.period = 365,
                         
@@ -53,8 +51,6 @@ save(pc_list, file = "pc_list.RData")
 pc_list_testsetup = sim.setup_sim_pars(N = 500,
                                        br = 0.1,
                                        adr.rate = 0:1,
-                                       adr.when = c(0.25, 0.5),
-                                       adr.when.label = c("beginning", "middle"),
                                        adr.relsd = 0.05,
                                        study.period = 365,
                                        
