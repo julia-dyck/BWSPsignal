@@ -9,7 +9,7 @@ eval.calc_auc = function(pc_list,
                            {
   require(dplyr) # for the pipe operator
   
-  # 1. -------------------------------------------------------------------------
+  # 0. -------------------------------------------------------------------------
   #### load res table
   if (!exists("res")) { 
     # obtain res table
@@ -25,6 +25,10 @@ eval.calc_auc = function(pc_list,
   else{
     message("Object `res` loaded in current environment is used to extract effective sample sizes.")
   }
+  
+  # 1. -------------------------------------------------------------------------
+  #### add label for true adr status
+  res$lab = ifelse(res$adr.rate > 0, 1, 0) # 1 = ADR, 0 = no ADR)
   
   # 2. -------------------------------------------------------------------------
   #### add ropes for all bwsp tests to be performed
@@ -118,15 +122,14 @@ eval.calc_auc = function(pc_list,
     } # end of loop over cred.levels
   } # end of loop over options
 
-
   
   # 4. -------------------------------------------------------------------------
   #### calculate AUC for each simulation scenario (= one row of pc_list$pc_table)
   
-  ## control cases are not in there, as they are assigned to each ADR-positive
-  # scenario (pc.pos) when calculating the AUC
-  pc.pos = filter(pc_list$pc_table, adr.rate > 0) 
+  ## control cases are matched to each ADR-positive scenario for AUC calc
+  pc.pos = filter(pc_list$pc_table, adr.rate > 0) # only ADR-positive scenarios
   
+  # add description of deviance between prior belief and simulated truth
   prior.correctness = function(pc_row) {
     adr.when = pc_row[4]
     prior.belief = pc_row[9]
@@ -145,31 +148,78 @@ eval.calc_auc = function(pc_list,
                                               "no ADR assumed")))
     return(out)
   }
-  
-  deviance.prior = apply(pc.pos, 1, prior.correctness)
+  # add deviance to pc.pos
+  deviance.prior = apply(pc.pos, 1, prior.correctness) 
   pc.pos.ext = cbind(pc.pos, deviance.prior)
   
-  # number of tests to be performed
-  nr.combined.tests = length(grep("^bwsp_", names(res.ext))) 
-  
-  
-  # setup matrix for AUC results
-  aucs = matrix(rep(0, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
-  colnames(aucs) = paste0("auc", 1:nr.combined.tests)
-  
-  #add label column (binary indicating whether adr or none-adr scenario) to 
-  # identify
+  # add label column (binary indicating whether adr or none-adr scenario)
   res.ext = dplyr::mutate(res.ext, adr.label = ifelse(adr.rate > 0, 1, 0))
   
-  
-  ## HIER WEITER
-  
-  
-  grouping_vars = c("tte.dist", "prior.dist", "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "prior.belief")
+  # number of tests
+  nr.combined.tests = length(grep("^bwsp_", names(res.ext))) 
+
+ # grouping_vars = c("tte.dist", "prior.dist", "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "prior.belief")
   
   # Identify all bwsp_test result columns
   bwsp_cols = grep("^bwsp_", names(res.ext), value = TRUE)
   
+  # prep empty matrix for AUC results  
+  aucs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
+  colnames(aucs) = sub("^bwsp", "auc", bwsp_cols)
+  
+  # go through every ADR-positive scenario linked with control
+  for(i in 1:nrow(pc.pos)){
+    N_i = pc.pos$N[i]
+    br_i = pc.pos$br[i]
+    adr.rate_i = pc.pos$adr.rate[i]
+    adr.when_i = pc.pos$adr.when[i]
+    adr.relsd_i = pc.pos$adr.relsd[i]
+    # no study.period, as supposed to be only one value
+    tte.dist_i = pc.pos$tte.dist[i]
+    prior.dist_i = pc.pos$prior.dist[i]
+    prior.belief_i = pc.pos$prior.belief[i]
+    
+    # HIER WEITER
+    res.test = res.ext %>%
+      filter(.$adr.rate %in% c(0, adr.rate_i),
+             .$adr.when %in% c(NA, adr.when_i),
+             .$N == N_i,
+             .$br == br_i,
+             .$adr.relsd == adr.relsd_i,
+             .$tte.dist == tte.dist_i,
+             .$prior.dist == prior.dist_i,
+             .$prior.belief == prior.belief_i)
+    run.reps = nrow(res.test) # number of repetitions obtained for this scenario
+    if(run.reps == 2*pc_list$add$reps){
+      # set up labels and predictions in a matrix
+      labels = res.test$lab
+      for(testnr in 2:nr.combined.tests){
+        labels = cbind(labels, res.test$lab)
+      }
+      predictions = data.frame(res.test)[,314:(313 + nr.combined.tests)] %>%
+        as.matrix()
+      
+      # creating prediction object
+      pred.obj <- ROCR::prediction(predictions, labels)
+      # dann noch AUC berechnen
+      aucs[i,] = ROCR::performance(pred.obj, "auc") %>%
+        .@y.values %>%
+        as.numeric()
+      # later, if still of interest
+      #rocs = ROCR::performance(pred.obj, "tpr", "fpr") %>%
+      ###  plot(lwd = 2)
+    }
+    else{
+      aucs[i,] = rep(NA, nr.combined.tests)
+    }
+    
+    
+    
+    
+    
+    
+    
+  }
   
   
   
