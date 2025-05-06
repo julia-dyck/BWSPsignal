@@ -118,9 +118,6 @@ eval.calc_auc = function(pc_list,
     } # end of loop over cred.levels
   } # end of loop over options
 
-  
-  return(res.ext)
-  
 
   
   # 4. -------------------------------------------------------------------------
@@ -128,11 +125,33 @@ eval.calc_auc = function(pc_list,
   
   ## control cases are not in there, as they are assigned to each ADR-positive
   # scenario (pc.pos) when calculating the AUC
-  pc.pos = filter(pc_list$pc_table, adr.rate > 0) #TEST THAT
+  pc.pos = filter(pc_list$pc_table, adr.rate > 0) 
+  
+  prior.correctness = function(pc_row) {
+    adr.when = pc_row[4]
+    prior.belief = pc_row[9]
+    out = ifelse(adr.when == 0.25 && prior.belief == "beginning" ||
+                 adr.when == 0.5 && prior.belief == "middle" ||
+                 adr.when == 0.75 && prior.belief == "end", 
+                               "correct specification", 
+                               ifelse(adr.when == 0.25 && prior.belief == "middle" ||
+                                      adr.when == 0.5 && prior.belief == "beginning" ||
+                                      adr.when == 0.5 && prior.belief == "end" ||
+                                      adr.when == 0.75 && prior.belief == "middle",
+                                      "one quarter off",
+                                      ifelse(adr.when == 0.25 && prior.belief == "end" ||
+                                            adr.when == 0.75 && prior.belief == "beginning",
+                                             "two quarters off",
+                                              "no ADR assumed")))
+    return(out)
+  }
+  
+  deviance.prior = apply(pc.pos, 1, prior.correctness)
+  pc.pos.ext = cbind(pc.pos, deviance.prior)
   
   # number of tests to be performed
-  nr.combined.tests = length(grep("^bwsp_", names(res.ext))) #TEST THAT
-  # or nrow(pc_list$test)
+  nr.combined.tests = length(grep("^bwsp_", names(res.ext))) 
+  
   
   # setup matrix for AUC results
   aucs = matrix(rep(0, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
@@ -166,5 +185,5 @@ eval.calc_auc = function(pc_list,
   
 }
 
-# tests = eval.calc_auc(pc_list)
+# nr.test.opts = eval.calc_auc(pc_list)
 # View(tests)
