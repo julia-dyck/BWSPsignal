@@ -208,7 +208,9 @@ eval.calc_auc = function(pc_list)
   
   
   # 5. -------------------------------------------------------------------------
-  #### add scenario information to aucs
+  #### add info and reshape table format
+  
+  # add scenario information to aucs
   
   ## inner fct
   # add description of deviance between prior belief and simulated truth
@@ -232,13 +234,38 @@ eval.calc_auc = function(pc_list)
   }
   
   # add deviance to pc.pos (for grouped mean calculation later)
-  deviance.prior = apply(pc.pos, 1, prior.correctness) 
-  pc.pos = cbind(pc.pos, deviance.prior)
-  pc.rel = pc.pos[,]
+  dist.prior.to.truth = apply(pc.pos, 1, prior.correctness) 
+  pc.pos = cbind(pc.pos, dist.prior.to.truth)
   
   aucs = cbind(pc.pos, aucs)
 
-  return(aucs)
+  
+  # reshape to long format
+  auc_cols <- grep("^auc_", names(aucs), value = TRUE)
+  # Reshape
+  aucs_long <- reshape(
+    aucs[, c(setdiff(names(aucs), auc_cols), auc_cols)],
+    varying = auc_cols,
+    v.names = "auc",
+    timevar = "test_spec",
+    times = auc_cols,
+    direction = "long"
+  )
+  rownames(aucs_long) <- NULL
+  
+  # Extract post.ci.type, cred.level, and sensitivity.option from test_spec
+  aucs_long$post.ci.type = sub("^auc_([^_]+)_.*", "\\1", aucs_long$test_spec)
+  aucs_long$cred.level <- as.numeric(sub("^auc_[^_]+_([0-9\\.]+)_.*", "\\1", aucs_long$test_spec))
+  aucs_long$sensitivity.option <- as.integer(sub(".*opt([0-9]+)$", "\\1", aucs_long$test_spec))
+  
+  # select relevant columns:
+  aucs_long <- aucs_long[, c(
+    "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", 
+    "tte.dist", "prior.dist", "prior.belief", "dist.prior.to.truth",
+    "post.ci.type", "cred.level", "sensitivity.option", "auc"
+  )]
+  
+  return(aucs_long)
   
 }
 
