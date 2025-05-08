@@ -52,10 +52,10 @@ eval.eff_sample_sizes(pc_list, threshold = 10000)
    # (AUC: area under the ROC curve)
 
 # if already calculated and saved, load AUC results per scenario with
-load("eval_aucs.RData")
+load("aucs.RData")
 
 # else, calculate AUC per scenario with
-file.edit("eval_auc_calc.R")
+aucs = eval.calc_auc(pc_list)
 
 
 ## summarize AUC results (grouped averages) 
