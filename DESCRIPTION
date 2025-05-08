@@ -22,6 +22,7 @@ Imports:
     rstantools (>= 2.4.0),
     Rdpack,
     HDInterval,
+    ROCR,
     stats,
     graphics,
     dplyr,
