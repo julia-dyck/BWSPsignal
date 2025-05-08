@@ -186,12 +186,10 @@ eval.calc_auc = function(pc_list,
              (is.na(.$adr.when) | .$adr.when == adr.when_i),
              .$N == N_i,
              .$br == br_i,
-             #.$adr.relsd %in% c(NA, adr.relsd_i),
+             (is.na(.$adr.relsd) | .$adr.relsd == adr.relsd_i),
              .$tte.dist == tte.dist_i,
              .$prior.dist == prior.dist_i,
              .$prior.belief == prior.belief_i)
-    
-    return(res.test)
     
     run.reps = nrow(res.test) # number of repetitions obtained for this scenario
     if(run.reps == 2*pc_list$add$reps){
