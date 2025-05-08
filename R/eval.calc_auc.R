@@ -7,8 +7,8 @@
 #' @param pc_list A list containing simulation parameters, test settings, and output paths 
 #'   (see \code{\link{sim.setup_simpars}} for structure).
 #'
-#' @return A data frame with one row per ADR-positive simulation scenario and AUC values for 
-#'   each BWSP test configuration.
+#' @return A data frame with one row per ADR-positive simulation scenario, BWSP 
+#' test configuration and corresponding AUC value.
 #'
 #' @details The function performs BWSP tests across all specified posterior CI types, credibility levels, 
 #'   and sensitivity options for each simulation run, and calculates AUC using the `ROCR` package. 
