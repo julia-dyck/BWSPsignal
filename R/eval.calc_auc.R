@@ -1,5 +1,30 @@
+#' Calculate AUC of BWSP Test specifications 
 #'
+#' Calculates the area under curve (AUC) of the receiver operating characteristic
+#' (ROC) graph with one threshold \insertCite{fawcett2004,lloyd1998}{BWSPsignal} 
+#' for all combinations of BWSP test configurations defined in `pc_list$test`. 
 #'
+#' @param pc_list A list containing simulation parameters, test settings, and output paths 
+#'   (see \code{\link{sim.setup_simpars}} for structure).
+#'
+#' @return A data frame with one row per ADR-positive simulation scenario and AUC values for 
+#'   each BWSP test configuration.
+#'
+#' @details The function performs BWSP tests across all specified posterior CI types, credibility levels, 
+#'   and sensitivity options for each simulation run, and calculates AUC using the `ROCR` package. 
+#'   The AUCs are computed for each simulation scenario based on equal numbers of 
+#'   ADR and no-ADR scenarios.
+#'   Scenarios where the number of repetitions deviates from the targeted count 
+#'   (e.g. due to convergence issues) are returned with `NA` AUCs.
+#'   
+#'   The output table provides the base for a ranking of model and test configurations 
+#'   (see [fcts to be inserted here]).
+#'
+#' @seealso \code{\link{bwsp_test}}}
+#' 
+#' @references 
+#' \insertAllCited{}
+#' 
 #'
 #' @export
 
@@ -212,13 +237,7 @@ eval.calc_auc = function(pc_list)
   pc.rel = pc.pos[,]
   
   aucs = cbind(pc.pos, aucs)
-  
-  # add distance to truth as grouping variable 
-  
-  
-  # retain only relevant grouping variables
-  # grouping_vars = c("tte.dist", "prior.dist", "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "prior.belief")
-  
+
   return(aucs)
   
 }
