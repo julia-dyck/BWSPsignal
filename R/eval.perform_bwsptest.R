@@ -148,7 +148,7 @@ eval.calc_auc = function(pc_list,
                                               "no ADR assumed")))
     return(out)
   }
-  # add deviance to pc.pos
+  # add deviance to pc.pos (for grouped mean calculation later)
   deviance.prior = apply(pc.pos, 1, prior.correctness) 
   pc.pos.ext = cbind(pc.pos, deviance.prior)
   
@@ -167,6 +167,7 @@ eval.calc_auc = function(pc_list,
   aucs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
   colnames(aucs) = sub("^bwsp", "auc", bwsp_cols)
   
+  
   # go through every ADR-positive scenario linked with control
   for(i in 1:nrow(pc.pos)){
     N_i = pc.pos$N[i]
@@ -182,20 +183,26 @@ eval.calc_auc = function(pc_list,
     # HIER WEITER
     res.test = res.ext %>%
       filter(.$adr.rate %in% c(0, adr.rate_i),
-             .$adr.when %in% c(NA, adr.when_i),
+             (is.na(.$adr.when) | .$adr.when == adr.when_i),
              .$N == N_i,
              .$br == br_i,
-             .$adr.relsd == adr.relsd_i,
+             #.$adr.relsd %in% c(NA, adr.relsd_i),
              .$tte.dist == tte.dist_i,
              .$prior.dist == prior.dist_i,
              .$prior.belief == prior.belief_i)
+    
+    return(res.test)
+    
     run.reps = nrow(res.test) # number of repetitions obtained for this scenario
     if(run.reps == 2*pc_list$add$reps){
+      
       # set up labels and predictions in a matrix
       labels = res.test$lab
-      for(testnr in 2:nr.combined.tests){
+      return(labels)
+      for(testnr in 2:nr.combined.tests){ ### warum 2:nr.combined.tests?
         labels = cbind(labels, res.test$lab)
       }
+      return(labels)
       predictions = data.frame(res.test)[,314:(313 + nr.combined.tests)] %>%
         as.matrix()
       
@@ -235,5 +242,6 @@ eval.calc_auc = function(pc_list,
   
 }
 
-# nr.test.opts = eval.calc_auc(pc_list)
+# restest = eval.calc_auc(pc_list)
+# restest[,1:10]
 # View(tests)
