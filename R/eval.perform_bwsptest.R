@@ -4,8 +4,7 @@
 #' @export
 
 
-eval.calc_auc = function(pc_list, 
-                         dist.to.truth = sim.dist_to_truth_mat_default(pc_list))
+eval.calc_auc = function(pc_list)
                            {
   require(dplyr) # for the pipe operator
   
@@ -129,34 +128,9 @@ eval.calc_auc = function(pc_list,
   ## control cases are matched to each ADR-positive scenario for AUC calc
   pc.pos = filter(pc_list$pc_table, adr.rate > 0) # only ADR-positive scenarios
   
-  # add description of deviance between prior belief and simulated truth
-  prior.correctness = function(pc_row) {
-    adr.when = pc_row[4]
-    prior.belief = pc_row[9]
-    out = ifelse(adr.when == 0.25 && prior.belief == "beginning" ||
-                 adr.when == 0.5 && prior.belief == "middle" ||
-                 adr.when == 0.75 && prior.belief == "end", 
-                               "correct specification", 
-                               ifelse(adr.when == 0.25 && prior.belief == "middle" ||
-                                      adr.when == 0.5 && prior.belief == "beginning" ||
-                                      adr.when == 0.5 && prior.belief == "end" ||
-                                      adr.when == 0.75 && prior.belief == "middle",
-                                      "one quarter off",
-                                      ifelse(adr.when == 0.25 && prior.belief == "end" ||
-                                            adr.when == 0.75 && prior.belief == "beginning",
-                                             "two quarters off",
-                                              "no ADR assumed")))
-    return(out)
-  }
-  # add deviance to pc.pos (for grouped mean calculation later)
-  deviance.prior = apply(pc.pos, 1, prior.correctness) 
-  pc.pos.ext = cbind(pc.pos, deviance.prior)
-  
   # number of tests
   nr.combined.tests = length(grep("^bwsp_", names(res.ext))) 
 
- # grouping_vars = c("tte.dist", "prior.dist", "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "prior.belief")
-  
   # Identify all bwsp_test result columns
   bwsp_cols = grep("^bwsp_", names(res.ext), value = TRUE)
   
@@ -208,22 +182,45 @@ eval.calc_auc = function(pc_list,
   }
   
   
+  # 5. -------------------------------------------------------------------------
+  #### add scenario information to aucs
+  
+  ## inner fct
+  # add description of deviance between prior belief and simulated truth
+  prior.correctness = function(pc_row) {
+    adr.when = pc_row[4]
+    prior.belief = pc_row[9]
+    out = ifelse(adr.when == 0.25 && prior.belief == "beginning" ||
+                   adr.when == 0.5 && prior.belief == "middle" ||
+                   adr.when == 0.75 && prior.belief == "end", 
+                 "correct specification", 
+                 ifelse(adr.when == 0.25 && prior.belief == "middle" ||
+                          adr.when == 0.5 && prior.belief == "beginning" ||
+                          adr.when == 0.5 && prior.belief == "end" ||
+                          adr.when == 0.75 && prior.belief == "middle",
+                        "one quarter off",
+                        ifelse(adr.when == 0.25 && prior.belief == "end" ||
+                                 adr.when == 0.75 && prior.belief == "beginning",
+                               "two quarters off",
+                               "no ADR assumed")))
+    return(out)
+  }
+  
+  # add deviance to pc.pos (for grouped mean calculation later)
+  deviance.prior = apply(pc.pos, 1, prior.correctness) 
+  pc.pos = cbind(pc.pos, deviance.prior)
+  pc.rel = pc.pos[,]
+  
+  aucs = cbind(pc.pos, aucs)
+  
+  # add distance to truth as grouping variable 
   
   
+  # retain only relevant grouping variables
+  # grouping_vars = c("tte.dist", "prior.dist", "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "prior.belief")
   
   return(aucs)
   
-  
-  
-  # 5. -------------------------------------------------------------------------
-  #### add distance to truth as grouping variable 
+}
 
-  # distance to truth depending on matrix in argument distance  to truth:
-  
-  
-  
-} # END OF FCT
-
-# l = eval.calc_auc(pc_list)
-# label_mat[,1:10]
-# View(tests)
+## END OF DOC
