@@ -152,9 +152,6 @@ eval.calc_auc = function(pc_list,
   deviance.prior = apply(pc.pos, 1, prior.correctness) 
   pc.pos.ext = cbind(pc.pos, deviance.prior)
   
-  # add label column (binary indicating whether adr or none-adr scenario)
-  res.ext = dplyr::mutate(res.ext, adr.label = ifelse(adr.rate > 0, 1, 0))
-  
   # number of tests
   nr.combined.tests = length(grep("^bwsp_", names(res.ext))) 
 
@@ -180,7 +177,6 @@ eval.calc_auc = function(pc_list,
     prior.dist_i = pc.pos$prior.dist[i]
     prior.belief_i = pc.pos$prior.belief[i]
     
-    # HIER WEITER
     res.test = res.ext %>%
       filter(.$adr.rate %in% c(0, adr.rate_i),
              (is.na(.$adr.when) | .$adr.when == adr.when_i),
@@ -195,39 +191,27 @@ eval.calc_auc = function(pc_list,
     if(run.reps == 2*pc_list$add$reps){
       
       # set up labels and predictions in a matrix
-      labels = res.test$lab
-      return(labels)
-      for(testnr in 2:nr.combined.tests){ ### warum 2:nr.combined.tests?
-        labels = cbind(labels, res.test$lab)
-      }
-      return(labels)
-      predictions = data.frame(res.test)[,314:(313 + nr.combined.tests)] %>%
+      labels = matrix(res.test$lab, nrow = run.reps, ncol = nr.combined.tests, byrow = F)
+      predictions = data.frame(res.test)[,bwsp_cols] %>%
         as.matrix()
       
       # creating prediction object
       pred.obj <- ROCR::prediction(predictions, labels)
-      # dann noch AUC berechnen
+      # calculate AUCs
       aucs[i,] = ROCR::performance(pred.obj, "auc") %>%
         .@y.values %>%
         as.numeric()
-      # later, if still of interest
-      #rocs = ROCR::performance(pred.obj, "tpr", "fpr") %>%
-      ###  plot(lwd = 2)
     }
     else{
       aucs[i,] = rep(NA, nr.combined.tests)
     }
-    
-    
-    
-    
-    
-    
-    
   }
   
   
   
+  
+  
+  return(aucs)
   
   
   
@@ -238,8 +222,8 @@ eval.calc_auc = function(pc_list,
   
   
   
-}
+} # END OF FCT
 
-# restest = eval.calc_auc(pc_list)
-# restest[,1:10]
+# l = eval.calc_auc(pc_list)
+# label_mat[,1:10]
 # View(tests)
