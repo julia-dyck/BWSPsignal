@@ -2,7 +2,8 @@
 #'
 #' Calculates the area under curve (AUC) of the receiver operating characteristic
 #' (ROC) graph with one threshold \insertCite{fawcett2004,lloyd1998}{BWSPsignal} 
-#' for all combinations of BWSP test configurations defined in `pc_list$test`. 
+#' for all combinations of BWSP test configurations defined in `pc_list$test` and
+#' all simulated scenarios. 
 #'
 #' @param pc_list A list containing simulation parameters, test settings, and output paths 
 #'   (see \code{\link{sim.setup_simpars}} for structure).
@@ -18,9 +19,10 @@
 #'   (e.g. due to convergence issues) are returned with `NA` AUCs.
 #'   
 #'   The output table provides the base for a ranking of model and test configurations 
-#'   (see [fcts to be inserted here]).
+#'   based on the auc ( see \code{\link{eval.rank_auc}}).
 #'
-#' @seealso \code{\link{bwsp_test}}}
+#' @seealso \code{\link{bwsp_test}}
+#' @seealso \code{\link{eval.rank_auc}}
 #' 
 #' @references 
 #' \insertAllCited{}
@@ -177,14 +179,14 @@ eval.calc_auc = function(pc_list)
     prior.belief_i = pc.pos$prior.belief[i]
     
     res.test = res.ext %>%
-      filter(.$adr.rate %in% c(0, adr.rate_i),
-             (is.na(.$adr.when) | .$adr.when == adr.when_i),
-             .$N == N_i,
-             .$br == br_i,
-             (is.na(.$adr.relsd) | .$adr.relsd == adr.relsd_i),
-             .$tte.dist == tte.dist_i,
-             .$prior.dist == prior.dist_i,
-             .$prior.belief == prior.belief_i)
+      dplyr::filter((adr.rate == 0 | adr.rate == adr.rate_i),
+             (is.na(adr.when) | adr.when == adr.when_i),
+             N == N_i,
+             br == br_i,
+             (is.na(adr.relsd) | adr.relsd == adr.relsd_i),
+             tte.dist == tte.dist_i,
+             prior.dist == prior.dist_i,
+             prior.belief == prior.belief_i)
     
     run.reps = nrow(res.test) # number of repetitions obtained for this scenario
     if(run.reps == 2*pc_list$add$reps){

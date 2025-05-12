@@ -3,7 +3,7 @@
 #' Merges result table batches from simulation study obtained from using 
 #' \code{\link{sim.run}}.
 #'
-#' @param pc_list list of parameter combinations obtained from \code{\link{sim.setup_simpars}}
+#' @param pc_list list of parameter combinations obtained from \link{sim.setup_simpars}
 #' @param save if \code{TRUE} (default), merged table is saved in same path where batches are stored; 
 #' else, it is returned to global environment
 #' 
@@ -15,10 +15,8 @@
 #'       \item posterior summary statistics and percentiles (ie information on the 
 #'       posterior distribution) for each shape parameter and 
 #'       \item posterior credibility 
-#'       intervals (as specified in \code{$test} list element obtained from \code{\link{sim.setup_simpars}).
+#'       intervals (as specified in \code{$test} list element obtained from \link{sim.setup_simpars}).
 #'       }
-#'
-#'
 #' @export
 
 sim.merge_results = function(pc_list, save = T){
@@ -123,3 +121,5 @@ sim.merge_results = function(pc_list, save = T){
     return(res)
   }
 }
+
+## END OF DOC

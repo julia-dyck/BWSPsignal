@@ -11,13 +11,13 @@
 #' @param adr.relsd A scalar or vector of relative standard deviations from the adverse drug reaction times.
 #' @param study.period A scalar specifying the length of the study period.
 #' @param tte.dist A character string indicating the modelling approach. Options are
-#' \code{"w", "dw", "pgw"} (see also \link\code{fit_mod_tte}).
+#' \code{"w", "dw", "pgw"} (see also \link{fit_mod_tte}).
 #' @param prior.dist A character string indicating the prior distribution for the
 #' parameters of the pgW distribution. Options are 
-#' \code{"fg", "fl", "gg", "ll"} (see also \link\code{fit_mod_tte}).
+#' \code{"fg", "fl", "gg", "ll"} (see also \link{fit_mod_tte}).
 #' @param post.ci.type A character string indicating whether to extract equal tailed
 #' intervals (\code{"ETI"}) or highest posterior density intervals (\code{HDI}) as
-#' credibilty interval/region for BWSP testing (see \link\code{bwsp_test}).
+#' credibilty interval/region for BWSP testing (see \link{bwsp_test}).
 #' @param cred.level A scalar or vector of credibility levels to be tried for construction
 #' of region of practical equivalence (ROPE) and posterior credibility interval (CI).
 #' @param sensitivity.option A scalar or vector of sensitivity options to be tried for the BWSP test.
