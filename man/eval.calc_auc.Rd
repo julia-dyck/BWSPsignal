@@ -11,13 +11,14 @@ eval.calc_auc(pc_list)
 (see \code{\link{sim.setup_simpars}} for structure).}
 }
 \value{
-A data frame with one row per ADR-positive simulation scenario and AUC values for
-each BWSP test configuration.
+A data frame with one row per ADR-positive simulation scenario, BWSP
+test configuration and corresponding AUC value.
 }
 \description{
 Calculates the area under curve (AUC) of the receiver operating characteristic
 (ROC) graph with one threshold \insertCite{fawcett2004,lloyd1998}{BWSPsignal}
-for all combinations of BWSP test configurations defined in \code{pc_list$test}.
+for all combinations of BWSP test configurations defined in \code{pc_list$test} and
+all simulated scenarios.
 }
 \details{
 The function performs BWSP tests across all specified posterior CI types, credibility levels,
@@ -28,11 +29,13 @@ Scenarios where the number of repetitions deviates from the targeted count
 (e.g. due to convergence issues) are returned with \code{NA} AUCs.
 
 The output table provides the base for a ranking of model and test configurations
-(see \link{fcts to be inserted here}).
+based on the auc ( see \code{\link{eval.rank_auc}}).
 }
 \references{
 \insertAllCited{}
 }
 \seealso{
-\code{\link{bwsp_test}}}
+\code{\link{bwsp_test}}
+
+\code{\link{eval.rank_auc}}
 }
