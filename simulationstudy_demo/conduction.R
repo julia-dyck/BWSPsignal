@@ -10,6 +10,8 @@ library(BWSPsignal) # signal detection test & simulation fcts.
 setwd("simulationstudy_demo")
 
 ####  prior elicitation --------------------------------------------------------
+# try a few prior parameter combinations and see whether the resulting hazard 
+# roughly matches the prior belief about the hazard form and expected event time
 
 # set prior means for Weibull parameters (ie powershape = 1 always):
 365/4 * c(1,2,3) # expected event times under prior belief beginning, middle, end of study period
@@ -37,11 +39,28 @@ plot_pgw(scale = 180, shape = 1, powershape = 1)   # under prior belief "middle"
 plot_pgw(scale = 300, shape = 4, powershape = 1)   # under prior belief "end"
 
 # prior standard deviations for all parameters are set to 100
-
+# (can also be specified per parameter)
+pr.sds = 100
 
 
 
 #### specify parameter combinations for simulation study -----------------------
+
+fp_list = sim.priors_template(prior.sds = pr.sds) # setup prior template
+# fill in prior template with values chosen in prior elicitation
+fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
+fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
+
+fp_list$dw[,2] = c(1, 1, 180, 300) # scale prior means
+fp_list$dw[,4] = c(1, 0.207, 1, 4) # shape prior means
+fp_list$dw[,6] = c(1, 1, 100, 1)   # scale_c prior means
+fp_list$dw[,8] = c(1, 0.207, 4, 1) # shape_c prior means
+
+fp_list$pgw[,2] = c(1, 1, 20, 300) # scale prior means
+fp_list$pgw[,4] = c(1, 0.207, 5.5, 4) # shape prior means
+fp_list$pgw[,6] = c(1, 1, 14, 1) # powershape prior means
+
+fp_list # filled fitpars.list
 
 pc_list = sim.setup_sim_pars(N = c(500),
                              br = 0.1,
@@ -51,6 +70,7 @@ pc_list = sim.setup_sim_pars(N = c(500),
                              
                              tte.dist = c("w", "dw", "pgw"),
                              prior.dist = c("fl", "ll"),
+                             fitpars.list = fp_list,
                              
                              post.ci.type = c("ETI", "HDI"),
                              cred.level = seq(0.5,0.95, by = 0.05),
@@ -59,7 +79,7 @@ pc_list = sim.setup_sim_pars(N = c(500),
                              reps = 10, # additional parameters
                              batch.size = 2,
                              
-                             resultpath = paste0(getwd(), "/simulationstudy_demo/results"),
+                             resultpath = paste0(getwd(), "/simulationstudy_demo"),
                              stanmod.chains = 4,
                              stanmod.iter = 11000,
                              stanmod.warmup = 1000
