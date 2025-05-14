@@ -60,6 +60,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               study.period,      # -
                               tte.dist,          # tuning parameters
                               prior.dist,        # |
+                              fitpars.list = NULL, # |
                               post.ci.type,      # |
                               cred.level,        # v
                               sensitivity.option,# -
@@ -80,10 +81,13 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                                 adr.relsd = adr.relsd,
                                 study.period = study.period)
   
+  
+  
+  
   fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
                                 prior.belief = c("none", "beginning", "middle", "end"), # fixed (matching adr.when)
                                 prior.dist = prior.dist,
-                                list.output = T)
+                                fit_pars_list = fitpars.list)
   
   test_pars = sim.setup_test_pars(post.ci.type = post.ci.type,
                                   cred.level = cred.level,
@@ -105,7 +109,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                     adr.relsd = adr.relsd, 
                     study.period = study.period,
                     tte.dist = tte.dist, 
-                    prior.belief = c("none", adr.when.label), 
+                    prior.belief = c("none", "beginning", "middle", "end"), # fixed (matching adr.when)
                     prior.dist = prior.dist, 
                     post.ci.type = post.ci.type, 
                     cred.level = cred.level, 

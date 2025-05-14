@@ -8,7 +8,7 @@ sim.setup_fit_pars(
   tte.dist = c("w", "dw", "pgw"),
   prior.belief = c("none", "beginning", "middle", "end"),
   prior.dist = c("fg", "gg", "fl", "ll"),
-  list.output = F
+  fit_pars_list = NULL
 )
 }
 \description{
