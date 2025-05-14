@@ -101,8 +101,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
   input_args = list(N = N, 
                     br = br, 
                     adr.rate = adr.rate, 
-                    adr.when = adr.when,
-                    adr.when.label = adr.when.label,
+                    adr.when = c(0, 0.25, 0.5, 0.75), # fixed (reduce complexity)
                     adr.relsd = adr.relsd, 
                     study.period = study.period,
                     tte.dist = tte.dist, 
