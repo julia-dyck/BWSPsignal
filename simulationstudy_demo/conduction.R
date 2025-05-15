@@ -9,7 +9,13 @@ library(BWSPsignal) # signal detection test & simulation fcts.
 
 ####  prior elicitation --------------------------------------------------------
 # try a few prior parameter combinations and see whether the resulting hazard 
-# roughly matches the prior belief about the hazard form and expected event time
+# roughly matches the prior belief about the hazard form 
+
+# Expected event time can also be taken into account for some guidance, but 
+# should not be prioritized.
+# The reason is that we do not expect the model to accurately fit the hazard of the 
+# data, but only catch the rough form by distinguishing the cases
+# constant vs decreasing vs unimodal vs increasing hazard.
 
 # set prior means for Weibull parameters (ie powershape = 1 always):
 365/4 * c(1,2,3) # expected event times under prior belief beginning, middle, end of study period
@@ -36,15 +42,10 @@ plot_pgw(scale = 20, shape = 5.5, powershape = 14) # under prior belief "beginni
 plot_pgw(scale = 180, shape = 1, powershape = 1)   # under prior belief "middle"
 plot_pgw(scale = 300, shape = 4, powershape = 1)   # under prior belief "end"
 
-# prior standard deviations for all parameters are set to 100
-# (can also be specified per parameter)
-pr.sds = 100
-
-
 
 #### specify parameter combinations for simulation study -----------------------
 
-fp_list = sim.priors_template(prior.sds = pr.sds) # setup prior template
+fp_list = sim.priors_template(prior.sds = 10) # setup prior template
 # fill in prior template with values chosen in prior elicitation
 fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
 fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
@@ -85,6 +86,22 @@ pc_list = sim.setup_sim_pars(N = c(500),
 
 
 save(pc_list, file = paste0(getwd(), "/simulationstudy_demo/pc_list.RData"))
+
+
+#### test for issues in prior choice -------------------------------------------
+
+# test rope calculation given all prior distributions under none :
+qlnorm(p = c(0.1,0.9), meanlog = logprior_repar(1, 10)[1], sdlog = logprior_repar(1, 10)[2])
+qgamma(p = c(0.1,0.9), shape = gamprior_repar(1, 10)[1], rate = gamprior_repar(1, 10)[2])
+
+
+# pilot modelling 
+# to test for numerical issues in estimation given the chosen prior values under 
+# all prior distributions:
+dat = datagen_tte()
+
+
+
 
 #### run simulation study ------------------------------------------------------
 
