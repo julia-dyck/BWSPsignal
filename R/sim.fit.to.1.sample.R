@@ -44,11 +44,16 @@ sim.fit.to.1.sample = function(pc, pc_list){
                     warmup = pc_list$add$stanmod.warmup)
 
   ### extracting relevant statistics
-  stats = sim.stanfit.to.poststats(pc, 
-                                   stanfit.object = mod,
-                                   cred.niveaus = pc_list$input$cred.level
-                                   )
-
+  stats = tryCatch(
+    sim.stanfit.to.poststats(pc, 
+                             stanfit.object = mod,
+                             cred.niveaus = pc_list$input$cred.level
+    ),
+    error = function(e) {
+      return(NULL)
+    }
+  )
+  
   return(stats)
 
 }

@@ -29,28 +29,36 @@
 
 
 
-sim.repeat.1.scenario = function(pc, pc_list, batch.ind, save = T){
+sim.repeat.1.scenario = function(pc, pc_list, batch.ind, save = TRUE) {
   batch.size = pc_list$add$batch.size
   
+  # Run simulations, capturing NULLs from errors
+  res.batch.list = replicate(batch.size,
+                             sim.fit.to.1.sample(pc = pc, pc_list = pc_list),
+                             simplify = FALSE)
   
-  res.batch = t(replicate(batch.size,
-                          sim.fit.to.1.sample(pc = pc,
-                                              pc_list = pc_list),
-                          simplify = T)
-                )
+  # Filter out failed (NULL) results
+  res.batch.cleaned = Filter(Negate(is.null), res.batch.list)
+  
+  # Warn if any simulations failed
+  failed.count = batch.size - length(res.batch.cleaned)
+  if (failed.count > 0) {
+    warning(failed.count, " simulation(s) failed and were excluded.")
+  }
+  
+  # Combine results into a data frame
+  res.batch = do.call(rbind, res.batch.cleaned)
   res.batch = data.frame(res.batch)
   
-  if(save == T){
-    # save result
+  # Save or return
+  if (save) {
     path = pc_list$add$resultpath
-    filename = paste(c(pc, "bADR_sim", batch.ind, ".RData") ,collapse="_")
-    save(res.batch, file=paste0(path, "/", filename))
-  }
-  else{ # option for testing/developing
+    filename = paste(c(pc, "bADR_sim", batch.ind, ".RData"), collapse = "_")
+    save(res.batch, file = file.path(path, filename))
+  } else {
     return(res.batch)
   }
 }
-
 
 # # testing
 # repeated.runs = sim.repeat.1.scenario(pc = pc, pc_list = pc_list, batch.ind = 1, save = F)
