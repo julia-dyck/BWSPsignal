@@ -52,5 +52,16 @@ standat = tte2priordat_dw(dat, scale.mean = 180, scale.sd = 10, shape.mean = 1, 
                           scale_c.mean = 100, scale_c.sd = 10, shape_c.mean = 4, shape_c.sd = 10)
 mod = fit_mod_tte(datstan = standat, tte.dist = "dw", prior.dist = "fg") # WARNINGS about divergent transitions
 mod = fit_mod_tte(datstan = standat, tte.dist = "dw", prior.dist = "gg")
-mod = fit_mod_tte(datstan = standat, tte.dist = "dw", prior.dist = "fl")
+mod = fit_mod_tte(datstan = standat, tte.dist = "dw", prior.dist = "fl") # ERROR + WARNINGS
 mod = fit_mod_tte(datstan = standat, tte.dist = "dw", prior.dist = "ll")
+
+# test run for pgw
+# under "none" prior
+standat = tte2priordat_pgw(dat, scale.mean = 1, scale.sd = 10, shape.mean = 1, shape.sd = 10, 
+                            powershape.mean = 1, powershape.sd = 10)
+mod = fit_mod_tte(datstan = standat, tte.dist = "pgw", prior.dist = "fg")
+mod = fit_mod_tte(datstan = standat, tte.dist = "pgw", prior.dist = "gg")
+mod = fit_mod_tte(datstan = standat, tte.dist = "pgw", prior.dist = "fl")
+mod = fit_mod_tte(datstan = standat, tte.dist = "pgw", prior.dist = "ll")
+
+
