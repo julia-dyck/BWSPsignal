@@ -35,7 +35,6 @@ sim.stanfit.to.poststats = function(pc, stanfit.object, cred.niveaus = seq(0.5, 
   
   if(pc$tte.dist == "w"){
     obj = stanfit.object
-    obj = stanfit.object
     
     # extract running time
     run.min = sum(rstan::get_elapsed_time(obj))/60 # in minutes
