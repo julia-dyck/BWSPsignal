@@ -22,7 +22,7 @@ library(BWSPsignal) # signal detection test & simulation fcts.
 plot_pgw(scale = 1, shape = 1, powershape = 1)     # under prior belief "none"
 plot_pgw(scale = 1, shape = 0.207, powershape = 1) # under prior belief "beginning"
 plot_pgw(scale = 180, shape = 1, powershape = 1)   # under prior belief "middle" (cannot create a unimodal form)
-plot_pgw(scale = 10, shape = 450, powershape = 1)   # under prior belief "end"
+plot_pgw(scale = 300, shape = 4, powershape = 1)   # under prior belief "end"
 
 # set prior means for double Weibull setting:
 # uncensored Weibull parameters are set equal to Weibull parameters
@@ -68,7 +68,7 @@ pc_list = sim.setup_sim_pars(N = c(500),
                              study.period = 365,
                              
                              tte.dist = c("w", "dw", "pgw"),
-                             prior.dist = c("gg", "ll"),
+                             prior.dist = c("fl", "ll", "fg", "gg"),
                              fitpars.list = fp_list,
                              
                              post.ci.type = c("ETI", "HDI"),
