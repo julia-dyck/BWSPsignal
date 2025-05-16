@@ -57,7 +57,9 @@ sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
     if (dist %in% tte.dist) {
       df <- fit_pars_list[[dist]]
       df <- merge(dist_pc[dist_pc$tte.dist == dist, ], df, by = "prior.belief")
+      df$tte.dist <- as.character(df$tte.dist)
       df$prior.dist <- as.character(df$prior.dist)
+      df$prior.belief <- as.character(df$prior.belief)
       fit_pc[[dist]] <- df
     } else {
       fit_pc[[dist]] <- fit_pars_list[[dist]]
