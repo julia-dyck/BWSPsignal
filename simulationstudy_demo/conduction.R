@@ -111,7 +111,6 @@ sim.run(pc_list = pc_list)
 
 #### merge results -------------------------------------------------------------
 
-load("pc_list.RData")
 # merge result batches and save
 sim.merge_results(pc_list, save = T)
 # load merged results into environment
@@ -134,24 +133,11 @@ eval.eff_sample_sizes(pc_list, threshold = 10000)
 #### AUC performance -----------------------------------------------------------
 # (AUC: area under the ROC curve)
 
-# if already calculated and saved, load AUC results per scenario with
-load("aucs.RData")
-
-# else, calculate AUC per scenario with
-aucs = eval.calc_auc(pc_list)
+# calculate AUC per scenario with
+auc.df = eval.calc_auc(pc_list)
 
 
-## summarize AUC results (grouped averages) 
-
-## stratified wrt. all prior distributional choices:
-# ## average auc (over all scenarios)
-# ## average auc | conditional on correct prior "when"-specification
-file.edit("eval_auc_summary.R")
-
-## after investigation of running time and effective sample size:
-## focus on results with log-log-log as prior distributional choice
-file.edit("eval_auc_summary_lll.R")
-
-
-
+# AUC results (grouped averages over all tte & prior distributional choices)
+ranking = eval.rank_auc(auc.df)
+ranking
 ## END OF DOC
