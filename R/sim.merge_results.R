@@ -56,7 +56,6 @@ sim.merge_results = function(pc_list, save = T){
             # try merge as new row to existing part
             merged.res.w = dplyr::bind_rows(merged.res.w,
                                  sim.load.scenario(pc = pc_vect, wd= pc_list$add$resultpath, batchnr = ind.batch))
-            return(batch)
           },
           error=function(cond) {
             # if not, return a warning 
