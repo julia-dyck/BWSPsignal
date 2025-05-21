@@ -4,26 +4,18 @@
 \alias{sim.monitor.progress}
 \title{Monitor the progress of simulationstudy}
 \usage{
-sim.monitor.progress(
-  pc_table,
-  wd = "D:/J/Sciebo/bADR_simstudyres01",
-  batch_max = 10
-)
+sim.monitor.progress(pc_list)
 }
 \arguments{
-\item{pc_table}{data frame with the parameter combinations to be used for
-the simulation study}
-
-\item{wd}{working directory where the raw result files are stored}
-
-\item{batch_max}{planned number of batches (each batch contains 10 simulation
-runs)}
+\item{pc_list}{simulation study parameters; mainly used here are pc_list$pc_table,
+a data frame with all simulation scenarios and pc_list$add$reps stating the planned
+number of repetitions per scenario.}
 }
 \value{
 a vector with the number of successfully run simulations for each pc
 }
 \description{
-The function monitors the progress of the simulationstudy by going through
+The function monitors the progress of the simulation study by going through
 raw result files.
 This can be done to find the restarting point when the running of simulations
 was interrupted or to investigate which simulations could not be run

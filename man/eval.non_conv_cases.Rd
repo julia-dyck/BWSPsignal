@@ -12,11 +12,11 @@ eval.non_conv_cases(pc_list)
 \value{
 A data frame with the following columns:
 \itemize{
-\item \code{tte.dist}: The time-to-event distribution.
-\item \code{prior.dist}: The prior distribution.
-\item \code{total.notrun}: The total number of repetitions that were not run.
-\item \code{total.planned}: The total number of planned repetitions.
-\item \code{prop.notrun}: The proportion of repetitions that were not run.
+\item \code{tte.dist}: The time-to-event distribution as grouping factor.
+\item \code{prior.dist}: The prior distribution as grouping factor.
+\item \code{total.planned}: The total number of planned repetitions in this group.
+\item \code{total.notrun}: The total number of repetitions that were not run in this group.
+\item \code{prop.notrun}: The proportion of repetitions that were not run in this group.
 }
 }
 \description{

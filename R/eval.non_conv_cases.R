@@ -10,11 +10,11 @@
 #' @param pc_list a list containing simulation parameters (see \code{\link{sim.setup_simpars}})
 #' 
 #' @return A data frame with the following columns:
-#'   - `tte.dist`: The time-to-event distribution.
-#'   - `prior.dist`: The prior distribution.
-#'   - `total.notrun`: The total number of repetitions that were not run.
-#'   - `total.planned`: The total number of planned repetitions.
-#'   - `prop.notrun`: The proportion of repetitions that were not run.
+#'   - `tte.dist`: The time-to-event distribution as grouping factor.
+#'   - `prior.dist`: The prior distribution as grouping factor.
+#'   - `total.planned`: The total number of planned repetitions in this group.
+#'   - `total.notrun`: The total number of repetitions that were not run in this group.
+#'   - `prop.notrun`: The proportion of repetitions that were not run in this group.
 #'
 #' 
 #' @export
@@ -29,20 +29,18 @@ eval.non_conv_cases = function(pc_list){
   batch.nr = pc_list$add$batch.nr
   
   # monitor progress: how many batches were successfully run/ not run in simulation?
-  prog = sim.monitor.progress(pc_table,
-                              wd = pc_list$add$resultpath,
-                              batch_max = pc_list$add$batch.nr)
+  prog = sim.monitor.progress(pc_list)
   
   # add information about planned, run and not run repetitions to pc table
-  pc_table = cbind(pc_table, reps.done = prog*batch.size, reps.planned = reps) 
+  pc_table = cbind(pc_table, reps.done = prog, reps.planned = reps) 
   pc_table = cbind(pc_table, reps.notrun = pc_table$reps.planned - pc_table$reps.done)
   
   
   # sum up numbers for groups depending on tte.dist, prior.dist
   nonconv.tab = dplyr::summarise(
     dplyr::group_by(pc_table, tte.dist, prior.dist),
-    total.notrun = sum(reps.notrun),
     total.planned = sum(reps.planned),
+    total.notrun = sum(reps.notrun),
     prop.notrun = total.notrun / total.planned,
     .groups = "drop"
   )
