@@ -4,7 +4,7 @@
 \alias{sim.repeat.1.scenario}
 \title{repeat simulation for one sample scenario (pc) in simulationstudy}
 \usage{
-sim.repeat.1.scenario(pc, pc_list, batch.ind, save = T)
+sim.repeat.1.scenario(pc, pc_list, batch.ind, save = TRUE)
 }
 \arguments{
 \item{pc}{vector containing the parameter combination for data generation and model fitting, namely:
