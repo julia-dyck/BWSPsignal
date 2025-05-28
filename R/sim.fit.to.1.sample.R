@@ -54,6 +54,12 @@ sim.fit.to.1.sample = function(pc, pc_list){
     }
   )
   
+  ### Frequentist model fitting (MLE)
+  # unconstrained starting value
+  mod = try(nlm(mllk_pgw, par = c(0,0,0), dat = ttedat, hessian = T))
+  # pgW test
+  rej.pgW = fwsp_test_pgW(mod, alphas = 1 - pc_list$input$cred.level)
+  
   return(stats)
 
 }
