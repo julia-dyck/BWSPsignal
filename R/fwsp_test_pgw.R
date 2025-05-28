@@ -52,3 +52,5 @@ fwsp_test_pgW = function(eo, alphas = c(1:10/1000, 2:10/100)){ # REWRITE TO DEPE
   }
 }
 
+
+# write an example to see output format
