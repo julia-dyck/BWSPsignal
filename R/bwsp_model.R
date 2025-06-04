@@ -1,9 +1,9 @@
 #' Fit stan model to time-to-event data
 #'
 #' Fits a Bayesian model to time-to-event data
-#' for the purpose of performing signal detection tests with \code{\link{bwsp_test}}
-#' based on the posterior samples of the shape parameters of the chosen model
-#' distribution.
+#' for the purpose of performing Weibull shape parameter signal detection tests 
+#' with \code{\link{bwsp_test}} based on the posterior samples of the shape 
+#' parameters of the chosen time-to-event data distribution.
 #' 
 #' The model can be a Weibull,
 #' a double Weibull ( estimating two Weibull models - one to the data as is & 
@@ -64,7 +64,7 @@
 #'                      powershape.mean = 1, 
 #'                      powershape.sd = 10)
 #' # fit a pgw model
-#' fit = fit_mod_tte(datstan = standat,  
+#' fit = bwsp_model(datstan = standat,  
 #'                   tte.dist = "pgw",         
 #'                   prior.dist = "ll",  
 #'                   chains = 4,
@@ -80,7 +80,7 @@
 #'
 #'
 
-fit_mod_tte = function(datstan, 
+bwsp_model = function(datstan, 
                        tte.dist = c("w", "dw", "pgw"),
                        prior.dist = c("fg","fl","gg","ll"),
                        chains = 4,

@@ -31,7 +31,7 @@
 #' The Bayesian Weibull shape parameter (WSP) test is a hypothesis test 
 #' for signal detection of adverse drug reactions.
 #' It is based on the principle of non-constant hazard function \insertCite{cornelius2012}{BWSPsignal}
-#' that can be formalized as the following hypotheses \insertCite{sauzet2024}{BWSPsignal}
+#' that can be formalized as the following hypotheses
 #' depending on the underlying model:
 #' 
 #' \tabular{lcc}{
@@ -116,7 +116,7 @@
 #'                       shape.mean = 1, 
 #'                       shape.sd = 10)
 #' 
-#' fit = fit_mod_tte(datstan = standat,      # fit the model
+#' fit = bwsp_model(datstan = standat,      # fit the model
 #'                   tte.dist = "w", 
 #'                   prior.dist = "ll",       
 #'                   chains = 4,              
@@ -158,7 +158,7 @@
 #'                       powershape.mean = 1, 
 #'                       powershape.sd = 10)
 #' 
-#' fit = fit_mod_tte(datstan = standat,     # fit the model
+#' fit = bwsp_model(datstan = standat,     # fit the model
 #'                   tte.dist = "pgw",
 #'                   prior.dist = "ll",       
 #'                   chains = 4,              
@@ -186,7 +186,7 @@
 
 bwsp_test = function(credregion, 
                      nullregion, 
-                     mod = c("w", "dw", "pgw"),
+                     mod = c("w", "dw", "pgw"), # rename to tte.dist everywhere
                      option = c(1,2,3)){
   
   # argument check for mod

@@ -1,8 +1,8 @@
 #' extract posterior summary statistics and credibility intervals
 #'
-#' Given a stanfit object returned by \code{\link{fit_pgw_tte}}, the function extracts statistics about the posterior
-#' distribution of the shape parameters nu and gamma.
-#' These shall give an overview and provide the basis for the adr signal detection
+#' Given a stanfit object returned by \code{\link{bwsp_model}}, the function extracts statistics about the posterior
+#' distribution of the shape parameters.
+#' These shall give an overview and provide the basis for the signal detection
 #' testing in one vector.
 #'
 #' @param stanfit.object the estimated stan model output

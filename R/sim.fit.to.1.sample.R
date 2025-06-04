@@ -36,7 +36,7 @@ sim.fit.to.1.sample = function(pc, pc_list){
   datstan = sim.fit.prep(ttedat = ttedat, pc = pc, pc_list = pc_list)
 
   ### Model fitting
-  mod = fit_mod_tte(datstan = datstan,
+  mod = bwsp_model(datstan = datstan,
                     tte.dist = pc$tte.dist,
                     prior.dist = pc$prior.dist,
                     chains = pc_list$add$stanmod.chains,
