@@ -5,7 +5,7 @@
 #' 
 #
 #' 
-#' @param mod.output estimation output resulting from `fit_mod_tte_freq(..., tte.dist = "pgw")`
+#' @param mod.output estimation output resulting from \code{\link{fwsp_model}}
 #' @param tte.dist character indicating the modelling approach; options are
 #' \code{"w", "dw", "pgw"}
 #' @param credlevel vector of credibility levels for the tests to be performed 
