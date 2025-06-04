@@ -74,7 +74,7 @@
 
 
 
-fit_tte_dw = function(datstan, 
+bwsp_model_dw = function(datstan, 
                      prior.dist = c("fg","fl","gg","ll"),
                      chains = 4,
                      iter = 11000,

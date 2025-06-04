@@ -51,7 +51,7 @@
 #'                            powershape.mean = 1, 
 #'                            powershape.sd = 10)
 #' # fit the model
-#' fit = fit_tte_pgw(datstan = standat,  # (be aware that posterior sample
+#' fit = bwsp_model_pgw(datstan = standat,  # (be aware that posterior sample
 #'                  prior.dist = "ll",   # is small for demo purpose)
 #'                  chains = 4,
 #'                  iter = 110,
@@ -63,7 +63,7 @@
 #'
 
 
-fit_tte_pgw = function(datstan, 
+bwsp_model_pgw = function(datstan, 
                           prior.dist = c("fg","fl","gg","ll"),
                           chains = 4,
                           iter = 11000,

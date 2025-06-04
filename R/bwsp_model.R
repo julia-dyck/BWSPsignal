@@ -87,21 +87,21 @@ bwsp_model = function(datstan,
                        iter = 11000,
                        warmup = 1000){
   if(tte.dist == "w"){
-    fit = fit_tte_w(datstan = datstan,
+    fit = bwsp_model_w(datstan = datstan,
                     prior.dist = prior.dist,
                     chains = chains,
                     iter = iter,
                     warmup = warmup)
   }
   else if(tte.dist == "dw"){
-    fit = fit_tte_dw(datstan = datstan,
+    fit = bwsp_model_dw(datstan = datstan,
                      prior.dist = prior.dist,
                      chains = chains,
                      iter = iter,
                      warmup = warmup)
   }
   else if(tte.dist == "pgw"){
-    fit = fit_tte_pgw(datstan = datstan,
+    fit = bwsp_model_pgw(datstan = datstan,
                       prior.dist = prior.dist,
                       chains = chains,
                       iter = iter,

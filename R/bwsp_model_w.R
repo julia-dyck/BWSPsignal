@@ -45,7 +45,7 @@
 #'                          shape.mean = 1, 
 #'                          shape.sd = 10)
 #' # fit the model
-#' fit = fit_tte_w(datstan = standat,  # (be aware that posterior sample
+#' fit = bwsp_model_w(datstan = standat,  # (be aware that posterior sample
 #'                  prior.dist = "ll",   # is small for demo purpose)
 #'                  chains = 4,
 #'                  iter = 110,
@@ -57,7 +57,7 @@
 #'
 
 
-fit_tte_w = function(datstan, 
+bwsp_model_w = function(datstan, 
                      prior.dist = c("fg","fl","gg","ll"),
                      chains = 4,
                      iter = 11000,
