@@ -44,7 +44,7 @@ Weibull family.
 The Bayesian Weibull shape parameter (WSP) test is a hypothesis test
 for signal detection of adverse drug reactions.
 It is based on the principle of non-constant hazard function \insertCite{cornelius2012}{BWSPsignal}
-that can be formalized as the following hypotheses \insertCite{sauzet2024}{BWSPsignal}
+that can be formalized as the following hypotheses
 depending on the underlying model:
 
 \tabular{lcc}{
