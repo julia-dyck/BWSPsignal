@@ -1,13 +1,14 @@
-#' Minus-log-Likelihood for pgW
+#' Minus-log-Likelihood for pgW distribution
 #' 
-#' Minus-log-likelihood function of the pgw distribution for time-to-event data.
-#' To be used with `nlm` or similar optimization functions for maximul likelihood estimation.
+#' Minus-log-likelihood function of the power generalized Weibull distribution 
+#' for time-to-event data.
+#' To be used with `nlm` or similar optimization functions for maximum likelihood estimation.
 #' 
 #' @param par vector of pgw parameters (scale, shape, powershape)
-#' @param dat dataframe containing tte data
+#' @param dat data frame containing tte data
 #' 
 #' 
-#' # @return minus-log-likelihood value given the parameters and the data
+#' @return minus-log-likelihood value given the parameters and the data
 #' 
 #' @export
 
