@@ -49,7 +49,7 @@ eval.calc_auc = function(pc_list)
     })
   }
   else{
-    message("Object `res` loaded in current environment is used to extract effective sample sizes.")
+    message("Object `res` loaded in current environment is used to calculate aucs.")
   }
   
   # 1. -------------------------------------------------------------------------
