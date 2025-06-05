@@ -7,7 +7,7 @@
 fwsp_test_dw(mod.output, credlevel = 1 - c(1:10/1000, 2:10/100))
 }
 \arguments{
-\item{mod.output}{estimation output resulting from \code{fit_mod_tte_freq(..., tte.dist = "w")}}
+\item{mod.output}{estimation output resulting from \code{fwsp_model(..., tte.dist = "w")}}
 
 \item{credlevel}{vector of credibility levels for the tests to be performed}
 }

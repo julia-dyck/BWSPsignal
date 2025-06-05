@@ -5,7 +5,7 @@
 #' 
 #' 
 #' 
-#' @param mod.output estimation output resulting from `fit_mod_tte_freq(..., tte.dist = "w")`
+#' @param mod.output estimation output resulting from `fwsp_model(..., tte.dist = "w")`
 #' @param credlevel vector of credibility levels for the tests to be performed
 #' 
 #' @return A vector containing the test results for each credibility level.
@@ -30,7 +30,7 @@ fwsp_test_dw = function(mod.output, credlevel = 1 - c(1:10/1000, 2:10/100)){
      !all(c("uncens", "cens") %in% names(mod.output)) ||
      !inherits(mod.output$uncens, "summary.survreg") ||
      !inherits(mod.output$cens, "summary.survreg")){
-    stop("Argument mod.output must be a list with elements 'uncens' and 'cens' containing \n summary.survreg objects returned by fit_mod_tte_freq(..., tte.dist = 'dw').")
+    stop("Argument mod.output must be a list with elements 'uncens' and 'cens' containing \n summary.survreg objects returned by fwsp_model(..., tte.dist = 'dw').")
   }
   
   test.w.inside = function(alpha, survreg.obj){
