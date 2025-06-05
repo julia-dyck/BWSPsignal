@@ -44,6 +44,6 @@ fwsp_test = function(mod.output, tte.dist = c("w", "dw", "pgw"), credlevel = 1 -
   }
   
   # name each vector entry according to the credibility level
-  names(testres) = paste0("fwsp_", credlevel)
+  names(testres) = paste0("fwsp_", tte.dist, "_", credlevel)
   return(testres)
 }
