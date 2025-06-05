@@ -41,13 +41,13 @@ for the data censored at half of the observation period.}
 }
 \description{
 Setup of prior specifications and reformated time-to-event
-data set as a list suitable for model fitting with \code{\link{fit_tte_dw}}.
+data set as a list suitable for model fitting with \code{\link{bwsp_model}}.
 }
 \details{
 The function converts time-to-event data and prior specifications for location ('.mean') and
 precision ('.sd') of the double Weibull parameters
 to a suitable format for \code{rstan} model fitting
-which is performed within \code{\link{fit_tte_dw}}.
+which is performed within \code{\link{bwsp_model}}.
 
 Prior means suitable to reflect the prior belief can be found by plotting the
 hazard and estimating the expected event time under different parameter combinations

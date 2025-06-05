@@ -16,7 +16,7 @@ information necessary for simulation study}
 }
 \value{
 A list containing all information to be inserted as \code{datstan}
-argument into the \code{\link{fit_mod_tte}} function.
+argument into the \code{\link{bwsp_model}} function.
 }
 \description{
 Formatting of simulated data generated with \code{\link{datagen_tte}} as

@@ -128,7 +128,7 @@ standat = tte2priordat_w(dat = tte,   # reformat the data
                       shape.mean = 1, 
                       shape.sd = 10)
 
-fit = fit_mod_tte(datstan = standat,      # fit the model
+fit = bwsp_model(datstan = standat,      # fit the model
                   tte.dist = "w", 
                   prior.dist = "ll",       
                   chains = 4,              
@@ -170,7 +170,7 @@ standat = tte2priordat_pgw(dat = tte,          # reformat the data
                       powershape.mean = 1, 
                       powershape.sd = 10)
 
-fit = fit_mod_tte(datstan = standat,     # fit the model
+fit = bwsp_model(datstan = standat,     # fit the model
                   tte.dist = "pgw",
                   prior.dist = "ll",       
                   chains = 4,              

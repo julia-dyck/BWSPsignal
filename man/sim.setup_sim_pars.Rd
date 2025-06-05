@@ -37,11 +37,11 @@ sim.setup_sim_pars(
 \item{study.period}{A scalar specifying the length of the study period.}
 
 \item{tte.dist}{A character string indicating the modelling approach. Options are
-\code{"w", "dw", "pgw"} (see also \link{fit_mod_tte}).}
+\code{"w", "dw", "pgw"} (see also \link{bwsp_model}).}
 
 \item{prior.dist}{A character string indicating the prior distribution for the
 parameters of the pgW distribution. Options are
-\code{"fg", "fl", "gg", "ll"} (see also \link{fit_mod_tte}).}
+\code{"fg", "fl", "gg", "ll"} (see also \link{bwsp_model}).}
 
 \item{post.ci.type}{A character string indicating whether to extract equal tailed
 intervals (\code{"ETI"}) or highest posterior density intervals (\code{HDI}) as

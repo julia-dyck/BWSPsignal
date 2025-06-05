@@ -11,7 +11,7 @@ fwsp_test(
 )
 }
 \arguments{
-\item{mod.output}{estimation output resulting from \code{fit_mod_tte_freq(..., tte.dist = "pgw")}}
+\item{mod.output}{estimation output resulting from \code{\link{fwsp_model}}}
 
 \item{tte.dist}{character indicating the modelling approach; options are
 \code{"w", "dw", "pgw"}}
