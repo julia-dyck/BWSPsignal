@@ -72,7 +72,7 @@ pc_list = sim.setup_sim_pars(N = c(500),
                              fitpars.list = fp_list,
                              
                              post.ci.type = c("ETI", "HDI"),
-                             cred.level = seq(0.5,0.95, by = 0.05),
+                             cred.level = c(seq(0.5,0.9, by = 0.05), seq(0.91,0.99, by = 0.01), seq(0.991, 0.999, by = 0.001)), 
                              sensitivity.option = 1:3,
                              
                              reps = 10, # additional parameters
