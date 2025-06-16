@@ -43,8 +43,8 @@ sim.fit.to.1.sample = function(pc, pc_list){
                     iter = pc_list$add$stanmod.iter,
                     warmup = pc_list$add$stanmod.warmup)
 
-  ### extracting relevant statistics
-  stats = tryCatch(
+  ### extracting Bayesian posterior statistics
+  bstats = tryCatch(
     sim.stanfit.to.poststats(pc, 
                              stanfit.object = mod,
                              cred.niveaus = pc_list$input$cred.level
@@ -62,9 +62,11 @@ sim.fit.to.1.sample = function(pc, pc_list){
   mod.pgw = fwsp_model(dat = ttedat, tte.dist = "pgw", censor = 365)
   test.pgw = fwsp_test(mod.pgw, tte.dist = "pgw", credlevel = pc_list$input$cred.level)
   
-  ftests = c(test.w, test.dw, test.pgw)
   
-  return(list(bstats = stats, ftests = ftests)) # return both stats and frequentist test results
+  ### formatting frequentist results
+  ftests = c(pc, test.w, test.dw, test.pgw)
+  
+  return(list(bstats = bstats, ftests = ftests)) # return both Bayesian posterior stats and frequentist test results
 
 }
 

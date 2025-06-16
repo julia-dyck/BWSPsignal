@@ -29,7 +29,7 @@
 
 
 
-sim.repeat.1.scenario = function(pc, pc_list, batch.ind, save = TRUE) {
+sim.repeat.1.scenario = function(pc, pc_list, batch.ind) {
   batch.size = pc_list$add$batch.size
   
   # Run simulations, capturing NULLs from errors
@@ -37,27 +37,27 @@ sim.repeat.1.scenario = function(pc, pc_list, batch.ind, save = TRUE) {
                              sim.fit.to.1.sample(pc = pc, pc_list = pc_list),
                              simplify = FALSE)
   
-  # Filter out failed (NULL) results
-  res.batch.cleaned = Filter(Negate(is.null), res.batch.list)
+  ## bstats
+  res.batch = do.call(rbind, lapply(res.batch.list, function(x) x$bstats))
+  # Convert list-columns to atomic vectors (flatten the structure)
+  res.batch = as.data.frame(lapply(res.batch, unlist), stringsAsFactors = FALSE)
   
-  # Warn if any simulations failed
-  failed.count = batch.size - length(res.batch.cleaned)
-  if (failed.count > 0) {
-    warning(failed.count, " simulation(s) failed and were excluded.")
-  }
+  # Save bstats batch
+  path = pc_list$add$resultpath
+  filename = paste(c(pc, "bADR_sim", batch.ind, ".RData"), collapse = "_")
+  save(res.batch, file = file.path(path, filename))
   
-  # Combine results into a data frame
-  res.batch = do.call(rbind, res.batch.cleaned)
+  ## ftests 
+  res.batch = do.call(rbind, lapply(res.batch.list, function(x) x$ftests))
+  # Convert list-columns to atomic vectors (flatten the structure)
+  res.batch = data.frame(res.batch)
+  res.batch = lapply(res.batch, unlist)
   res.batch = data.frame(res.batch)
   
-  # Save or return
-  if (save) {
-    path = pc_list$add$resultpath
-    filename = paste(c(pc, "bADR_sim", batch.ind, ".RData"), collapse = "_")
-    save(res.batch, file = file.path(path, filename))
-  } else {
-    return(res.batch)
-  }
+  # Save ftests batch
+  path = pc_list$add$resultpath
+  filename = paste(c(pc, "fADR_sim", batch.ind, ".RData"), collapse = "_")
+  save(res.batch, file = file.path(path, filename))
 }
 
 # # testing
