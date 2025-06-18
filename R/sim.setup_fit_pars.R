@@ -20,7 +20,7 @@ sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
     return(invisible(NULL))
   }
   
-  for (dist_name in tte_dist) {
+  for (dist_name in tte.dist) {
     df <- fit_pars_list[[dist_name]]
     
     if (!is.data.frame(df)) {

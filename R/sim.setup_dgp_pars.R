@@ -31,6 +31,9 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   if(any(adr.rate == 0)){ # separate control and adr>0 cases
     adr.rate = adr.rate[-(which(adr.rate==0))]
   }
+  if(any(adr.when == 0)){ # separate control and adr.when>0 cases
+    adr.when = adr.when[-(which(adr.when==0))]
+  }
   
   else{ # its fine, but notify user that control case is necessary
     warning("Control case (adr.rate = 0) necessary for simulation study. Value 0 is added to specified vector adr.rate.")
@@ -40,7 +43,7 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
   pc_with_adr = expand.grid(        
     study.period = study.period,
     adr.relsd = adr.relsd,
-    adr.when = adr.when,
+    adr.when = adr.when, # remove 0 from adr.when,
     adr.rate = adr.rate, # remove 0 from adr.rate,         
     br = br,
     N = N

@@ -130,15 +130,18 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
              " times. "))
   
   pc_table = list()  # parameters in table format s.t. one row = one simulation scenario
-  if(!is.null(fit_pars$w)){
+  if(nrow(fit_pars$w) > 0){
     pc_table$w = dplyr::cross_join(dgp_pars, fit_pars$w[c("tte.dist", "prior.dist", "prior.belief")])
   }
-  if(!is.null(fit_pars$dw)){
+  else{pc_table$w = NULL}
+  if(nrow(fit_pars$dw) > 0){
     pc_table$dw = dplyr::cross_join(dgp_pars, fit_pars$dw[c("tte.dist", "prior.dist", "prior.belief")])
   }
-  if(!is.null(fit_pars$pgw)){
+  else{pc_table$dw = NULL}
+  if(nrow(fit_pars$pgw) > 0){
     pc_table$pgw = dplyr::cross_join(dgp_pars, fit_pars$pgw[c("tte.dist", "prior.dist", "prior.belief")])
   }
+  else{pc_table$pgw = NULL}
   pc_table = dplyr::bind_rows(pc_table)
   
   
