@@ -20,8 +20,7 @@ sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),
     return(invisible(NULL))
   }
   
-  expected_tte_dists <- intersect(c("w", "dw", "pgw"), names(fit_pars_list))
-  for (dist_name in expected_tte_dists) {
+  for (dist_name in tte_dist) {
     df <- fit_pars_list[[dist_name]]
     
     if (!is.data.frame(df)) {
