@@ -45,67 +45,62 @@ plot_pgw(scale = 300, shape = 4, powershape = 1)   # under prior belief "end"
 
 #### specify parameter combinations for simulation study -----------------------
 
-fp_list = sim.priors_template(prior.sds = 10) # setup prior template
+fp_list = sim.priors_template(tte.dist = c("pgw"),
+                              prior.sds = 10) # setup prior template
 # fill in prior template with values chosen in prior elicitation
-fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
-fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
 
-fp_list$dw[,2] = c(1, 1, 180, 300) # scale prior means
-fp_list$dw[,4] = c(1, 0.207, 1, 4) # shape prior means
-fp_list$dw[,6] = c(1, 1, 100, 1)   # scale_c prior means
-fp_list$dw[,8] = c(1, 0.207, 4, 1) # shape_c prior means
+# fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
+# fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
+# 
+# fp_list$dw[,2] = c(1, 1, 180, 300) # scale prior means
+# fp_list$dw[,4] = c(1, 0.207, 1, 4) # shape prior means
+# fp_list$dw[,6] = c(1, 1, 100, 1)   # scale_c prior means
+# fp_list$dw[,8] = c(1, 0.207, 4, 1) # shape_c prior means
 
-fp_list$pgw[,2] = c(1, 1, 20, 300) # scale prior means
-fp_list$pgw[,4] = c(1, 0.207, 5.5, 4) # shape prior means
-fp_list$pgw[,6] = c(1, 1, 14, 1) # powershape prior means
+fp_list$pgw[,2] = c(1, 1, 20, 300)   # scale prior means
+fp_list$pgw[,4] = c(1, 0.207, 5.5, 4)# shape prior means
+fp_list$pgw[,6] = c(1, 1, 14, 1)     # powershape prior means
 
 fp_list # filled fitpars.list
 
-pc_list = sim.setup_sim_pars(N = c(500),
+pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),
                              br = 0.1,
-                             adr.rate = 0:1,
+                             adr.rate = c(0, 0.5, 1),
                              adr.relsd = 0.05,
                              study.period = 365,
                              
-                             tte.dist = c("w", "dw", "pgw"),
-                             prior.dist = c("fl", "ll", "fg", "gg"),
+                             tte.dist = c("pgw"),
+                             prior.dist = c("ll", "gg"),
                              fitpars.list = fp_list,
                              
                              post.ci.type = c("ETI", "HDI"),
                              cred.level = c(seq(0.5,0.9, by = 0.05), seq(0.91,0.99, by = 0.01), seq(0.991, 0.999, by = 0.001)), 
                              sensitivity.option = 1:3,
                              
-                             reps = 10, # additional parameters
-                             batch.size = 2,
+                             reps = 100, # additional parameters
+                             batch.size = 10,
                              
-                             resultpath = paste0(getwd(), "/simulationstudy_demo"),
+                             resultpath = "C:/Users/jdyck/sciebo/bADR/simulation_comparative",
                              stanmod.chains = 4,
                              stanmod.iter = 11000,
                              stanmod.warmup = 1000
 )
 
 
-save(pc_list, file = paste0(getwd(), "/simulationstudy_demo/pc_list.RData"))
+save(pc_list, file = paste0(pc_list$add$resultpath, "/pc_list.RData"))
 
 
 #### test for issues in prior choice -------------------------------------------
 
-# test rope calculation given all prior distributions under none :
+# test rope calculation given all prior distributions under none (exemplary for
+# credibility level 90%):
 qlnorm(p = c(0.1,0.9), meanlog = logprior_repar(1, 10)[1], sdlog = logprior_repar(1, 10)[2])
 qgamma(p = c(0.1,0.9), shape = gamprior_repar(1, 10)[1], rate = gamprior_repar(1, 10)[2])
 
 
-# pilot modelling 
-# to test for numerical issues in estimation given the chosen prior values under 
-# all prior distributions:
-dat = datagen_tte()
-
-
-
-
 #### run simulation study ------------------------------------------------------
 
-load(paste0(getwd(), "/simulationstudy_demo/pc_list.RData"))
+load(paste0(pc_list$add$resultpath, "/pc_list.RData"))
 sim.run(pc_list = pc_list)
 
 
