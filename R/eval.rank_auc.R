@@ -20,8 +20,7 @@
 #' time on AUC for the optimal fit and BWSP test specification given a correct 
 #' specification of prior belief.
 #' \item \code{$effect.of.dist.prior.to.truth}: Effect of distance of prior belief 
-#' to true adr.when on AUC for the optimal fit and BWSP test specification given a 
-#' correct specification of prior belief.
+#' to true adr.when on AUC for the optimal fit and BWSP test specification.
 #' }
 #' 
 #' 
@@ -88,8 +87,13 @@ eval.rank_auc = function(auc.df){
   # 3. Robustness wrt prior specification
   
   # Effect of distance of prior belief to true adr.when
-  auc.opti.dist.prior.to.truth = auc.opti %>% 
-    group_by(dist.prior.to.truth) %>% summarise(AUC = mean(auc), .groups = "drop")
+  auc.robu.dist.prior.to.truth = auc.df %>% 
+    filter(tte.dist == opti.tte.dist, 
+           post.ci.type == opti.post.ci.type,
+           cred.level == opti.cred.level,
+           sensitivity.option == opti.sensitivity.option) %>% 
+    group_by(dist.prior.to.truth) %>% 
+    summarise(AUC = mean(auc), .groups = "drop")
   
   out = list(ranking = auc.ranked,
              effect.of.N = auc.opti.N,
@@ -97,7 +101,7 @@ eval.rank_auc = function(auc.df){
              effect.of.adr.rate = auc.opti.adr.rate,
              effect.of.adr.when = auc.opti.adr.when,
              effect.of.adr.relsd = auc.opti.adr.relsd,
-             effect.of.dist.prior.to.truth = auc.opti.dist.prior.to.truth
+             effect.of.dist.prior.to.truth = auc.robu.dist.prior.to.truth
              )
   return(out)
   

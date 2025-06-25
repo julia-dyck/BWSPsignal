@@ -26,8 +26,7 @@ for the optimal fit and BWSP test specification given a correct specification of
 time on AUC for the optimal fit and BWSP test specification given a correct
 specification of prior belief.
 \item \code{$effect.of.dist.prior.to.truth}: Effect of distance of prior belief
-to true adr.when on AUC for the optimal fit and BWSP test specification given a
-correct specification of prior belief.
+to true adr.when on AUC for the optimal fit and BWSP test specification.
 }
 }
 \description{
