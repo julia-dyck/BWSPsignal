@@ -49,13 +49,13 @@ fp_list = sim.priors_template(tte.dist = c("pgw"),
                               prior.sds = 10) # setup prior template
 # fill in prior template with values chosen in prior elicitation
 
-# fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
-# fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
-# 
-# fp_list$dw[,2] = c(1, 1, 180, 300) # scale prior means
-# fp_list$dw[,4] = c(1, 0.207, 1, 4) # shape prior means
-# fp_list$dw[,6] = c(1, 1, 100, 1)   # scale_c prior means
-# fp_list$dw[,8] = c(1, 0.207, 4, 1) # shape_c prior means
+fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
+fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
+
+fp_list$dw[,2] = c(1, 1, 180, 300) # scale prior means
+fp_list$dw[,4] = c(1, 0.207, 1, 4) # shape prior means
+fp_list$dw[,6] = c(1, 1, 100, 1)   # scale_c prior means
+fp_list$dw[,8] = c(1, 0.207, 4, 1) # shape_c prior means
 
 fp_list$pgw[,2] = c(1, 1, 20, 300)   # scale prior means
 fp_list$pgw[,4] = c(1, 0.207, 5.5, 4)# shape prior means
@@ -63,24 +63,24 @@ fp_list$pgw[,6] = c(1, 1, 14, 1)     # powershape prior means
 
 fp_list # filled fitpars.list
 
-pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),
+pc_list = sim.setup_sim_pars(N = c(500),
                              br = 0.1,
-                             adr.rate = c(0, 0.5, 1),
+                             adr.rate = c(0, 1),
                              adr.relsd = 0.05,
                              study.period = 365,
                              
-                             tte.dist = c("pgw"),
-                             prior.dist = c("ll", "gg"),
+                             tte.dist = c("w", "dw", "pgw"),
+                             prior.dist = c("fl", "ll", "fg", "gg"),
                              fitpars.list = fp_list,
                              
                              post.ci.type = c("ETI", "HDI"),
-                             cred.level = c(seq(0.5,0.9, by = 0.05), seq(0.91,0.99, by = 0.01), seq(0.991, 0.999, by = 0.001)), 
+                             cred.level = seq(0.5,0.9, by = 0.05), 
                              sensitivity.option = 1:3,
                              
-                             reps = 100, # additional parameters
-                             batch.size = 10,
+                             reps = 10, # additional parameters
+                             batch.size = 2,
                              
-                             resultpath = "C:/Users/jdyck/sciebo/bADR/simulation_comparative",
+                             resultpath = "C:/Users/jdyck/github_projects_office/BWSPsignal/simulationstudy_demo",
                              stanmod.chains = 4,
                              stanmod.iter = 11000,
                              stanmod.warmup = 1000
