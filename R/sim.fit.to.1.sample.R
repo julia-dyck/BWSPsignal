@@ -59,9 +59,19 @@ sim.fit.to.1.sample = function(pc, pc_list){
   test.w = fwsp_test(mod.w, tte.dist = "w", credlevel = pc_list$input$cred.level)
   mod.dw = fwsp_model(dat = ttedat, tte.dist = "dw", censor = 365)
   test.dw = fwsp_test(mod.dw,  tte.dist = "dw", credlevel = pc_list$input$cred.level)
-  mod.pgw = fwsp_model(dat = ttedat, tte.dist = "pgw", censor = 365)
-  test.pgw = fwsp_test(mod.pgw, tte.dist = "pgw", credlevel = pc_list$input$cred.level)
   
+  mod.pgw = tryCatch(
+    fwsp_model(dat = ttedat, tte.dist = "pgw", censor = 365),
+    error = function(e) {
+      return(NULL)
+    }
+  )
+  test.pgw = tryCatch(
+    fwsp_test(mod.pgw, tte.dist = "pgw", credlevel = pc_list$input$cred.level),
+    error = function(e) {
+      return(rep(NA, length(pc_list$input$cred.level)))
+    }
+  )
   
   ### formatting frequentist results
   ftests = c(pc, test.w, test.dw, test.pgw)
