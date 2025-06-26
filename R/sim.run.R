@@ -119,7 +119,7 @@ sim.run_parallel = function(pc_list, subset_ind = NULL) {
   pc_table_ext = dplyr::cross_join(pc_table, data.frame(batch_nr = 1:pc_list$add$batch.nr))
   
   # split table rows into list elements
-  pc_table_as_list = base::split(pc_table_ext, seq_len(nrow(pc_table_ext)))
+  pc_table_as_list = split(pc_table_ext, seq_len(nrow(pc_table_ext)))
   
   # Parallelized execution using furrr::future_walk
   furrr::future_walk(
@@ -128,9 +128,9 @@ sim.run_parallel = function(pc_list, subset_ind = NULL) {
       pc_vect = row[1:9]
       ind.batch = row$batch_nr
       
-      base::tryCatch({
+      tryCatch({
         sim.load.scenario(pc = pc_vect, wd = pc_list$add$resultpath, batchnr = ind.batch)
-        base::message("File exists.")
+        message("File exists.")
       },
       error = function(cond) {
         sim.repeat.1.scenario(
