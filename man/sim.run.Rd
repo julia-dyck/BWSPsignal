@@ -4,14 +4,32 @@
 \alias{sim.run}
 \title{run all simulation scenarios}
 \usage{
-sim.run(pc_list)
+sim.run(pc_list, subset_ind = NULL)
 }
 \arguments{
-\item{pc_list}{list of parameter combinations obtained from \link{\code{sim.setup_sim_pars}}
+\item{pc_list}{list of parameter combinations obtained from \link{\code{sim.setup_sim_pars}}}
+
+\item{subset_ind}{vector of integers specifying which rows of \code{pc_list$pc_table}
+to be considered in simulation runs
 
 Runs simulations for all data generating processes, model and test alternatives
 specified in pc_list. If part of the simulations is already run and saved in the
-detemined resultpath, only missing simulations are run and saved.}
+detemined resultpath, only missing simulations are run and saved.
+
+#' @example
+\dontrun{
+ 
+ 
+ 
+ sim.run(pc_list, subset_ind = NULL) # run all simulations
+ 
+ 
+ # To run only a subset of simulation scenarios, specify the indices of the rows
+ # in pc_list$pc_table that you want to run. For example, to run the first 10 scenarios:
+ 
+ sim.run(pc_list, subset_ind = 1:10) # run first 10 simulation scenarios
+
+}}
 }
 \description{
 run all simulation scenarios
