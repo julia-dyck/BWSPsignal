@@ -4,7 +4,7 @@
 \alias{sim.load.scenario}
 \title{Load simulated scenario}
 \usage{
-sim.load.scenario(wd, pc, batchnr = 1)
+sim.load.scenario(wd, pc, batchnr = 1, bayes = T)
 }
 \arguments{
 \item{wd}{working directory were ALL the simulation files lie}
@@ -13,12 +13,15 @@ sim.load.scenario(wd, pc, batchnr = 1)
 
 \item{batchnr}{nr of files (batches) containing simulation output based on the
 same pc}
+
+\item{bayes}{logical argument to specify whether to load the simulation results
+obtained with Bayesian (, if \code{bayes = T}; default) or frequentist estimation
+approach}
 }
 \value{
-Returns a table with counts on run simulation scenarios
+A dataframe \code{res.batch}.
 }
 \description{
 Load all simulations of a simulated scenario (obtained using
-\code{\link{sim.repeat.1.scenario}}) and return number of run
-simulations.
+\code{\link{sim.repeat.1.scenario}}).
 }
