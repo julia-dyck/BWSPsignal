@@ -21,3 +21,22 @@ Simulation runs can be parallelized using the \link\link{future} package.}
 \description{
 run all or subset of simulation scenarios
 }
+\examples{
+\dontrun{
+ # install.packages(future)
+ future::plan(multisession) # or another plan strategy
+ sim.run_parallel(pc_list, subset_ind = NULL) # run all simulations
+ 
+ 
+ # To run only a subset of simulation scenarios, specify the indices of the rows
+ # in pc_list$pc_table that you want to run. For example, to run the first 10 scenarios:
+ 
+ # install.packages(future)
+ future::plan(multisession) # or another plan strategy
+ sim.run_parallel(pc_list, subset_ind = 1:10) # run first 10 simulation scenarios
+}
+
+
+
+
+}

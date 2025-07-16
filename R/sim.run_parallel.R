@@ -11,10 +11,8 @@
 #' 
 #' Simulation runs can be parallelized using the \link[future] package.
 #' 
-#' @example 
-#'  \dontrun{
-#'  
-#'  
+#' @examples 
+#' \dontrun{
 #'  # install.packages(future)
 #'  future::plan(multisession) # or another plan strategy
 #'  sim.run_parallel(pc_list, subset_ind = NULL) # run all simulations
@@ -26,7 +24,6 @@
 #'  # install.packages(future)
 #'  future::plan(multisession) # or another plan strategy
 #'  sim.run_parallel(pc_list, subset_ind = 1:10) # run first 10 simulation scenarios
-#' 
 #' }
 #' 
 #' 
