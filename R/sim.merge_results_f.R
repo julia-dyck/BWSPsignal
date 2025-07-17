@@ -21,105 +21,35 @@
 
 sim.merge_results_f = function(pc_list, save = T){
   
-  ### ADJUST HERE FOR TABLE FORMAT
+  pc_table = pc_list$pc_table
+  pc_table_ext = dplyr::cross_join(pc_table, data.frame(batch_nr = 1:pc_list$add$batch.nr))
   
-  # prepare ncols of merged df per tte.dist
-  ncols_parvect = 10
-  ncols_post.summary = 5 # per shape parameter
-  ncols_eti = 2*length(pc_list$input$cred.level) # per shape parameter
-  ncols_hdi = 2*length(pc_list$input$cred.level) # per shape parameter
-  ncols_per = 101 # per shape parameter
-  ncols_per.shape = ncols_post.summary + ncols_eti + ncols_hdi +  ncols_per
-  
-  # for w
-  ncols = ncols_parvect + 1*ncols_per.shape
-  # setup empty df
-  merged.res.w =  data.frame()
-  
-  # adjust ncols of df (no. shapes depends on tte.dist)
-  ncols = ncols_parvect + 2*ncols_per.shape # 2 = length(nu1, nu2)
-  # setup empty df
-  merged.res.dw =  data.frame()
-  
-  # for pgw
-  ncols = ncols_parvect + 2*ncols_per.shape # 2 = length(nu, ga)
-  # setup empty df
-  merged.res.pgw = data.frame()
-  
-  # go through all pc combinations in pc_list:
-  
-  for(ind.dgp in 1:nrow(pc_list$dgp)){      # go through dgp scenarios (per row)
-    if(nrow(pc_list$fit$w)>0){
-      for(ind.fitw in 1:nrow(pc_list$fit$w)){ # go through weibull fitting parameter combis
-        # set up one dgp+fit combination
-        pc_vect = sim.gather_pc_vect(pc_list$dgp[ind.dgp,], pc_list$fit$w[ind.fitw,c("tte.dist", "prior.dist", "prior.belief")])
-        # go through batches for one parcombi
-        for(ind.batch in 1:pc_list$add$batch.nr){
-          tryCatch({
-            # try merge as new row to existing part
-            merged.res.w = dplyr::bind_rows(merged.res.w,
-                                            sim.load.scenario(pc = pc_vect, wd= pc_list$add$resultpath, batchnr = ind.batch))
-          },
-          error=function(cond) {
-            # if not, return a warning 
-            warning(paste0(paste(c(pc_vect, "bADR_sim", ind.batch, ".RData") ,collapse="_"), " not found."))
-          }
-          )
-          
-        }
-      }
-    }
+  res_f = data.frame(matrix(nrow = 0, ncol = ncol(pc_list$pc_table) + 3*length(pc_list$input$cred.level)))
+  colnames(res_f) = c(colnames(pc_list$pc_table), 
+                      paste0("fwsp_", rep(c("w", "dw", "pgw"), each = length(pc_list$input$cred.level)), "_", rep(pc_list$input$cred.level, times = 3))
+  )
+
+  for(ind in 1:nrow(pc_table_ext)){
+    pc_vect = pc_table_ext[ind, 1:9]
+    ind.batch = pc_table_ext[ind, 10]
     
-    if(nrow(pc_list$fit$dw)>0){
-      for(ind.fitdw in 1:nrow(pc_list$fit$dw)){
-        # set up one dgp+fit combination
-        pc_vect = sim.gather_pc_vect(pc_list$dgp[ind.dgp,], pc_list$fit$dw[ind.fitdw,c("tte.dist", "prior.dist", "prior.belief")])
-        # go through batches for one parcombi
-        for(ind.batch in 1:pc_list$add$batch.nr){
-          tryCatch({
-            # try merge as new row to existing part
-            merged.res.dw = dplyr::bind_rows(merged.res.dw,
-                                             sim.load.scenario(pc = pc_vect, wd= pc_list$add$resultpath, batchnr = ind.batch))
-          },
-          error=function(cond) {
-            # if not, return a warning 
-            warning(paste0(paste(c(pc_vect, "bADR_sim", ind.batch, ".RData") ,collapse="_"), " not found."))
-          }
-          )
-        }
-      }
-    }
-    
-    if(nrow(pc_list$fit$pgw)>0){
-      for(ind.fitpgw in 1:nrow(pc_list$fit$pgw)){
-        # set up one dgp+fit combination
-        pc_vect = sim.gather_pc_vect(pc_list$dgp[ind.dgp,], pc_list$fit$pgw[ind.fitpgw,c("tte.dist", "prior.dist", "prior.belief")])
-        # go through batches for one parcombi
-        for(ind.batch in 1:pc_list$add$batch.nr){
-          tryCatch({
-            # try merge as new row to existing part
-            merged.res.pgw = dplyr::bind_rows(merged.res.pgw,
-                                              sim.load.scenario(pc = pc_vect, wd= pc_list$add$resultpath, batchnr = ind.batch))
-          },
-          error=function(cond) {
-            # if not, return a warning 
-            warning(paste0(paste(c(pc_vect, "bADR_sim", ind.batch, ".RData") ,collapse="_"), " not found."))
-          }
-          )
-        }
-      }
-    }
+    tryCatch({
+      batch = sim.load.scenario(pc = pc_vect, wd = pc_list$add$resultpath, batchnr = ind.batch, bayes = F)
+      res_f = rbind(res_f, batch)
+      message("File exists.")
+    },
+    error = function(cond) {
+      message("File does not exist.")
+    })
   }
   
-  # merge output for all tte.dists
-  res_f = dplyr::bind_rows(merged.res.w, merged.res.dw, merged.res.pgw)
   if(save == T){
     # save result
     path = pc_list$add$resultpath
     filename = "res_f.RData"
-    save(res, file=paste0(path, "/", filename))
+    save(res_f, file=paste0(path, "/", filename))
   }
-  else{
+  if(save == F){
     return(res_f)
   }
 }

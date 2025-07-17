@@ -6,6 +6,8 @@
 #' @param pc_list list of parameter combinations obtained from \link{sim.setup_simpars}
 #' @param save if \code{TRUE} (default), merged table is saved in same path where batches are stored; 
 #' else, it is returned to global environment
+#' @param bayes \code{TRUE} (default), results of Bayesian simulations are merged, 
+#' else, results of frequentist simulations are merged.
 #' 
 #' @return Dataframe containing all simulation results (one repetition of one 
 #' simulation scenario per row). The 
@@ -19,14 +21,13 @@
 #'       }
 #' @export
 
-sim.merge_results = function(pc_list, save = T, framework = c("bwsp", "fwsp")){
+sim.merge_results = function(pc_list, save = T, bayes = T){
   
-  framework = match.arg(framework)
-  
-  if(framework == "bwsp"){
+  if(bayes == T){
     sim.merge_results_b(pc_list = pc_list, save = save)
+    
   }
-  else if(framework == "fwsp"){
+  else if(bayes == F){
     sim.merge_results_f(pc_list = pc_list, save = save)
   }
 }

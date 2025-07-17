@@ -4,13 +4,16 @@
 \alias{sim.merge_results}
 \title{Merge result table batches from simulation study}
 \usage{
-sim.merge_results(pc_list, save = T, framework = c("bwsp", "fwsp"))
+sim.merge_results(pc_list, save = T, bayes = T)
 }
 \arguments{
 \item{pc_list}{list of parameter combinations obtained from \link{sim.setup_simpars}}
 
 \item{save}{if \code{TRUE} (default), merged table is saved in same path where batches are stored;
 else, it is returned to global environment}
+
+\item{bayes}{\code{TRUE} (default), results of Bayesian simulations are merged,
+else, results of frequentist simulations are merged.}
 }
 \value{
 Dataframe containing all simulation results (one repetition of one
