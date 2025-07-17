@@ -39,7 +39,7 @@ eval.calc_auc_f = function(pc_list)
     # obtain res table
     tryCatch({
       load(paste0(pc_list$add$resultpath, "/res_f.RData"))
-      message("res_b.RData successfully loaded")
+      message("res_f.RData successfully loaded")
     }, error = function(cond) {
       sim.merge_results(pc_list, save = T, bayes = F)
       load(paste0(pc_list$add$resultpath, "/res_f.RData"))
@@ -53,24 +53,23 @@ eval.calc_auc_f = function(pc_list)
   # 1. -------------------------------------------------------------------------
   #### add label for true adr status
   res_f$lab = ifelse(res_f$adr.rate > 0, 1, 0) # 1 = ADR, 0 = no ADR)
+  res.ext = res_f
   
-  
-  ## AB HIER AN FWSP ANPASSEN
-  # 4. -------------------------------------------------------------------------
+  # 2. -------------------------------------------------------------------------
   #### calculate AUC for each simulation scenario (= one row of pc_list$pc_table)
   
   ## control cases are matched to each ADR-positive scenario for AUC calc
   pc.pos = filter(pc_list$pc_table, adr.rate > 0) # only ADR-positive scenarios
   
   # number of tests
-  nr.combined.tests = length(grep("^bwsp_", names(res.ext))) 
+  nr.combined.tests = length(grep("^fwsp_", names(res.ext))) 
   
-  # Identify all bwsp_test result columns
-  bwsp_cols = grep("^bwsp_", names(res.ext), value = TRUE)
+  # Identify all fwsp_test result columns
+  fwsp_cols = grep("^fwsp_", names(res.ext), value = TRUE)
   
   # prep empty matrix for AUC results  
   aucs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
-  colnames(aucs) = sub("^bwsp", "auc", bwsp_cols)
+  colnames(aucs) = sub("^fwsp", "auc", fwsp_cols)
   
   
   # go through every ADR-positive scenario linked with control
@@ -82,8 +81,8 @@ eval.calc_auc_f = function(pc_list)
     adr.relsd_i = pc.pos$adr.relsd[i]
     # no study.period, as supposed to be only one value
     tte.dist_i = pc.pos$tte.dist[i]
-    prior.dist_i = pc.pos$prior.dist[i]
-    prior.belief_i = pc.pos$prior.belief[i]
+    prior.dist_i = pc.pos$prior.dist[i]      ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
+    prior.belief_i = pc.pos$prior.belief[i]  ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
     
     res.test = res.ext %>%
       dplyr::filter((adr.rate == 0 | adr.rate == adr.rate_i),
@@ -92,21 +91,23 @@ eval.calc_auc_f = function(pc_list)
                     br == br_i,
                     (is.na(adr.relsd) | adr.relsd == adr.relsd_i),
                     tte.dist == tte.dist_i,
-                    prior.dist == prior.dist_i,
-                    prior.belief == prior.belief_i)
+                    prior.dist == prior.dist_i,     ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
+                    prior.belief == prior.belief_i) ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
     
     run.reps = nrow(res.test) # number of repetitions obtained for this scenario
-    if(run.reps == 2*pc_list$add$reps){
+    if(run.reps == 2*pc_list$add$reps){  ## EVTL ANPASSEN (mehr als 200 Reps)
       
       # set up labels and predictions in a matrix
       labels = matrix(res.test$lab, nrow = run.reps, ncol = nr.combined.tests, byrow = F)
-      predictions = data.frame(res.test)[,bwsp_cols] %>%
+      predictions = data.frame(res.test)[,fwsp_cols] %>%
         as.matrix()
-      
+      return(predictions)  # HIER WEITER ###########################################
+      ## NA handling bei pgw: in pvalue paper schauen, was mit NA gemacht wurde
+      ## evtl für w, dw und pgw aufsplitten und bei pgw na rows killen
       # creating prediction object
       pred.obj <- ROCR::prediction(predictions, labels)
       # calculate AUCs
-      aucs[i,] = ROCR::performance(pred.obj, "auc") %>%
+      aucs[i,] = ROCR::performance(pred.obj, "auc") %>%  ## HIER VLLT OPTION FÜR FP; TP EINBAUEN; UM ROC CURVE DARAUS ZU PLOTTEN (ARGUMENT DAFÜR EINRICHTEN)
         .@y.values %>%
         as.numeric()
     }
@@ -114,7 +115,7 @@ eval.calc_auc_f = function(pc_list)
       aucs[i,] = rep(NA, nr.combined.tests)
     }
   }
-  
+  return(aucs)
   
   # 5. -------------------------------------------------------------------------
   #### add info and reshape table format
