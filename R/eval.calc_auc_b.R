@@ -31,30 +31,30 @@
 #' @export
 
 
-eval.calc_auc = function(pc_list)
+eval.calc_auc_b = function(pc_list)
                            {
   require(dplyr) # for the pipe operator
   
   # 0. -------------------------------------------------------------------------
   #### load res table
-  if (!exists("res")) { 
+  if (!exists("res_b")) { 
     # obtain res table
     tryCatch({
-      load(paste0(pc_list$add$resultpath, "/res.RData"))
-      message("res.RData successfully loaded")
+      load(paste0(pc_list$add$resultpath, "/res_b.RData"))
+      message("res_b.RData successfully loaded")
     }, error = function(cond) {
       sim.merge_results(pc_list, save = T)
-      load(paste0(pc_list$add$resultpath, "/res.RData"))
+      load(paste0(pc_list$add$resultpath, "/res_b.RData"))
       message(" batches merged and loaded")
     })
   }
   else{
-    message("Object `res` loaded in current environment is used to calculate aucs.")
+    message("Object `res_b` loaded in current environment is used to calculate aucs.")
   }
   
   # 1. -------------------------------------------------------------------------
   #### add label for true adr status
-  res$lab = ifelse(res$adr.rate > 0, 1, 0) # 1 = ADR, 0 = no ADR)
+  res_b$lab = ifelse(res_b$adr.rate > 0, 1, 0) # 1 = ADR, 0 = no ADR)
   
   # 2. -------------------------------------------------------------------------
   #### add ropes for all bwsp tests to be performed
@@ -74,7 +74,7 @@ eval.calc_auc = function(pc_list)
   # remove cols unnecessary? (at the same time, they do not hurt)
   rope.infos = cbind(rope.infos, ropes)
   
-  res.ext = merge(res, rope.infos, by = c("tte.dist", "prior.dist"), all.x = TRUE) #merge
+  res.ext = merge(res_b, rope.infos, by = c("tte.dist", "prior.dist"), all.x = TRUE) #merge
   
   # 3. -------------------------------------------------------------------------
   #### perform all bwsp tests and save binary test result per row and per test specification as new res cols
