@@ -94,61 +94,33 @@ eval.calc_auc_f = function(pc_list){
                     prior.belief == prior.belief_i) ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
     
     run.reps = nrow(res.test) # number of repetitions obtained for this scenario
-    #if(run.reps == 2*pc_list$add$reps){  ## EVTL ANPASSEN (mehr als 200 Reps)  ## HIER WEITER: ABFRAGE VERURSACHT NAs 8-> überlegen, wie ich das händle
-      print(run.reps)
-      # set up labels and predictions in a matrix
-      labels = matrix(res.test$lab, nrow = run.reps, ncol = nr.combined.tests, byrow = F)
-      predictions = data.frame(res.test)[,fwsp_cols] %>% as.matrix()
-      predictions[is.na(predictions)] = 0 # NA handling pgWSP test 
-                                          # (nonconverged mod -> interpreted as no signal)
-      
-      # creating prediction object
-      pred.obj <- ROCR::prediction(predictions, labels)
-      
-      # calculate AUCs
-      aucs[i,] = ROCR::performance(pred.obj, "auc") %>%  ## HIER VLLT OPTION FÜR FP; TP EINBAUEN; UM ROC CURVE DARAUS ZU PLOTTEN (ARGUMENT DAFÜR EINRICHTEN)
-        .@y.values %>%
-        as.numeric()
-    #}
-    #else{
-    #  aucs[i,] = rep(NA, nr.combined.tests)
-    #}
+    
+    print(run.reps)
+    # set up labels and predictions in a matrix
+    labels = matrix(res.test$lab, nrow = run.reps, ncol = nr.combined.tests, byrow = F)
+    predictions = data.frame(res.test)[,fwsp_cols] %>% as.matrix()
+    pred.with.na = predictions
+    predictions[is.na(predictions)] = 0 # NA handling pgWSP test 
+                                        # (nonconverged mod -> interpreted as no signal)
+    
+    # creating prediction object
+    pred.obj <- ROCR::prediction(predictions, labels)
+    
+    # calculate AUCs
+    aucs[i,] = ROCR::performance(pred.obj, "auc") %>%  ## HIER VLLT OPTION FÜR FP; TP EINBAUEN; UM ROC CURVE DARAUS ZU PLOTTEN (ARGUMENT DAFÜR EINRICHTEN)
+      .@y.values %>%
+      as.numeric()
   }
-  return(list(predictions, aucs))
-  
-  
   
   # 5. -------------------------------------------------------------------------
   #### add info and reshape table format
   
-  # add scenario information to aucs
-  
-  ## inner fct
-  # add description of deviance between prior belief and simulated truth
-  prior.correctness = function(pc_row) {
-    adr.when = pc_row[4]
-    prior.belief = pc_row[9]
-    out = ifelse(adr.when == 0.25 && prior.belief == "beginning" ||
-                   adr.when == 0.5 && prior.belief == "middle" ||
-                   adr.when == 0.75 && prior.belief == "end", 
-                 "correct specification", 
-                 ifelse(adr.when == 0.25 && prior.belief == "middle" ||
-                          adr.when == 0.5 && prior.belief == "beginning" ||
-                          adr.when == 0.5 && prior.belief == "end" ||
-                          adr.when == 0.75 && prior.belief == "middle",
-                        "one quarter off",
-                        ifelse(adr.when == 0.25 && prior.belief == "end" ||
-                                 adr.when == 0.75 && prior.belief == "beginning",
-                               "two quarters off",
-                               "no ADR assumed")))
-    return(out)
-  }
-  
-  # add deviance to pc.pos (for grouped mean calculation later)
-  dist.prior.to.truth = apply(pc.pos, 1, prior.correctness) 
-  pc.pos = cbind(pc.pos, dist.prior.to.truth)
-  
   aucs = cbind(pc.pos, aucs)
+  return(aucs)
+  
+  # TODO: delete tte.dist, prior.dist, prior.belief col 
+  # TODO: after long format: add new tte.dist col (extract with grep)
+  # MAYBE: add col with no. of tests going into the auc calculation? -> talk to Odile
   
   
   # reshape to long format
