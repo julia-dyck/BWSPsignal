@@ -59,7 +59,8 @@ eval.calc_auc_f = function(pc_list){
   
   ## control cases are matched to each ADR-positive scenario for AUC calc
   pc.pos = filter(pc_list$pc_table, adr.rate > 0) # only ADR-positive scenarios
-  
+  pc.pos = unique(pc.pos[,-(7:9)])  # remove prior.dist & prior.belief 
+                                    # (irrelevant in frequentist approach)
   # number of tests
   nr.combined.tests = length(grep("^fwsp_", names(res.ext))) 
   
@@ -70,6 +71,7 @@ eval.calc_auc_f = function(pc_list){
   aucs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
   colnames(aucs) = sub("^fwsp", "auc", fwsp_cols)
   
+  run.reps = c()
   
   # go through every ADR-positive scenario linked with control
   for(i in 1:nrow(pc.pos)){
@@ -79,23 +81,21 @@ eval.calc_auc_f = function(pc_list){
     adr.when_i = pc.pos$adr.when[i]
     adr.relsd_i = pc.pos$adr.relsd[i]
     # no study.period, as supposed to be only one value
-    tte.dist_i = pc.pos$tte.dist[i]
-    prior.dist_i = pc.pos$prior.dist[i]      ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
-    prior.belief_i = pc.pos$prior.belief[i]  ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
+    # no tte.dist, as w, dw and pgw are indicated in colnames
+    # no prior.dist, as irrelevant in frequentist modelling
+    # no prior.belief, as irrelevant in frequentist modelling
     
     res.test = res.ext %>%
       dplyr::filter((adr.rate == 0 | adr.rate == adr.rate_i),
                     (is.na(adr.when) | adr.when == adr.when_i),
                     N == N_i,
                     br == br_i,
-                    (is.na(adr.relsd) | adr.relsd == adr.relsd_i),
-                    tte.dist == tte.dist_i,
-                    prior.dist == prior.dist_i,     ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
-                    prior.belief == prior.belief_i) ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
+                    (is.na(adr.relsd) | adr.relsd == adr.relsd_i)
+                    )
     
-    run.reps = nrow(res.test) # number of repetitions obtained for this scenario
+    run.reps[i] = nrow(res.test) # number of repetitions obtained for this scenario
     
-    print(run.reps)
+    
     # set up labels and predictions in a matrix
     labels = matrix(res.test$lab, nrow = run.reps, ncol = nr.combined.tests, byrow = F)
     predictions = data.frame(res.test)[,fwsp_cols] %>% as.matrix()
@@ -111,14 +111,14 @@ eval.calc_auc_f = function(pc_list){
       .@y.values %>%
       as.numeric()
   }
-  
+
   # 5. -------------------------------------------------------------------------
-  #### add info and reshape table format
+  #### add info and reshape table forma
   
-  aucs = cbind(pc.pos, aucs)
+  
+  aucs = cbind(pc.pos, run.reps, aucs)
   return(aucs)
   
-  # TODO: delete tte.dist, prior.dist, prior.belief col 
   # TODO: after long format: add new tte.dist col (extract with grep)
   # MAYBE: add col with no. of tests going into the auc calculation? -> talk to Odile
   
