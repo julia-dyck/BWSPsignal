@@ -29,8 +29,7 @@
 #'
 #' @export
 
-eval.calc_auc_f = function(pc_list)
-{
+eval.calc_auc_f = function(pc_list){
   require(dplyr) # for the pipe operator
   
   # 0. -------------------------------------------------------------------------
@@ -95,27 +94,29 @@ eval.calc_auc_f = function(pc_list)
                     prior.belief == prior.belief_i) ## EVTL NICHT DANACH FILTERN (IRRELEVANT FÜR FWSP)
     
     run.reps = nrow(res.test) # number of repetitions obtained for this scenario
-    if(run.reps == 2*pc_list$add$reps){  ## EVTL ANPASSEN (mehr als 200 Reps)
-      
+    #if(run.reps == 2*pc_list$add$reps){  ## EVTL ANPASSEN (mehr als 200 Reps)  ## HIER WEITER: ABFRAGE VERURSACHT NAs 8-> überlegen, wie ich das händle
+      print(run.reps)
       # set up labels and predictions in a matrix
       labels = matrix(res.test$lab, nrow = run.reps, ncol = nr.combined.tests, byrow = F)
-      predictions = data.frame(res.test)[,fwsp_cols] %>%
-        as.matrix()
-      return(predictions)  # HIER WEITER ###########################################
-      ## NA handling bei pgw: in pvalue paper schauen, was mit NA gemacht wurde
-      ## evtl für w, dw und pgw aufsplitten und bei pgw na rows killen
+      predictions = data.frame(res.test)[,fwsp_cols] %>% as.matrix()
+      predictions[is.na(predictions)] = 0 # NA handling pgWSP test 
+                                          # (nonconverged mod -> interpreted as no signal)
+      
       # creating prediction object
       pred.obj <- ROCR::prediction(predictions, labels)
+      
       # calculate AUCs
       aucs[i,] = ROCR::performance(pred.obj, "auc") %>%  ## HIER VLLT OPTION FÜR FP; TP EINBAUEN; UM ROC CURVE DARAUS ZU PLOTTEN (ARGUMENT DAFÜR EINRICHTEN)
         .@y.values %>%
         as.numeric()
-    }
-    else{
-      aucs[i,] = rep(NA, nr.combined.tests)
-    }
+    #}
+    #else{
+    #  aucs[i,] = rep(NA, nr.combined.tests)
+    #}
   }
-  return(aucs)
+  return(list(predictions, aucs))
+  
+  
   
   # 5. -------------------------------------------------------------------------
   #### add info and reshape table format
