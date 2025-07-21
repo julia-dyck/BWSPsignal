@@ -95,9 +95,8 @@ eval.calc_auc_f = function(pc_list){
     
     run.reps[i] = nrow(res.test) # number of repetitions obtained for this scenario
     
-    
     # set up labels and predictions in a matrix
-    labels = matrix(res.test$lab, nrow = run.reps, ncol = nr.combined.tests, byrow = F)
+    labels = matrix(res.test$lab, nrow = run.reps[i], ncol = nr.combined.tests, byrow = F)
     predictions = data.frame(res.test)[,fwsp_cols] %>% as.matrix()
     pred.with.na = predictions
     predictions[is.na(predictions)] = 0 # NA handling pgWSP test 
@@ -117,11 +116,6 @@ eval.calc_auc_f = function(pc_list){
   
   
   aucs = cbind(pc.pos, run.reps, aucs)
-  return(aucs)
-  
-  # TODO: after long format: add new tte.dist col (extract with grep)
-  # MAYBE: add col with no. of tests going into the auc calculation? -> talk to Odile
-  
   
   # reshape to long format
   auc_cols <- grep("^auc_", names(aucs), value = TRUE)
@@ -134,20 +128,14 @@ eval.calc_auc_f = function(pc_list){
     times = auc_cols,
     direction = "long"
   )
+  
+  # extract w ,dw ,pgw from rownames and save in new column named tte.dist
+  
+  aucs_long$tte.dist <- sub(".*_(w|dw|pgw).*", "\\1", aucs_long$test_spec)
   rownames(aucs_long) <- NULL
-  
-  # Extract post.ci.type, cred.level, and sensitivity.option from test_spec
-  aucs_long$post.ci.type = sub("^auc_([^_]+)_.*", "\\1", aucs_long$test_spec)
-  aucs_long$cred.level <- as.numeric(sub("^auc_[^_]+_([0-9\\.]+)_.*", "\\1", aucs_long$test_spec))
-  aucs_long$sensitivity.option <- as.integer(sub(".*opt([0-9]+)$", "\\1", aucs_long$test_spec))
-  
-  # select relevant columns:
-  aucs_long <- aucs_long[, c(
-    "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", 
-    "tte.dist", "prior.dist", "prior.belief", "dist.prior.to.truth",
-    "post.ci.type", "cred.level", "sensitivity.option", "auc"
-  )]
-  
+  aucs_long = aucs_long %>% 
+    select(N:study.period, tte.dist, auc)
+
   return(aucs_long)
   
 }
