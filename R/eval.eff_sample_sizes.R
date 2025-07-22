@@ -22,36 +22,36 @@
 
 eval.eff_sample_sizes = function(pc_list, threshold = 10000){
   
-  if (!exists("res")) { 
+  if (!exists("res_b")) { 
     # obtain res table
     tryCatch({
-      load(paste0(pc_list$add$resultpath, "/res.RData"))
-      message("res.RData successfully loaded")
+      load(paste0(pc_list$add$resultpath, "/res_b.RData"))
+      message("res_b.RData successfully loaded")
     }, error = function(cond) {
       sim.merge_results(pc_list, save = T)
-      load(paste0(pc_list$add$resultpath, "/res.RData"))
+      load(paste0(pc_list$add$resultpath, "/res_b.RData"))
       message(" batches merged and loaded")
     })
   }
   else{
-    message("Object `res` loaded in current environment is used to extract effective sample sizes.")
+    message("Object `res_b` loaded in current environment is used to extract effective sample sizes.")
   }
   
   # NULL values ~> NA
-  res$nu.po.n_eff <- lapply(res$nu.po.n_eff, function(x) if (length(x) == 0) NA else x)
-  res$ga.po.n_eff <- lapply(res$ga.po.n_eff, function(x) if (length(x) == 0) NA else x)
+  res_b$nu.po.n_eff <- lapply(res_b$nu.po.n_eff, function(x) if (length(x) == 0) NA else x)
+  res_b$ga.po.n_eff <- lapply(res_b$ga.po.n_eff, function(x) if (length(x) == 0) NA else x)
   
   # Select and rename relevant cols for nu
-  n_eff.nu <- dplyr::select(res, tte.dist, prior.dist, nu.po.n_eff)
+  n_eff.nu <- dplyr::select(res_b, tte.dist, prior.dist, nu.po.n_eff)
   n_eff.nu <- dplyr::rename(n_eff.nu, n_eff = nu.po.n_eff)
   #n_eff.nu$n_eff = ifelse(is.null(n_eff.nu$n_eff), NA, n_eff.nu$n_eff)
   n_eff.nu$parameter <- "shape1"
   
   # Select and rename relevant cols for ga
-  n_eff.ga <- dplyr::select(res, tte.dist, prior.dist, ga.po.n_eff)
+  n_eff.ga <- dplyr::select(res_b, tte.dist, prior.dist, ga.po.n_eff)
   n_eff.ga <- dplyr::rename(n_eff.ga, n_eff = ga.po.n_eff)
   # Replace NULLs with NAs in a list-column ### HIER WEITER
-  res$ga.po.n_eff <- lapply(res$ga.po.n_eff, function(x) if (is.null(x)) NA else x)
+  res_b$ga.po.n_eff <- lapply(res_b$ga.po.n_eff, function(x) if (is.null(x)) NA else x)
   n_eff.ga$parameter <- "shape2"
   
   # Combine into long format

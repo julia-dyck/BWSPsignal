@@ -15,23 +15,23 @@
 
 eval.execution_times = function(pc_list){
  
-  if (!exists("res")) { 
-  # obtain res table
+  if (!exists("res_b")) { 
+  # obtain res_b table
   tryCatch({
-    load(paste0(pc_list$add$resultpath, "/res.RData"))
-    message("res.RData successfully loaded")
+    load(paste0(pc_list$add$resultpath, "/res_b.RData"))
+    message("res_b.RData successfully loaded")
   }, error = function(cond) {
     sim.merge_results(pc_list, save = T)
-    load(paste0(pc_list$add$resultpath, "/res.RData"))
+    load(paste0(pc_list$add$resultpath, "/res_b.RData"))
     print(" batches merged and loaded")
   })
   }
   else{
-    message("Object `res` loaded in current environment is used to extract execution times.")
+    message("Object `res_b` loaded in current environment is used to extract execution times.")
   }
   
   # select relevant variables
-  time.df = res[, c("tte.dist", "prior.dist", "run.min")]
+  time.df = res_b[, c("tte.dist", "prior.dist", "run.min")]
   # adjust format
   time.df$tte.dist <- as.factor(unlist(time.df$tte.dist))
   time.df$prior.dist <- as.factor(unlist(time.df$prior.dist))
