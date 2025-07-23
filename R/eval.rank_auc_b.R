@@ -2,7 +2,7 @@
 #'
 #' Ranks all tried fit & test specifications by AUC.
 #'
-#' @param auc.df A data frame containing AUC results returned by \link{eval.calc_auc}.
+#' @param auc_b A data frame containing Bayesian AUC results returned by \link{eval.calc_auc_b}.
 #'
 #' @return A list containing 
 #' \itemize{
@@ -34,17 +34,26 @@
 #' @export
 
 
-eval.rank_auc = function(auc.df){
+eval.rank_auc_b = function(auc_b){
   require(dplyr)
   
-  # 1. group by fit & test specifications
+  auc.df = auc_b
+  
+  # 1. summarize and rank fit & test specifications
+  
+  # # ranking not filtered for correct prior belief
+  # auc.ranked <- auc.df %>%
+  #   dplyr::group_by(tte.dist, prior.dist, post.ci.type, cred.level, sensitivity.option) %>% # group by fit&test specifications
+  #   dplyr::summarise(AUC = mean(auc), .groups = "drop") %>%
+  #   dplyr::arrange(dplyr::desc(AUC)) # ranking
 
+  # ranking under correct prior belief
   auc.ranked <- auc.df %>%
     dplyr::filter(dist.prior.to.truth == "correct specification") %>% # only for correct prior spec for now
     dplyr::group_by(tte.dist, prior.dist, post.ci.type, cred.level, sensitivity.option) %>% # group by fit&test specifications
     dplyr::summarise(AUC = mean(auc), .groups = "drop") %>%
     dplyr::arrange(dplyr::desc(AUC)) # ranking
-  
+
   # 2. filter for best fit & test specification and investigate effect of scenario parameters 
   
   opti.tte.dist = auc.ranked$tte.dist[1]
@@ -52,8 +61,11 @@ eval.rank_auc = function(auc.df){
   opti.post.ci.type = auc.ranked$post.ci.type[1]
   opti.cred.level = auc.ranked$cred.level[1]
   opti.sensitivity.option = auc.ranked$sensitivity.option[1]
+ 
   
+  # optimal fit & test specification according to ranking under correct prior belief
   auc.opti = auc.df %>% filter(tte.dist == opti.tte.dist, 
+                               prior.dist == opti.prior.dist,
                                post.ci.type == opti.post.ci.type,
                                cred.level == opti.cred.level,
                                sensitivity.option == opti.sensitivity.option,
@@ -89,13 +101,15 @@ eval.rank_auc = function(auc.df){
   # Effect of distance of prior belief to true adr.when
   auc.robu.dist.prior.to.truth = auc.df %>% 
     filter(tte.dist == opti.tte.dist, 
+           prior.dist == opti.prior.dist,
            post.ci.type == opti.post.ci.type,
            cred.level == opti.cred.level,
            sensitivity.option == opti.sensitivity.option) %>% 
     group_by(dist.prior.to.truth) %>% 
     summarise(AUC = mean(auc), .groups = "drop")
   
-  out = list(ranking = auc.ranked,
+  out = list(# ranking = auc.ranked,
+             ranking = auc.ranked,
              effect.of.N = auc.opti.N,
              effect.of.br = auc.opti.br,
              effect.of.adr.rate = auc.opti.adr.rate,
