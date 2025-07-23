@@ -128,13 +128,14 @@ eval.calc_auc_f = function(pc_list){
     times = auc_cols,
     direction = "long"
   )
-  
   # extract w ,dw ,pgw from rownames and save in new column named tte.dist
   
-  aucs_long$tte.dist <- sub(".*_(w|dw|pgw).*", "\\1", aucs_long$test_spec)
+  aucs_long$tte.dist = sub(".*_(w|dw|pgw).*", "\\1", aucs_long$test_spec)
+  aucs_long$cred.level = as.numeric(sub(".*_(\\d+\\.\\d+)$", "\\1", aucs_long$test_spec))
+
   rownames(aucs_long) <- NULL
   aucs_long = aucs_long %>% 
-    select(N:study.period, tte.dist, auc)
+    select(N:study.period, tte.dist, cred.level, auc)
 
   return(aucs_long)
   
