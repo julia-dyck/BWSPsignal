@@ -165,7 +165,7 @@ eval.calc_auc_b = function(pc_list)
   aucs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
   colnames(aucs) = sub("^bwsp", "auc", bwsp_cols)
   
-  
+  run.reps = c()
   # go through every ADR-positive scenario linked with control
   for(i in 1:nrow(pc.pos)){
     N_i = pc.pos$N[i]
@@ -188,11 +188,11 @@ eval.calc_auc_b = function(pc_list)
              prior.dist == prior.dist_i,
              prior.belief == prior.belief_i)
     
-    run.reps = nrow(res.test) # number of repetitions obtained for this scenario
-    if(run.reps == 2*pc_list$add$reps){
+    run.reps[i] = nrow(res.test) # number of repetitions obtained for this scenario
+    if(run.reps[i] == 2*pc_list$add$reps){
       
       # set up labels and predictions in a matrix
-      labels = matrix(res.test$lab, nrow = run.reps, ncol = nr.combined.tests, byrow = F)
+      labels = matrix(res.test$lab, nrow = run.reps[i], ncol = nr.combined.tests, byrow = F)
       predictions = data.frame(res.test)[,bwsp_cols] %>%
         as.matrix()
       
@@ -208,7 +208,6 @@ eval.calc_auc_b = function(pc_list)
     }
   }
   
-  
   # 5. -------------------------------------------------------------------------
   #### add info and reshape table format
   
@@ -217,19 +216,19 @@ eval.calc_auc_b = function(pc_list)
   ## inner fct
   # add description of deviance between prior belief and simulated truth
   prior.correctness = function(pc_row) {
-    adr.when = pc_row[4]
-    prior.belief = pc_row[9]
-    out = ifelse(adr.when == 0.25 && prior.belief == "beginning" ||
-                   adr.when == 0.5 && prior.belief == "middle" ||
-                   adr.when == 0.75 && prior.belief == "end", 
+    adr.when = as.numeric(as.character(pc_row[4]))
+    prior.belief = as.character(pc_row[9])
+    out = ifelse((adr.when == 0.25 && prior.belief == "beginning") ||
+                   (adr.when == 0.5 && prior.belief == "middle") ||
+                   (adr.when == 0.75 && prior.belief == "end"), 
                  "correct specification", 
-                 ifelse(adr.when == 0.25 && prior.belief == "middle" ||
-                          adr.when == 0.5 && prior.belief == "beginning" ||
-                          adr.when == 0.5 && prior.belief == "end" ||
-                          adr.when == 0.75 && prior.belief == "middle",
+                 ifelse((adr.when == 0.25 && prior.belief == "middle") ||
+                          (adr.when == 0.5 && prior.belief == "beginning") ||
+                          (adr.when == 0.5 && prior.belief == "end") ||
+                          (adr.when == 0.75 && prior.belief == "middle"),
                         "one quarter off",
-                        ifelse(adr.when == 0.25 && prior.belief == "end" ||
-                                 adr.when == 0.75 && prior.belief == "beginning",
+                        ifelse((adr.when == 0.25 && prior.belief == "end") ||
+                                 (adr.when == 0.75 && prior.belief == "beginning"),
                                "two quarters off",
                                "no ADR assumed")))
     return(out)
@@ -241,7 +240,6 @@ eval.calc_auc_b = function(pc_list)
   
   aucs = cbind(pc.pos, aucs)
 
-  
   # reshape to long format
   auc_cols <- grep("^auc_", names(aucs), value = TRUE)
   # Reshape
