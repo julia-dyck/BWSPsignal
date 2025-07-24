@@ -1,15 +1,16 @@
 #' run all or subset of simulation scenarios
 #' 
-#' @param pc_list list of parameter combinations obtained from \link{\code{sim.setup_sim_pars}}
-#' @param subset_ind vector of integers specifying which rows of \code{pc_list$pc_table} 
-#' to be considered in simulation runs
-#' 
-#' 
 #' Runs simulations for all data generating processes, model and test alternatives
 #' specified in pc_list. If part of the simulations is already run and saved in the 
 #' detemined resultpath, only missing simulations are run and saved.
 #' 
-#' Simulation runs can be parallelized using the \link[future] package.
+#' Simulation runs can be parallelized using the \code{\link[future]{plan}} command.
+#' 
+#' @param pc_list list of parameter combinations obtained from \code{\link{sim.setup_sim_pars}}
+#' @param subset_ind vector of integers specifying which rows of \code{pc_list$pc_table} 
+#' to be considered in simulation runs
+#' 
+#' 
 #' 
 #' @examples 
 #' \dontrun{
