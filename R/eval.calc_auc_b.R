@@ -161,10 +161,17 @@ eval.calc_auc_b = function(pc_list)
   # Identify all bwsp_test result columns
   bwsp_cols = grep("^bwsp_", names(res.ext), value = TRUE)
   
-  # prep empty matrix for AUC results  
+  # prep empty matrix for performance measure results
+  # false positive rate
+  fprs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
+  colnames(fprs) = sub("^bwsp", "fpr", bwsp_cols)
+  # true positive rate
+  tprs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
+  colnames(tprs) = sub("^bwsp", "tpr", bwsp_cols)
+  # area under the receiver operating characteristic (ROC) curve
   aucs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
   colnames(aucs) = sub("^bwsp", "auc", bwsp_cols)
-  
+  return(list(fprs, tprs, aucs)) ##HIER WEITER
   run.reps = c()
   # go through every ADR-positive scenario linked with control
   for(i in 1:nrow(pc.pos)){
@@ -198,12 +205,26 @@ eval.calc_auc_b = function(pc_list)
       
       # creating prediction object
       pred.obj <- ROCR::prediction(predictions, labels)
+      
+      # calculate fprs
+      fprs[i,] = ROCR::performance(pred.obj, "fpr") #%>%
+      return(fprs[i,])
+        .@y.values %>%
+        as.numeric()
+      
+      # calculate tprs
+      tprs[i,] = ROCR::performance(pred.obj, "tpr") %>%
+        .@y.values %>%
+        as.numeric()
+      
       # calculate AUCs
       aucs[i,] = ROCR::performance(pred.obj, "auc") %>%
         .@y.values %>%
         as.numeric()
     }
     else{
+      fprs[i,] = rep(NA, nr.combined.tests)
+      tprs[i,] = rep(NA, nr.combined.tests)
       aucs[i,] = rep(NA, nr.combined.tests)
     }
   }
@@ -238,9 +259,12 @@ eval.calc_auc_b = function(pc_list)
   dist.prior.to.truth = apply(pc.pos, 1, prior.correctness) 
   pc.pos = cbind(pc.pos, dist.prior.to.truth)
   
+  fprs = cbind(pc.pos, fprs)
+  tprs = cbind(pc.pos, tprs)
   aucs = cbind(pc.pos, aucs)
+  return(list(fprs, tprs, aucs)) # HIER WEITER
 
-  # reshape to long format
+  # reshape aucs to long format
   auc_cols <- grep("^auc_", names(aucs), value = TRUE)
   # Reshape
   aucs_long <- reshape(
