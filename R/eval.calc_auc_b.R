@@ -171,7 +171,7 @@ eval.calc_auc_b = function(pc_list)
   # area under the receiver operating characteristic (ROC) curve
   aucs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
   colnames(aucs) = sub("^bwsp", "auc", bwsp_cols)
-  return(list(fprs, tprs, aucs)) ##HIER WEITER
+  
   run.reps = c()
   # go through every ADR-positive scenario linked with control
   for(i in 1:nrow(pc.pos)){
@@ -203,19 +203,39 @@ eval.calc_auc_b = function(pc_list)
       predictions = data.frame(res.test)[,bwsp_cols] %>%
         as.matrix()
       
+      # calculate tpr, fpr, tnr, fnr manually   ### HIER WEITER
+      extract_performance = function(predictions, labels) {
+        # true positives
+        tp = rowSums(predictions == 1 & labels == 1)
+        # false positives
+        fp = rowSums(predictions == 1 & labels == 0)
+        # true negatives
+        tn = rowSums(predictions == 0 & labels == 0)
+        # false negatives
+        fn = rowSums(predictions == 0 & labels == 1)
+        
+        tpr = tp / (tp + fn) # true positive rate
+        fpr = fp / (fp + tn) # false positive rate
+        
+        return(c(tpr, fpr))
+      }
+      
+      
       # creating prediction object
       pred.obj <- ROCR::prediction(predictions, labels)
+
       
-      # calculate fprs
-      fprs[i,] = ROCR::performance(pred.obj, "fpr") #%>%
-      return(fprs[i,])
-        .@y.values %>%
-        as.numeric()
-      
-      # calculate tprs
-      tprs[i,] = ROCR::performance(pred.obj, "tpr") %>%
-        .@y.values %>%
-        as.numeric()
+      # # calculate fprs with ROCR
+      # fprs[i,] = ROCR::performance(pred.obj, "fpr") #%>%
+      # return(fprs[i,])
+      #   .@y.values %>%
+      #   as.numeric()
+
+      # calculate tprs with ROCR
+      # tprs[i,] = ROCR::performance(pred.obj, "tpr") %>%
+      #   .@y.values #%>%
+      #   as.numeric()
+      return(tprs = ROCR::performance(pred.obj, "tpr", "fpr"))
       
       # calculate AUCs
       aucs[i,] = ROCR::performance(pred.obj, "auc") %>%
@@ -223,12 +243,12 @@ eval.calc_auc_b = function(pc_list)
         as.numeric()
     }
     else{
-      fprs[i,] = rep(NA, nr.combined.tests)
+      #fprs[i,] = rep(NA, nr.combined.tests)
       tprs[i,] = rep(NA, nr.combined.tests)
       aucs[i,] = rep(NA, nr.combined.tests)
     }
   }
-  
+  return(list(fprs, tprs, aucs))
   # 5. -------------------------------------------------------------------------
   #### add info and reshape table format
   
