@@ -4,10 +4,10 @@
 \alias{eval.rank_auc_b}
 \title{Evaluation: rank BWSP tests by AUC}
 \usage{
-eval.rank_auc_b(auc_b)
+eval.rank_auc_b(perf_b)
 }
 \arguments{
-\item{auc_b}{A data frame containing Bayesian AUC results returned by \link{eval.calc_auc_b}.}
+\item{perf_b}{A data frame containing Bayesian performance metric results returned by \link{eval.calc_perf_b}.}
 }
 \value{
 A list containing
@@ -36,7 +36,7 @@ Ranks all tried fit & test specifications by AUC.
 \dontrun{
 # Filtering for a specific tte and prior distribution (for instance based on
 # evaluation of execution times, convergence and 
- auc_dw_ll <- dplyr::filter(aucs, tte.dist == "dw", prior.dist == "ll")
- eval.rank_auc(auc_dw_ll)
+ auc_pgw_ll <- dplyr::filter(perf_b, tte.dist == "pgw", prior.dist == "ll")
+ eval.rank_auc_b(auc_dw_ll)
 }
 }

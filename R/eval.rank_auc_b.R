@@ -2,7 +2,7 @@
 #'
 #' Ranks all tried fit & test specifications by AUC.
 #'
-#' @param auc_b A data frame containing Bayesian AUC results returned by \link{eval.calc_auc_b}.
+#' @param perf_b A data frame containing Bayesian performance metric results returned by \link{eval.calc_perf_b}.
 #'
 #' @return A list containing 
 #' \itemize{
@@ -28,43 +28,39 @@
 #' \dontrun{
 #' # Filtering for a specific tte and prior distribution (for instance based on
 #' # evaluation of execution times, convergence and 
-#'  auc_dw_ll <- dplyr::filter(aucs, tte.dist == "dw", prior.dist == "ll")
-#'  eval.rank_auc(auc_dw_ll)
+#'  auc_pgw_ll <- dplyr::filter(perf_b, tte.dist == "pgw", prior.dist == "ll")
+#'  eval.rank_auc_b(auc_dw_ll)
 #' }
 #' @export
 
 
-eval.rank_auc_b = function(auc_b){
+eval.rank_auc_b = function(perf_b){
   require(dplyr)
-  
-  auc.df = auc_b
+ 
+  tab.df = perf_b
   
   # 1. summarize and rank fit & test specifications
   
-  # # ranking not filtered for correct prior belief
-  # auc.ranked <- auc.df %>%
-  #   dplyr::group_by(tte.dist, prior.dist, post.ci.type, cred.level, sensitivity.option) %>% # group by fit&test specifications
-  #   dplyr::summarise(AUC = mean(auc), .groups = "drop") %>%
-  #   dplyr::arrange(dplyr::desc(AUC)) # ranking
-
   # ranking under correct prior belief
-  auc.ranked <- auc.df %>%
+  tab.ranked <- tab.df %>%
     dplyr::filter(dist.prior.to.truth == "correct specification") %>% # only for correct prior spec for now
     dplyr::group_by(tte.dist, prior.dist, post.ci.type, cred.level, sensitivity.option) %>% # group by fit&test specifications
-    dplyr::summarise(AUC = mean(auc), .groups = "drop") %>%
-    dplyr::arrange(dplyr::desc(AUC)) # ranking
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+                     .groups = "drop") %>%
+    dplyr::arrange(dplyr::desc(AUC)) # ranking by AUC
 
+  
   # 2. filter for best fit & test specification and investigate effect of scenario parameters 
   
-  opti.tte.dist = auc.ranked$tte.dist[1]
-  opti.prior.dist = auc.ranked$prior.dist[1]
-  opti.post.ci.type = auc.ranked$post.ci.type[1]
-  opti.cred.level = auc.ranked$cred.level[1]
-  opti.sensitivity.option = auc.ranked$sensitivity.option[1]
- 
+  opti.tte.dist = tab.ranked$tte.dist[1]
+  opti.prior.dist = tab.ranked$prior.dist[1]
+  opti.post.ci.type = tab.ranked$post.ci.type[1]
+  opti.cred.level = tab.ranked$cred.level[1]
+  opti.sensitivity.option = tab.ranked$sensitivity.option[1]
+  
   
   # optimal fit & test specification according to ranking under correct prior belief
-  auc.opti = auc.df %>% filter(tte.dist == opti.tte.dist, 
+  tab.opti = tab.df %>% filter(tte.dist == opti.tte.dist, 
                                prior.dist == opti.prior.dist,
                                post.ci.type == opti.post.ci.type,
                                cred.level == opti.cred.level,
@@ -72,51 +68,59 @@ eval.rank_auc_b = function(auc_b){
                                dist.prior.to.truth == "correct specification")
   
   # Effect of N
-  auc.opti.N = auc.opti %>% 
+  tab.opti.N = tab.opti %>% 
     dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(N) %>% summarise(AUC = mean(auc), .groups = "drop")
+    group_by(N) %>% 
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+                     .groups = "drop")
   
   # Effect of br
-  auc.opti.br = auc.opti %>% 
+  tab.opti.br = tab.opti %>% 
     dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(br) %>% summarise(AUC = mean(auc), .groups = "drop")
+    group_by(br) %>% 
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+                     .groups = "drop")
   
   # Effect of adr.rate
-  auc.opti.adr.rate = auc.opti %>% 
+  tab.opti.adr.rate = tab.opti %>% 
     dplyr::filter(dist.prior.to.truth == "correct specification") %>%
     group_by(adr.rate) %>% summarise(AUC = mean(auc), .groups = "drop")
   
   # Effect of adr.when
-  auc.opti.adr.when = auc.opti %>% 
+  tab.opti.adr.when = tab.opti %>% 
     dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(adr.when) %>% summarise(AUC = mean(auc), .groups = "drop")
+    group_by(adr.when) %>% 
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+                     .groups = "drop")
   
   # Effect of adr.relsd
-  auc.opti.adr.relsd = auc.opti %>% 
+  tab.opti.adr.relsd = tab.opti %>% 
     dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(adr.relsd) %>% summarise(AUC = mean(auc), .groups = "drop")
+    group_by(adr.relsd) %>% 
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+                     .groups = "drop")
   
   # 3. Robustness wrt prior specification
   
   # Effect of distance of prior belief to true adr.when
-  auc.robu.dist.prior.to.truth = auc.df %>% 
+  tab.robu.dist.prior.to.truth = tab.df %>% 
     filter(tte.dist == opti.tte.dist, 
            prior.dist == opti.prior.dist,
            post.ci.type == opti.post.ci.type,
            cred.level == opti.cred.level,
            sensitivity.option == opti.sensitivity.option) %>% 
     group_by(dist.prior.to.truth) %>% 
-    summarise(AUC = mean(auc), .groups = "drop")
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+                     .groups = "drop")
   
-  out = list(# ranking = auc.ranked,
-             ranking = auc.ranked,
-             effect.of.N = auc.opti.N,
-             effect.of.br = auc.opti.br,
-             effect.of.adr.rate = auc.opti.adr.rate,
-             effect.of.adr.when = auc.opti.adr.when,
-             effect.of.adr.relsd = auc.opti.adr.relsd,
-             effect.of.dist.prior.to.truth = auc.robu.dist.prior.to.truth
-             )
+  out = list(ranking = tab.ranked,
+             effect.of.N = tab.opti.N,
+             effect.of.br = tab.opti.br,
+             effect.of.adr.rate = tab.opti.adr.rate,
+             effect.of.adr.when = tab.opti.adr.when,
+             effect.of.adr.relsd = tab.opti.adr.relsd,
+             effect.of.dist.prior.to.truth = tab.robu.dist.prior.to.truth
+  )
   return(out)
   
 }

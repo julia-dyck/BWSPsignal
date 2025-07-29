@@ -4,10 +4,10 @@
 \alias{eval.rank_auc_f}
 \title{Evaluation: rank FWSP tests by AUC}
 \usage{
-eval.rank_auc_f(auc_f)
+eval.rank_auc_f(perf_f)
 }
 \arguments{
-\item{auc_f}{A data frame containing Bayesian AUC results returned by \link{eval.calc_auc_f}.}
+\item{perf_f}{A data frame containing Bayesian performance metric results returned by \link{eval.calc_perf_f}.}
 }
 \value{
 A list containing

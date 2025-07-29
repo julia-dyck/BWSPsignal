@@ -2,7 +2,7 @@
 #'
 #' Ranks all tried fit & test specifications by AUC.
 #'
-#' @param auc_f A data frame containing Bayesian AUC results returned by \link{eval.calc_auc_f}.
+#' @param perf_f A data frame containing Bayesian performance metric results returned by \link{eval.calc_perf_f}.
 #'
 #'
 #' @return A list containing 
@@ -25,58 +25,67 @@
 #' @export
 
 
-eval.rank_auc_f = function(auc_f){
+eval.rank_auc_f = function(perf_f){
   require(dplyr)
   
-  auc.df = auc_f
+  tab.df = perf_f
   
   # 1. summarize and rank fit & test specifications
   
   # ranking
-  auc.ranked <- auc.df %>%
+  tab.ranked <- tab.df %>%
     dplyr::group_by(tte.dist, cred.level) %>% # group by fit&test specifications
-    dplyr::summarise(AUC = mean(auc), .groups = "drop") %>%
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
+                     .groups = "drop") %>%
     dplyr::arrange(dplyr::desc(AUC)) # ranking
   
  
   # 2. filter for best fit & test specification and investigate effect of scenario parameters 
   
-  opti.tte.dist = auc.ranked$tte.dist[1]
-  opti.cred.level = auc.ranked$cred.level[1]
+  opti.tte.dist = tab.ranked$tte.dist[1]
+  opti.cred.level = tab.ranked$cred.level[1]
    
   # optimal fit & test specification according to ranking under correct prior belief
-  auc.opti = auc.df %>% filter(tte.dist == opti.tte.dist, 
+  tab.opti = tab.df %>% filter(tte.dist == opti.tte.dist, 
                                cred.level == opti.cred.level,
                                )
   
   # Effect of N
-  auc.opti.N = auc.opti %>% 
+  tab.opti.N = tab.opti %>% 
     group_by(N) %>% summarise(AUC = mean(auc), .groups = "drop")
   
   # Effect of br
-  auc.opti.br = auc.opti %>% 
-    group_by(br) %>% summarise(AUC = mean(auc), .groups = "drop")
+  tab.opti.br = tab.opti %>% 
+    group_by(br) %>% 
+    summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+              .groups = "drop")
   
   # Effect of adr.rate
-  auc.opti.adr.rate = auc.opti %>% 
-   group_by(adr.rate) %>% summarise(AUC = mean(auc), .groups = "drop")
+  tab.opti.adr.rate = tab.opti %>% 
+   group_by(adr.rate) %>% 
+    summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
+              .groups = "drop")
   
   # Effect of adr.when
-  auc.opti.adr.when = auc.opti %>% 
-    group_by(adr.when) %>% summarise(AUC = mean(auc), .groups = "drop")
+  tab.opti.adr.when = tab.opti %>% 
+    group_by(adr.when) %>% 
+    summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
+              .groups = "drop")
   
   # Effect of adr.relsd
-  auc.opti.adr.relsd = auc.opti %>% 
-    group_by(adr.relsd) %>% summarise(AUC = mean(auc), .groups = "drop")
+  tab.opti.adr.relsd = auc.opti %>% 
+    group_by(adr.relsd) %>% 
+    summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
+              .groups = "drop")
   
   # Output 
   out = list(
-    ranking = auc.ranked,
-    effect.of.N = auc.opti.N,
-    effect.of.br = auc.opti.br,
-    effect.of.adr.rate = auc.opti.adr.rate,
-    effect.of.adr.when = auc.opti.adr.when,
-    effect.of.adr.relsd = auc.opti.adr.relsd
+    ranking = tab.ranked,
+    effect.of.N = tab.opti.N,
+    effect.of.br = tab.opti.br,
+    effect.of.adr.rate = tab.opti.adr.rate,
+    effect.of.adr.when = tab.opti.adr.when,
+    effect.of.adr.relsd = tab.opti.adr.relsd
   )
   return(out)
   
