@@ -2,40 +2,32 @@
 % Please edit documentation in R/eval.calc_perf_b.R
 \name{eval.calc_perf_b}
 \alias{eval.calc_perf_b}
-\title{Calculate AUC of BWSP Test specifications}
+\title{Calculate performance metrics for BWSP Test Configurations}
 \usage{
 eval.calc_perf_b(pc_list)
 }
 \arguments{
-\item{pc_list}{A list containing simulation parameters, test settings, and output paths
-(see \code{\link{sim.setup_simpars}} for structure).}
+\item{pc_list}{A list with simulation parameters, test configurations, and file paths
+(see \code{\link{sim.setup_simpars}}).}
 }
 \value{
-A data frame with one row per ADR-positive simulation scenario, BWSP
-test configuration and corresponding AUC value.
+A data frame with one row per ADR-positive scenario and BWSP test configuration,
+including AUC and related performance values.
 }
 \description{
-Calculates the area under curve (AUC) of the receiver operating characteristic
-(ROC) graph with one threshold \insertCite{fawcett2004,lloyd1998}{BWSPsignal}
-for all combinations of BWSP test configurations defined in \code{pc_list$test} and
-all simulated scenarios.
+Computes the area under the ROC curve (AUC) as well as false positive, true positive,
+false negative and true negative rates for all BWSP test configurations defined in \code{pc_list$test}
+across simulated scenarios.
 }
 \details{
-The function performs BWSP tests across all specified posterior CI types, credibility levels,
-and sensitivity options for each simulation run, and calculates AUC using the \code{ROCR} package.
-The AUCs are computed for each simulation scenario based on equal numbers of
-ADR and no-ADR scenarios.
-Scenarios where the number of repetitions deviates from the targeted count
-(e.g. due to convergence issues) are returned with \code{NA} AUCs.
-
-The output table provides the base for a ranking of model and test configurations
-based on the auc ( see \code{\link{eval.rank_auc}}).
+The function performs BWSP tests for all specified combinations of
+posterior CI types, credibility levels, and sensitivity options. AUC is
+calculated using the \code{ROCR} package, comparing ADR-positive with control scenarios.
+Scenarios with incomplete simulation repetitions return \code{NA} for performance metrics.
 }
 \references{
 \insertAllCited{}
 }
 \seealso{
-\code{\link{bwsp_test}}
-
-\code{\link{eval.rank_auc}}
+\code{\link{bwsp_test}}, \code{\link{eval.rank_auc}}
 }

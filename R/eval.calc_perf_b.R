@@ -1,4 +1,4 @@
-#' Calculate AUC for BWSP Test Configurations
+#' Calculate performance metrics for BWSP Test Configurations
 #'
 #' Computes the area under the ROC curve (AUC) as well as false positive, true positive, 
 #' false negative and true negative rates for all BWSP test configurations defined in `pc_list$test` 
