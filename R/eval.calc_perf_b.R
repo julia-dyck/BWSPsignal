@@ -1,37 +1,30 @@
-#' Calculate AUC of BWSP Test specifications 
+#' Calculate AUC for BWSP Test Configurations
 #'
-#' Calculates the area under curve (AUC) of the receiver operating characteristic
-#' (ROC) graph with one threshold \insertCite{fawcett2004,lloyd1998}{BWSPsignal} 
-#' for all combinations of BWSP test configurations defined in `pc_list$test` and
-#' all simulated scenarios. 
+#' Computes the area under the ROC curve (AUC) as well as false positive, true positive, 
+#' false negative and true negative rates for all BWSP test configurations defined in `pc_list$test` 
+#' across simulated scenarios.
 #'
-#' @param pc_list A list containing simulation parameters, test settings, and output paths 
-#'   (see \code{\link{sim.setup_simpars}} for structure).
+#' @param pc_list A list with simulation parameters, test configurations, and file paths 
+#'   (see \code{\link{sim.setup_simpars}}).
 #'
-#' @return A data frame with one row per ADR-positive simulation scenario, BWSP 
-#' test configuration and corresponding AUC value.
+#' @return A data frame with one row per ADR-positive scenario and BWSP test configuration, 
+#'   including AUC and related performance values.
 #'
-#' @details The function performs BWSP tests across all specified posterior CI types, credibility levels, 
-#'   and sensitivity options for each simulation run, and calculates AUC using the `ROCR` package. 
-#'   The AUCs are computed for each simulation scenario based on equal numbers of 
-#'   ADR and no-ADR scenarios.
-#'   Scenarios where the number of repetitions deviates from the targeted count 
-#'   (e.g. due to convergence issues) are returned with `NA` AUCs.
-#'   
-#'   The output table provides the base for a ranking of model and test configurations 
-#'   based on the auc ( see \code{\link{eval.rank_auc}}).
+#' @details The function performs BWSP tests for all specified combinations of 
+#'   posterior CI types, credibility levels, and sensitivity options. AUC is 
+#'   calculated using the `ROCR` package, comparing ADR-positive with control scenarios. 
+#'   Scenarios with incomplete simulation repetitions return `NA` for performance metrics.
 #'
-#' @seealso \code{\link{bwsp_test}}
-#' @seealso \code{\link{eval.rank_auc}}
+#' @seealso \code{\link{bwsp_test}}, \code{\link{eval.rank_auc}}
 #' 
 #' @references 
 #' \insertAllCited{}
-#' 
 #'
 #' @export
 
 
-eval.calc_auc_b = function(pc_list)
+
+eval.calc_perf_b = function(pc_list)
                            {
   require(dplyr) # for the pipe operator
   
@@ -49,7 +42,7 @@ eval.calc_auc_b = function(pc_list)
     })
   }
   else{
-    message("Object `res_b` loaded in current environment is used to calculate aucs.")
+    message("Object `res_b` currently loaded in environment is used to calculate performance measures.")
   }
   
   # 1. -------------------------------------------------------------------------
@@ -168,6 +161,12 @@ eval.calc_auc_b = function(pc_list)
   # true positive rate
   tprs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
   colnames(tprs) = sub("^bwsp", "tpr", bwsp_cols)
+  # false negative rate
+  fnrs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
+  colnames(fnrs) = sub("^bwsp", "fnr", bwsp_cols)
+  # true negative rate
+  tnrs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
+  colnames(tnrs) = sub("^bwsp", "tnr", bwsp_cols)
   # area under the receiver operating characteristic (ROC) curve
   aucs = matrix(rep(NA, nr.combined.tests*nrow(pc.pos)), ncol = nr.combined.tests)
   colnames(aucs) = sub("^bwsp", "auc", bwsp_cols)
@@ -203,56 +202,43 @@ eval.calc_auc_b = function(pc_list)
       predictions = data.frame(res.test)[,bwsp_cols] %>%
         as.matrix()
       
-      # calculate tpr, fpr, tnr, fnr manually   ### HIER WEITER
-      extract_performance = function(predictions, labels) {
-        # true positives
-        tp = rowSums(predictions == 1 & labels == 1)
-        # false positives
-        fp = rowSums(predictions == 1 & labels == 0)
-        # true negatives
-        tn = rowSums(predictions == 0 & labels == 0)
-        # false negatives
-        fn = rowSums(predictions == 0 & labels == 1)
-        
-        tpr = tp / (tp + fn) # true positive rate
-        fpr = fp / (fp + tn) # false positive rate
-        
-        return(c(tpr, fpr))
-      }
+      # calculate tpr, fpr, tnr, fnr manually   
       
+      # true positives
+      tp = colSums(predictions == 1 & labels == 1)
+      # false positives
+      fp = colSums(predictions == 1 & labels == 0)
+      # true negatives
+      tn = colSums(predictions == 0 & labels == 0)
+      # false negatives
+      fn = colSums(predictions == 0 & labels == 1)
       
-      # creating prediction object
-      pred.obj <- ROCR::prediction(predictions, labels)
-
+      fprs[i,] = fp / (fp + tn) # false positive rate
+      tprs[i,] = tp / (tp + fn) # true positive rate
+      fnrs[i,] = fn / (tp + fn) # false negative rate
+      tnrs[i,] = tn / (fp + tn) # true negative rate
       
-      # # calculate fprs with ROCR
-      # fprs[i,] = ROCR::performance(pred.obj, "fpr") #%>%
-      # return(fprs[i,])
-      #   .@y.values %>%
-      #   as.numeric()
-
-      # calculate tprs with ROCR
-      # tprs[i,] = ROCR::performance(pred.obj, "tpr") %>%
-      #   .@y.values #%>%
-      #   as.numeric()
-      return(tprs = ROCR::performance(pred.obj, "tpr", "fpr"))
       
       # calculate AUCs
+      pred.obj <- ROCR::prediction(predictions, labels) # creating prediction object
+
       aucs[i,] = ROCR::performance(pred.obj, "auc") %>%
         .@y.values %>%
         as.numeric()
     }
     else{
-      #fprs[i,] = rep(NA, nr.combined.tests)
+      fprs[i,] = rep(NA, nr.combined.tests)
       tprs[i,] = rep(NA, nr.combined.tests)
+      fnrs[i,] = rep(NA, nr.combined.tests)
+      tnrs[i,] = rep(NA, nr.combined.tests)
       aucs[i,] = rep(NA, nr.combined.tests)
     }
   }
-  return(list(fprs, tprs, aucs))
+  
   # 5. -------------------------------------------------------------------------
   #### add info and reshape table format
   
-  # add scenario information to aucs
+  # add scenario information to performance measure matrices
   
   ## inner fct
   # add description of deviance between prior belief and simulated truth
@@ -281,8 +267,75 @@ eval.calc_auc_b = function(pc_list)
   
   fprs = cbind(pc.pos, fprs)
   tprs = cbind(pc.pos, tprs)
+  fnrs = cbind(pc.pos, fnrs)
+  tnrs = cbind(pc.pos, tnrs)
   aucs = cbind(pc.pos, aucs)
-  return(list(fprs, tprs, aucs)) # HIER WEITER
+  
+  # reshape performance measure matrices to long format
+  
+  fpr_cols <- grep("^fpr_", names(fprs), value = TRUE)
+  # Reshape
+  fprs_long <- reshape(
+    fprs[, c(setdiff(names(fprs), fpr_cols), fpr_cols)],
+    varying = fpr_cols,
+    v.names = "fpr",
+    timevar = "test_spec",
+    times = fpr_cols,
+    direction = "long"
+  )
+  rownames(fprs_long) <- NULL
+  # Extract post.ci.type, cred.level, and sensitivity.option from test_spec
+  fprs_long$post.ci.type = sub("^fpr_([^_]+)_.*", "\\1", fprs_long$test_spec)
+  fprs_long$cred.level <- as.numeric(sub("^fpr_[^_]+_([0-9\\.]+)_.*", "\\1", fprs_long$test_spec))
+  fprs_long$sensitivity.option <- as.integer(sub(".*opt([0-9]+)$", "\\1", fprs_long$test_spec))
+  
+  tpr_cols <- grep("^tpr_", names(tprs), value = TRUE)
+  # Reshape
+  tprs_long <- reshape(
+    tprs[, c(setdiff(names(tprs), tpr_cols), tpr_cols)],
+    varying = tpr_cols,
+    v.names = "tpr",
+    timevar = "test_spec",
+    times = tpr_cols,
+    direction = "long"
+  )
+  rownames(tprs_long) <- NULL
+  # Extract post.ci.type, cred.level, and sensitivity.option from test_spec
+  tprs_long$post.ci.type = sub("^tpr_([^_]+)_.*", "\\1", tprs_long$test_spec)
+  tprs_long$cred.level <- as.numeric(sub("^tpr_[^_]+_([0-9\\.]+)_.*", "\\1", tprs_long$test_spec))
+  tprs_long$sensitivity.option <- as.integer(sub(".*opt([0-9]+)$", "\\1", tprs_long$test_spec))
+  
+  fnr_cols <- grep("^fnr_", names(fnrs), value = TRUE)
+  # Reshape
+  fnrs_long <- reshape(
+    fnrs[, c(setdiff(names(fnrs), fnr_cols), fnr_cols)],
+    varying = fnr_cols,
+    v.names = "fnr",
+    timevar = "test_spec",
+    times = fnr_cols,
+    direction = "long"
+  )
+  rownames(fnrs_long) <- NULL
+  # Extract post.ci.type, cred.level, and sensitivity.option from test_spec
+  fnrs_long$post.ci.type = sub("^fnr_([^_]+)_.*", "\\1", fnrs_long$test_spec)
+  fnrs_long$cred.level <- as.numeric(sub("^fnr_[^_]+_([0-9\\.]+)_.*", "\\1", fnrs_long$test_spec))
+  fnrs_long$sensitivity.option <- as.integer(sub(".*opt([0-9]+)$", "\\1", fnrs_long$test_spec))
+  
+  tnr_cols <- grep("^tnr_", names(tnrs), value = TRUE)
+  # Reshape
+  tnrs_long <- reshape(
+    tnrs[, c(setdiff(names(tnrs), tnr_cols), tnr_cols)],
+    varying = tnr_cols,
+    v.names = "tnr",
+    timevar = "test_spec",
+    times = tnr_cols,
+    direction = "long"
+  )
+  rownames(tnrs_long) <- NULL
+  # Extract post.ci.type, cred.level, and sensitivity.option from test_spec
+  tnrs_long$post.ci.type = sub("^tnr_([^_]+)_.*", "\\1", tnrs_long$test_spec)
+  tnrs_long$cred.level <- as.numeric(sub("^tnr_[^_]+_([0-9\\.]+)_.*", "\\1", tnrs_long$test_spec))
+  tnrs_long$sensitivity.option <- as.integer(sub(".*opt([0-9]+)$", "\\1", tnrs_long$test_spec))
 
   # reshape aucs to long format
   auc_cols <- grep("^auc_", names(aucs), value = TRUE)
@@ -296,20 +349,48 @@ eval.calc_auc_b = function(pc_list)
     direction = "long"
   )
   rownames(aucs_long) <- NULL
-  
   # Extract post.ci.type, cred.level, and sensitivity.option from test_spec
   aucs_long$post.ci.type = sub("^auc_([^_]+)_.*", "\\1", aucs_long$test_spec)
   aucs_long$cred.level <- as.numeric(sub("^auc_[^_]+_([0-9\\.]+)_.*", "\\1", aucs_long$test_spec))
   aucs_long$sensitivity.option <- as.integer(sub(".*opt([0-9]+)$", "\\1", aucs_long$test_spec))
   
+  
+  # merge performance measure matrices fprs, tprs, auc to one
+  # merge fprs and tprs
+  pm_long = dplyr::left_join(fprs_long, tprs_long, by = c(
+    "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "tte.dist", 
+    "prior.dist", "prior.belief", "dist.prior.to.truth",
+    "post.ci.type", "cred.level", "sensitivity.option"
+  ))
+  # merge fprs, tprs and fnrs
+  pm_long = dplyr::left_join(pm_long, fnrs_long, by = c(
+    "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "tte.dist", 
+    "prior.dist", "prior.belief", "dist.prior.to.truth",
+    "post.ci.type", "cred.level", "sensitivity.option"
+  ))
+  # merge fprs, tprs, fnrs and tnrs
+  pm_long = dplyr::left_join(pm_long, tnrs_long, by = c(
+    "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "tte.dist", 
+    "prior.dist", "prior.belief", "dist.prior.to.truth",
+    "post.ci.type", "cred.level", "sensitivity.option"
+  ))
+  # merge fprs, tprs, fnrs, tnrs and aucs
+  # (this is the final result)
+  pm_long = dplyr::left_join(pm_long, aucs_long, by = c(
+    "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", "tte.dist", 
+    "prior.dist", "prior.belief", "dist.prior.to.truth",
+    "post.ci.type", "cred.level", "sensitivity.option"
+  ))
+  
   # select relevant columns:
-  aucs_long <- aucs_long[, c(
+  pm_long <- pm_long[, c(
     "N", "br", "adr.rate", "adr.when", "adr.relsd", "study.period", 
     "tte.dist", "prior.dist", "prior.belief", "dist.prior.to.truth",
-    "post.ci.type", "cred.level", "sensitivity.option", "auc"
+    "post.ci.type", "cred.level", "sensitivity.option", 
+    "auc", "fpr", "tpr", "fnr", "tnr"
   )]
   
-  return(aucs_long)
+  return(pm_long)
   
 }
 
