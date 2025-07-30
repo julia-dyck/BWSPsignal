@@ -15,10 +15,10 @@
 #' @examples
 #' \dontrun{
 #' ranking_b # output of eval.rank_auc_b()
-#' eval.plot_roc(ranking_b$ranking, n = 3)
+#' eval.roc_curve(ranking_b$ranking, n = 3)
 #' 
 #' ranking_f # output of eval.rank_auc_f()
-#' eval.plot_roc(ranking_b$ranking, n = 3)
+#' eval.roc_curve(ranking_b$ranking, n = 3)
 #' 
 #' # for a comparative study of Bayesian and Frequentist tests 
 #' ranking = dplyr::bind_rows(ranking_b$ranking[, 1:8], 
@@ -30,7 +30,7 @@
 #'
 #' @export
 
-eval.plot_roc = function(rank_tab, n = 10) {
+eval.roc_curve = function(rank_tab, n = 10) {
   require(ggplot2)
   require(dplyr)
   require(tidyr)
