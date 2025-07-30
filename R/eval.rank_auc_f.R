@@ -73,7 +73,7 @@ eval.rank_auc_f = function(perf_f){
               .groups = "drop")
   
   # Effect of adr.relsd
-  tab.opti.adr.relsd = auc.opti %>% 
+  tab.opti.adr.relsd = tab.opti %>% 
     group_by(adr.relsd) %>% 
     summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
               .groups = "drop")
