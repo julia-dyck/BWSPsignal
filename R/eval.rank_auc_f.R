@@ -52,30 +52,32 @@ eval.rank_auc_f = function(perf_f){
   
   # Effect of N
   tab.opti.N = tab.opti %>% 
-    group_by(N) %>% summarise(AUC = mean(auc), .groups = "drop")
+    group_by(N) %>% 
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
+                     .groups = "drop")
   
   # Effect of br
   tab.opti.br = tab.opti %>% 
     group_by(br) %>% 
-    summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
               .groups = "drop")
   
   # Effect of adr.rate
   tab.opti.adr.rate = tab.opti %>% 
    group_by(adr.rate) %>% 
-    summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
               .groups = "drop")
   
   # Effect of adr.when
   tab.opti.adr.when = tab.opti %>% 
     group_by(adr.when) %>% 
-    summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
               .groups = "drop")
   
   # Effect of adr.relsd
   tab.opti.adr.relsd = tab.opti %>% 
     group_by(adr.relsd) %>% 
-    summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
               .groups = "drop")
   
   # Output 

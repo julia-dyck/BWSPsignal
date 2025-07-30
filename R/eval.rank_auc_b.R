@@ -84,7 +84,9 @@ eval.rank_auc_b = function(perf_b){
   # Effect of adr.rate
   tab.opti.adr.rate = tab.opti %>% 
     dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(adr.rate) %>% summarise(AUC = mean(auc), .groups = "drop")
+    group_by(adr.rate) %>% 
+    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
+                     .groups = "drop")
   
   # Effect of adr.when
   tab.opti.adr.when = tab.opti %>% 
