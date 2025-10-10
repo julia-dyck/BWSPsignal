@@ -16,7 +16,7 @@
 #' @param warmup The number of warmup iterations per chain
 #' 
 #' 
-#' @return List of two stanfit objects; \code{$uncens} contains the stanfit object
+#' @return A list of two stanfit objects; \code{$uncens} contains the stanfit object
 #' obtained from the model to the tte data as is, \code{$cens} the stanfit object
 #' obtained from the model to the tte data censored at mid of observation period.
 #' 

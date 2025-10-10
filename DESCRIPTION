@@ -6,7 +6,7 @@ Authors@R:
     person("Julia", "Dyck", , "j.dyck@uni-bielefeld.de", role = c("aut", "cre")),
     person("Odile", "Sauzet", role = "aut")
     )
-Description: This is an R package to perform Bayesian Weibull Shape Parameter (BWSP) tests developed for signal detection for instance in pharmacovigilance to flag associations between drugs and adverse events based on time-to-event data. The BWSP test is based on the assumption of constant hazard reflected by a Weibull type distribution with shape parameters equal to one. Using data and prior information, the BWSP test calculates the posterior distribution and performs an HDI+ROPE test on each shape parameter leading to a decision on the presence of a signal.
+Description: This is an R package to perform Bayesian Weibull Shape Parameter (BWSP) tests developed for signal detection in pharmacovigilance to flag associations between drugs and adverse events based on time-to-event data. The BWSP test is based on the assumption of constant hazard reflected by a Weibull type distribution with shape parameters equal to one. Using data and specified prior information, the BWSP test calculates the posterior distribution and performs an HDI+ROPE test on each shape parameter leading to a decision on the presence of a signal.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
