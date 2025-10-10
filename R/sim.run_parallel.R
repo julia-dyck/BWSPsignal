@@ -40,7 +40,7 @@ sim.run_parallel = function(pc_list, subset_ind = NULL) {
   if (!is.null(subset_ind)) {
     pc_table = pc_list$pc_table[subset_ind, ]
   } else {
-    pc_table = pc_list$pc_table
+    pc_table = pc_list$pc_table## run 
   }
   
   pc_table_ext = dplyr::cross_join(pc_table, data.frame(batch_nr = 1:pc_list$add$batch.nr))
