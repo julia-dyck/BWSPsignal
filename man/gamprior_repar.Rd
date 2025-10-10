@@ -30,9 +30,9 @@ and rate parameter \eqn{\beta} are given by
 
 For \eqn{E(X), \;sd(X)>0} rearraging above equations to
 
-\deqn{\mu = \frac{\mu^2}{\sigma^2}}
+\deqn{\alpha = \frac{\mu^2}{\sigma^2}}
 
-\deqn{\sigma = \frac{\mu}{\sigma^2}}
+\deqn{\beta = \frac{\mu}{\sigma^2}}
 
 is possible such that the shape parameter \eqn{\alpha}
 and rate parameter \eqn{\beta} of the Gamma distribution are
