@@ -41,6 +41,7 @@ hdi_plus_rope(nullregion = c(6,7), credregion = c(3,5)) # rope right from hdi an
 hdi_plus_rope(nullregion = c(4,7), credregion = c(3,5)) # rope right from hdi with overlap
 hdi_plus_rope(nullregion = c(4,4.5), credregion = c(3,5)) # rope encompassed by hdi
 
+
 }
 \references{
 \insertRef{kruschke2015}{BWSPsignal}

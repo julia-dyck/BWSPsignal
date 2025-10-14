@@ -25,28 +25,28 @@ rpgw(n, scale = 1, shape = 1, powershape = 1)
 \arguments{
 \item{x}{vector of quantiles}
 
-\item{scale}{Scale parameter of the distribution}
+\item{scale}{scale parameter of the distribution}
 
-\item{shape}{Shape parameter}
+\item{shape}{shape parameter}
 
-\item{powershape}{powershape parameter}
+\item{powershape}{power shape parameter}
 
-\item{log}{logical argument; if TRUE, the logarithm of the survival probability is returned}
+\item{log}{FALSE (default); if TRUE, the logarithm of the survival probability is returned}
 
 \item{p}{vector of probabilities}
 
 \item{n}{number of observations}
 }
 \value{
-A vector of cumulative probability values evaluated at each of the inserted quantiles
+A vector of cumulative probability values evaluated at each of the inserted quantiles.
 }
 \description{
-Survival function, hazard function, cumulative distribution function,
-density, quantile function and random generation for the power generalized
-Weibull distribution with parameters \code{scale}, \code{shape} and \code{powershape}.
+Survival, hazard, cumulative distribution,
+density, quantile and sampling function for the power generalized
+Weibull (PgW) distribution with parameters \code{scale}, \code{shape} and \code{powershape}.
 }
 \details{
-The survival function of the power generalized distribution is:
+The survival function of the PgW distribution is:
 \deqn{
     S(x) = \exp \left\{ 1 - \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma}} \right\}.
 }
@@ -58,10 +58,10 @@ The cumulative distribution function is then \eqn{F(x) = 1 - S(x)} and the densi
 is \eqn{S(x)\cdot h(x)}. The quantile function is the inverse of the cumulative
 distribution function \eqn{F^{-1}(x)}.
 
-If both shape parameters equal 1, the pgw distribution reduces to the exponential distribution
-(implemented in \code{d/p/q/rexp} in Rpackage 'stats') with \eqn{\texttt{rate} = 1/\texttt{scale}}
-If the powershape parameter equals 1, the pgw distribution simplifies to the Weibull distribution
-(implemented in \code{d/p/q/rweibull} in Rpackage 'stats') with the same parameterization.
+If both shape parameters equal 1, the PgW distribution reduces to the exponential distribution
+(see \code{\link[stats]{dexp}}) with \eqn{\texttt{rate} = 1/\texttt{scale}}
+If the power shape parameter equals 1, the PgW distribution simplifies to the Weibull distribution
+(see \code{\link[stats]{dweibull}}) with the same parametrization.
 
 If parameter values are not specified, they are set as
 \code{scale = 1, shape = 1, powershape = 1} per default.
