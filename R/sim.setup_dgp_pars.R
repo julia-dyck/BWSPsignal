@@ -14,7 +14,7 @@
 #' @return A data frame with the simulation scenarios that will be inserted into the 
 #' \code{\link{sim.datagen_tte}} function.
 #' 
-#' @export
+
 
 
 

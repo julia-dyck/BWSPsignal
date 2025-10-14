@@ -2,11 +2,6 @@
 #' 
 #' 
 #' 
-#'
-#' @export
-#' 
-#' 
-#' 
 
 
 sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),

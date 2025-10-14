@@ -59,7 +59,6 @@
 #' # print the summary
 #' fit
 #' 
-#' @export
 #'
 
 

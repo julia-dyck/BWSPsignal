@@ -15,7 +15,8 @@
 #' shape estimates and their estimated standard errors extracted from the estimated
 #' hessian.
 #' 
-#' @export
+#' 
+#' 
 
 
 fwsp_test_pgw = function(mod.output, credlevel = 1 - c(1:10/1000, 2:10/100)){ 

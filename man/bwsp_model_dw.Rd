@@ -85,4 +85,5 @@ fit = fit_tte_dw(standat,
 # print the summary
 fit
 
+
 }

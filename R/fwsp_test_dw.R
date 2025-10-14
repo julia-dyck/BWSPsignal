@@ -17,7 +17,7 @@
 #' The shape parameter test is performed on the transform leading the test outcome
 #' equivalent to performing the test based on the shape parameter itself.
 #' 
-#' @export
+#' 
 #' 
 
 

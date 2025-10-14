@@ -75,4 +75,5 @@ fit = bwsp_model_pgw(datstan = standat,  # (be aware that posterior sample
 # print the summary
 fit
 
+
 }
