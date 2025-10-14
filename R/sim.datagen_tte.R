@@ -48,13 +48,13 @@
 #' @return A simulated time-to-event data frame of size N
 #' 
 #' @examples
-#' datagen_tte(c(100, 0.1, 1, 0.5, 0.05, 365))
+#' sim.datagen_tte(c(100, 0.1, 1, 0.5, 0.05, 365))
 #' 
 #' @export
 
 
 
-datagen_tte = function(genpar){
+sim.datagen_tte = function(genpar){
   genpar = as.numeric(genpar)
   n = genpar[1]
   br = genpar[2]

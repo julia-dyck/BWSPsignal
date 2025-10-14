@@ -1,7 +1,7 @@
 #' Prepare Bayesian pgW fitting for simulation study
 #' 
 #' 
-#' Formatting of simulated data generated with \code{\link{datagen_tte}} as 
+#' Formatting of simulated data generated with \code{\link{sim.datagen_tte}} as 
 #' building block for tuning the Bayesian WSP test via simulation study.
 #'
 #' @param ttedat time-to-event data set

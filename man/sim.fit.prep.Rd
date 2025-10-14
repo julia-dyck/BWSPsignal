@@ -19,6 +19,6 @@ A list containing all information to be inserted as \code{datstan}
 argument into the \code{\link{bwsp_model}} function.
 }
 \description{
-Formatting of simulated data generated with \code{\link{datagen_tte}} as
+Formatting of simulated data generated with \code{\link{sim.datagen_tte}} as
 building block for tuning the Bayesian WSP test via simulation study.
 }

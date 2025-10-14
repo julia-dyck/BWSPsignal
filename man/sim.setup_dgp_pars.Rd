@@ -23,7 +23,7 @@ sim.setup_dgp_pars(N, br, adr.rate, adr.when, adr.relsd, study.period)
 }
 \value{
 A data frame with the simulation scenarios that will be inserted into the
-\code{\link{datagen_tte}} function.
+\code{\link{sim.datagen_tte}} function.
 }
 \description{
 The function returns the set of simulation scenarios determined by the data generating process (dgp) parameter
