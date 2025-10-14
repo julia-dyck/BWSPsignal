@@ -25,7 +25,7 @@ rpgw(n, scale = 1, shape = 1, powershape = 1)
 \arguments{
 \item{x}{vector of quantiles}
 
-\item{scale}{scale parameter of the distribution}
+\item{scale}{scale parameter}
 
 \item{shape}{shape parameter}
 

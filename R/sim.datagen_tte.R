@@ -1,19 +1,6 @@
-#' Data generation
+#' Generate simulated time-to-event data
 #'
-#' Simulation of time-to-event (tte) data
-#'
-#' @details Input is a vector with six elements:
-#'          \enumerate{
-#'       \item the sample size N,
-#'       \item the background rate br (observed in population on average),
-#'       \item the adverse drug reaction rate as proportion of the background rate,
-#'       \item the ADR mean time quantile percentage based on the length of the
-#'             observation period,
-#'       \item the ADR relative standard deviation from the mean time relative to
-#'             the observation period length
-#'       \item the study end time point and censoring time for all subjects without
-#'             event up to that point.
-#'             }
+#' Simulation of time-to-event (tte) data.
 #'
 #' After specification of the input, the data simulation works as follows:
 #'
@@ -38,12 +25,15 @@
 #' @param genpar A vector containing 6 elements, namely:
 #' \enumerate{
 #'       \item the sample size N,
-#'       \item the background rate br,
-#'       \item the ADR rate adr,
-#'       \item the ADR mean time quantile percentage,
-#'       \item the ADR relative standard deviation from the mean time,
-#'       \item the study end time point.
-#'        }
+#'       \item the background rate br (observed in population on average),
+#'       \item the adverse drug reaction rate as proportion of the background rate,
+#'       \item the ADR mean time quantile percentage based on the length of the
+#'             observation period,
+#'       \item the ADR relative standard deviation from the mean time relative to
+#'             the observation period length
+#'       \item the study end time point and censoring time for all subjects without
+#'             event up to that point.
+#'             }
 #'
 #' @return A simulated time-to-event data frame of size N
 #' 

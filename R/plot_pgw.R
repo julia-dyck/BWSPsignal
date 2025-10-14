@@ -1,10 +1,10 @@
-#' Visualization of the power generalized Weibull distribution
+#' Visualize the power generalized Weibull distribution
 #'
 #'
-#' @param scale Scale parameter of the distribution (\eqn{\theta} in formula)
-#' @param shape Shape parameter (\eqn{\nu} in formula)
-#' @param powershape Powershape parameter (\eqn{\gamma} in formula)
-#' @param ... optional plot arguments (expept \code{type, lwd, main})
+#' @param scale scale parameter
+#' @param shape shape parameter
+#' @param powershape power shape parameter
+#' @param ... optional plot arguments (with exceptions, eg. \code{type, lwd, main})
 #'
 #' @return A plot of the PDF, CDF, hazard and survival function
 #' 
@@ -12,7 +12,7 @@
 #' plotpgw(scale = 2, shape = 5, powershape = 10)
 #'
 #'
-#' @seealso \code{\link{dpgw}}, \code{\link{spgw}}, \code{\link{ppgw}}, \code{\link{hpgw}}.
+#' @seealso \code{\link{pgw}}
 #' 
 #' An interactive version of this plot is available
 #' on \url{https://janoleko.shinyapps.io/pgwd/}.

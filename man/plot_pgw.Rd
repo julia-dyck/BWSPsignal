@@ -2,24 +2,24 @@
 % Please edit documentation in R/plot_pgw.R
 \name{plot_pgw}
 \alias{plot_pgw}
-\title{Visualization of the power generalized Weibull distribution}
+\title{Visualize the power generalized Weibull distribution}
 \usage{
 plot_pgw(scale = 1, shape = 1, powershape = 1, ...)
 }
 \arguments{
-\item{scale}{Scale parameter of the distribution (\eqn{\theta} in formula)}
+\item{scale}{scale parameter}
 
-\item{shape}{Shape parameter (\eqn{\nu} in formula)}
+\item{shape}{shape parameter}
 
-\item{powershape}{Powershape parameter (\eqn{\gamma} in formula)}
+\item{powershape}{power shape parameter}
 
-\item{...}{optional plot arguments (expept \code{type, lwd, main})}
+\item{...}{optional plot arguments (with exceptions, eg. \code{type, lwd, main})}
 }
 \value{
 A plot of the PDF, CDF, hazard and survival function
 }
 \description{
-Visualization of the power generalized Weibull distribution
+Visualize the power generalized Weibull distribution
 }
 \examples{
 plotpgw(scale = 2, shape = 5, powershape = 10)
@@ -27,7 +27,7 @@ plotpgw(scale = 2, shape = 5, powershape = 10)
 
 }
 \seealso{
-\code{\link{dpgw}}, \code{\link{spgw}}, \code{\link{ppgw}}, \code{\link{hpgw}}.
+\code{\link{pgw}}
 
 An interactive version of this plot is available
 on \url{https://janoleko.shinyapps.io/pgwd/}.
