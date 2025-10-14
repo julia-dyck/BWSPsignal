@@ -12,7 +12,7 @@
 #' @param study.period A scalar specifying the length of the study period.
 #' 
 #' @return A data frame with the simulation scenarios that will be inserted into the 
-#' \code{\link{datagen_tte}} function.
+#' \code{\link{sim.datagen_tte}} function.
 #' 
 #' @export
 

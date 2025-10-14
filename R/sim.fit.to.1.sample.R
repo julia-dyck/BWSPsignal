@@ -30,7 +30,7 @@
 sim.fit.to.1.sample = function(pc, pc_list){
 
   ### Data simulation
-  ttedat = datagen_tte(genpar = c(pc$N, pc$br, pc$adr.rate, pc$adr.when, pc$adr.relsd, pc$study.period))
+  ttedat = sim.datagen_tte(genpar = c(pc$N, pc$br, pc$adr.rate, pc$adr.when, pc$adr.relsd, pc$study.period))
 
   ### tte and prior data preparation
   datstan = sim.fit.prep(ttedat = ttedat, pc = pc, pc_list = pc_list)
