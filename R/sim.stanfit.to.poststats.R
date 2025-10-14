@@ -25,7 +25,6 @@
 #'  simulation study, where all relevant statistics per run are stored column-wise
 #'  and the repeated runs for one data scenario are store row-wise.
 #'
-#' @export
 
 
 

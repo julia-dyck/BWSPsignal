@@ -16,9 +16,7 @@
 #' 
 #' @return A dataframe \code{res.batch}.
 #' 
-#' @export
-#'
-#'
+
 
 sim.load.scenario = function(wd, pc, batchnr = 1, bayes = T){
   

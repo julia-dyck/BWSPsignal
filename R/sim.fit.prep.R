@@ -12,8 +12,6 @@
 #' @return A list containing all information to be inserted as \code{datstan} 
 #' argument into the \code{\link{bwsp_model}} function.
 #'
-#' @export
-#' 
 
 
 ## CONCRETE SPECIFICATION DEPENDS ON tte.dist and prior.belief 

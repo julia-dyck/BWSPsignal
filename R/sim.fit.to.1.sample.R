@@ -22,9 +22,7 @@
 #' 1st, 2nd, 3rd quartile of observation period) alternatives.
 #'
 #'
-#' @export
-#'
-#'
+
 
 
 sim.fit.to.1.sample = function(pc, pc_list){

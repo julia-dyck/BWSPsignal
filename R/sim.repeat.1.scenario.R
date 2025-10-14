@@ -23,9 +23,7 @@
 #' functions).
 #'
 #'
-#' @export
-#'
-#'
+
 
 
 
