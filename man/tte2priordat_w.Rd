@@ -18,11 +18,11 @@ tte2priordat_w(dat, scale.mean, scale.sd, shape.mean, shape.sd)
 \item{shape.sd}{The priori expected standard deviation of the shape parameter.}
 }
 \description{
-Setup of prior specifications and reformated time-to-event
+Setup of prior specifications and time-to-event (tte)
 data set as a list suitable for model fitting with \code{\link{bwsp_model}}.
 }
 \details{
-The function converts time-to-event data and prior specifications for location ('.mean') and
+The function converts tte data and prior specifications for location ('.mean') and
 precision ('.sd') of the Weibull parameters
 to a suitable format for \code{rstan} model fitting
 which is performed within \code{\link{bwsp_model}}.

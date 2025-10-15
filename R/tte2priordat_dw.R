@@ -1,6 +1,6 @@
 #' Prior and data setup for Bayesian double Weibull model fitting
 #'
-#' @description Setup of prior specifications and reformated time-to-event
+#' @description Setup of prior specifications and time-to-event
 #' data set as a list suitable for model fitting with \code{\link{bwsp_model}}.
 #' 
 #' @param dat Matrix or data frame with time in the first column and event status in the second column.
@@ -31,8 +31,6 @@
 #' (i.e. set smaller standard deviation in case of high certainty about prior belief vs. larger 
 #' standard deviation in case of low certainty).
 #' 
-#' @export
-
 
 tte2priordat_dw = function(dat,
                           scale.mean,

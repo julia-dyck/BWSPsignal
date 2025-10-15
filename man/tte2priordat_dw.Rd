@@ -40,7 +40,7 @@ data censored at half of the observation period.}
 for the data censored at half of the observation period.}
 }
 \description{
-Setup of prior specifications and reformated time-to-event
+Setup of prior specifications and time-to-event
 data set as a list suitable for model fitting with \code{\link{bwsp_model}}.
 }
 \details{

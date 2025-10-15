@@ -1,6 +1,6 @@
 #' Prior and data setup for Bayesian Weibull model fitting
 #'
-#' @description Setup of prior specifications and reformated time-to-event
+#' @description Setup of prior specifications and time-to-event (tte)
 #' data set as a list suitable for model fitting with \code{\link{bwsp_model}}.
 #' 
 #' @param dat Matrix or data frame with time in the first column and event status in the second column.
@@ -10,7 +10,7 @@
 #' @param shape.sd The priori expected standard deviation of the shape parameter.
 #' 
 #' 
-#' @details The function converts time-to-event data and prior specifications for location ('.mean') and 
+#' @details The function converts tte data and prior specifications for location ('.mean') and 
 #' precision ('.sd') of the Weibull parameters 
 #' to a suitable format for `rstan` model fitting
 #' which is performed within \code{\link{bwsp_model}}.
@@ -24,7 +24,7 @@
 #' (i.e. set smaller standard deviation in case of high certainty about prior belief vs. larger 
 #' standard deviation in case of low certainty).
 #' 
-#' @export
+
 
 tte2priordat_w = function(dat,
                          scale.mean,

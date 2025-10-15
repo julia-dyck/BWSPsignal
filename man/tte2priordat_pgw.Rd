@@ -30,7 +30,7 @@ tte2priordat_pgw(
 \item{powershape.sd}{The priori expected standard deviation of the power shape parameter.}
 }
 \description{
-Setup of prior specifications and reformated time-to-event
+Setup of prior specifications and time-to-event
 data set as a list suitable for model fitting with \code{\link{bwsp_model}}.
 }
 \details{
