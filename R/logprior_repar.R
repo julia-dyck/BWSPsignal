@@ -1,9 +1,10 @@
 #' Reparametrization of Lognormal mean and sd
 #' 
 #' 
-#' `logprior_repar` can be used after specifying a Lognormal prior in terms of
+#' Can be used after specifying a Lognormal prior in terms of
 #' mean `m_t` and standard deviation `s_t` to calculate the location `meanlog` 
 #' and scale `sdlog` as defined and used in \code{\link[stats]{dlnorm}}.
+#' 
 #' 
 #' @param m_t mean of the Lognormal distribution
 #' @param s_t standard deviation of the Lognormal distribution
@@ -28,6 +29,7 @@
 #' is possible such that the location parameter `meanlog` or \eqn{\mu} and the 
 #' scale parameter `logmean` or \eqn{\sigma} of the Lognormal distribution are 
 #' obtained.
+#' 
 #' 
 #' @examples
 #' # obtain location and scale for Lognormal distribution with mean = 1 and sd = 10
