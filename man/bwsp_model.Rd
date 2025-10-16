@@ -2,7 +2,7 @@
 % Please edit documentation in R/bwsp_model.R
 \name{bwsp_model}
 \alias{bwsp_model}
-\title{Fit stan model to time-to-event data}
+\title{Fit Bayesian model to time-to-event data}
 \usage{
 bwsp_model(
   datstan,
@@ -14,67 +14,60 @@ bwsp_model(
 )
 }
 \arguments{
-\item{datstan}{A named list of data for the stanmodel; a data frame can be
-reformated with \code{\link{tte2standat}}.}
+\item{datstan}{named list of data for the stanmodel; tte data can be
+formated with \code{\link{tte2standat}}}
 
-\item{tte.dist}{A character string indicating the modelling approach. Options are
-\code{"w", "dw", "pgw"}.}
+\item{tte.dist}{character indicating the modelling approach; options are
+\code{"w", "dw", "pgw"} (see details)}
 
-\item{prior.dist}{A character string indicating the prior distribution for the
-parameters of the pgW distribution. Options are
-\code{"fg", "fl", "gg", "ll"} (see details).}
+\item{prior.dist}{character indicating the prior distribution for the
+parameters of the tte distribution; options are
+\code{"fg", "fl", "gg", "ll"} (see details)}
 
-\item{chains}{The number of Markov chains to run}
+\item{chains}{number of Markov chains to run}
 
-\item{iter}{The total number of iterations per chain (including warmup)}
+\item{iter}{total number of iterations per chain (including warmup)}
 
-\item{warmup}{The number of warmup iterations per chain}
+\item{warmup}{number of warmup iterations per chain}
 }
 \value{
-A stanfit object; in case of \code{tte.dist = "dw"} a list of two stanfit objects
+A stanfit object or, in case of \code{tte.dist = "dw"}, a list of two stanfit objects
 with \code{$uncens} containing the stanfit object
 obtained from the model to the tte data as is, and \code{$cens} containing the stanfit object
 obtained from the model to the tte data censored at mid of observation period.
 }
 \description{
-Fits a Bayesian model to time-to-event data
+Fits a Bayesian model to time-to-event (tte) data
 for the purpose of performing Weibull shape parameter signal detection tests
-with \code{\link{bwsp_test}} based on the posterior samples of the shape
-parameters of the chosen time-to-event data distribution.
+with \code{\link{bwsp_test}}.
 }
 \details{
-The model can be a Weibull,
-a double Weibull ( estimating two Weibull models - one to the data as is &
-one to the data censored at mid of observation period),
-or a power generalized Weibull distribution.
-
 The function applies the \code{\link[rstan]{sampling}} command to fit a Bayesian model to
 time-to-event data.
-The model can be a Weibull,
-a double Weibull (estimating two Weibull models - one to the data as is &
-one to the data censored at half of the observation period),
-or a power generalized Weibull distribution.
+The model can be a Weibull \code{("w")},
+a double Weibull \code{("w"}, estimating two Weibull models - one to the data as is &
+one to the data censored at mid of observation period),
+or a power generalized Weibull \code{("pgw")} model.
 
 The posterior is proportional to the likelihood times the prior. The likelihood is
 \deqn{\mathcal{L}(t| \Theta) = \prod_{i=1}^N S(t_i)^{1-d_i}\cdot f(t_i)^{d_i}}
 with \eqn{S(t)} the survival function of the chosen distribution and \eqn{f(t)} the
-density function. The pair \eqn{(t_i, d_i)} are the observed
-time-to-event observations.
+density function. The pair \eqn{(t_i, d_i)} are the tte observations \insertCite{nikulin2016}{BWSPsignal}.
 
 Implemented prior distributions for the scale and shape parameters are products
 of the following univariate distributional choices:
 \tabular{lll}{
-for scale parameter(s) \eqn{\theta} \tab for shape parameter(s) \tab  abbreviation \cr
-fixed to prior mean \tab Gamma  \tab fg \cr
-Gamma \tab Gamma \tab gg \cr
-fixed to prior mean \tab Lognormal \tab fl \cr
-Lognormal \tab Lognormal \tab ll \cr
+for scale parameter \tab for shape parameter(s) \tab  abbreviation \cr
+fixed to prior mean \tab gamma  \tab fg \cr
+gamma \tab gamma \tab gg \cr
+fixed to prior mean \tab lognormal \tab fl \cr
+lognormal \tab lognormal \tab ll \cr
 }
 }
 \examples{
 # prep the data
 head(tte)
-standat = tte2priordat_pgw(dat = tte,
+standat = tte2priordat(dat = tte,
                      tte.dist = "pgw",
                      scale.mean = 1, 
                      scale.sd = 10,
@@ -87,7 +80,7 @@ fit = bwsp_model(datstan = standat,
                   tte.dist = "pgw",         
                   prior.dist = "ll",  
                   chains = 4,
-                  iter = 110,          # (be aware that posterior sample
+                  iter = 110,          # (posterior sample
                   warmup = 10)         # is small for demo purpose)
                   
 # print the summary
@@ -95,4 +88,7 @@ fit
 
 
 
+}
+\references{
+\insertAllCited{}
 }

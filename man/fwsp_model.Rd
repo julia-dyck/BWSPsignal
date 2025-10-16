@@ -2,19 +2,18 @@
 % Please edit documentation in R/fwsp_model.R
 \name{fwsp_model}
 \alias{fwsp_model}
-\title{Fit model to time-to-event data (non-Bayesian)}
+\title{Fit frequentist model to time-to-event data}
 \usage{
-fwsp_model(dat, tte.dist = c("w", "dw", "pgw"), censor = 365)
+fwsp_model(dat, tte.dist = c("w", "dw", "pgw"), censor = NULL)
 }
 \arguments{
-\item{dat}{A data frame or matrix with time information in first column and
-event information (binary status) in second column.}
+\item{dat}{data frame or matrix with time information in first column and
+event information (binary status) in second column}
 
-\item{tte.dist}{A character string specifying the distribution to use for the
-model. Options are "w" for Weibull, "dw" for double Weibull, and
-"pgw" for power generalized Weibull.}
+\item{tte.dist}{character specifying the distribution for the
+model; options are \code{"w", "dw", "pgw"} (see details)}
 
-\item{censor}{time of censoring}
+\item{censor}{time of censoring; only required for \code{"dw"}.}
 }
 \value{
 Output of the fitted model. For Weibull models, a \code{summary.survreg} object;
@@ -27,6 +26,28 @@ for the pgw model, a list containing the maximum likelihood estimate
 (log of all parameters) obtained via \code{nlm}.
 }
 \description{
-Fits a time-to-event model using the specified distribution via maximum
+Fits a frequentist model to time-to-event (tte) data via maximum
 likelihood estimation.
+}
+\details{
+The model can be a Weibull \code{("w")},
+a double Weibull \code{("w"}, estimating two Weibull models - one to the data as is &
+one to the data censored at mid of observation period),
+or a power generalized Weibull \code{("pgw")} model.
+
+The likelihood used in maximum likelihood estimation is
+\deqn{\mathcal{L}(t) = \prod_{i=1}^N S(t_i)^{1-d_i}\cdot f(t_i)^{d_i}}
+with \eqn{S(t)} the survival function of the chosen distribution and \eqn{f(t)} the
+density function. The pair \eqn{(t_i, d_i)} are the tte observations \insertCite{nikulin2016}{BWSPsignal}.
+}
+\examples{
+head(tte)
+fwsp_model(tte, tte.dist = "w") # Weibull model
+fwsp_model(tte, tte.dist = "dw", censor = 365) # double Weibull model
+fwsp_model(tte, tte.dist = "pgw") # power generalized Weibull model
+
+
+}
+\references{
+\insertAllCited{}
 }
