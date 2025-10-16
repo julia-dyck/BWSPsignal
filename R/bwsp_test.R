@@ -100,9 +100,9 @@
 #' # 1. specify ROPE reflecting the null hypothesis:
 #' # we choose an 80% confidence interval around the 
 #' # null value (1 for both shape parameters)
-#' logpars = logprior_repar(m_t = 1,s_t = 10) # get parameters of a 
-#'                                            # Lognormal distribution with 
-#'                                            # mean 1 and sd 10
+#' logpars = logprior_repar(1, 10) # get parameters of a 
+#'                                 # Lognormal distribution with 
+#'                                 # mean 1 and sd 10
 #' 
 #' rope = qlnorm(p = c(0.1,0.9), meanlog = logpars[1], sdlog = logpars[2])
 #' 
@@ -140,9 +140,9 @@
 #' # we choose an 80% confidence interval around the 
 #' # null value (1 for both shape parameters)
 #' 
-#' logpars = logprior_repar(m_t = 1,s_t = 10) # get parameters of a 
-#' # Lognormal distribution with 
-#' # mean 1 and sd 10
+#' logpars = logprior_repar(1, 10) # get parameters of a 
+#'                                 # Lognormal distribution with 
+#'                                 # mean 1 and sd 10
 #' 
 #' rope = qlnorm(p = c(0.1,0.9), meanlog = logpars[1], sdlog = logpars[2])
 #' 

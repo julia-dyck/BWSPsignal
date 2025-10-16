@@ -5,7 +5,7 @@
 #### perform HDI+ROPE tests ----------------------------------------------------
 
 # prior parameters under null hypothesis
-logpars1 = logprior_repar(m_t = 1,s_t = 10)
+logpars1 = logprior_repar(mean = 1,sd = 10)
 
 # probability mass and percentiles for rope intervals
 prob = seq(0.5, 0.95, by = 0.05)

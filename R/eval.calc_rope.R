@@ -23,7 +23,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     
     if(prior.dist == "ll" || prior.dist == "fl"){
       # lognormal pars from mean and sd
-      pars = logprior_repar(m_t = m, s_t = sd)
+      pars = logprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -36,7 +36,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     } 
     else if(prior.dist == "fg" || prior.dist == "gg"){
       # gamma pars from mean and sd
-      pars = gamprior_repar(m_t = m, s_t = sd)
+      pars = gamprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -79,7 +79,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     
     if(prior.dist == "ll" || prior.dist == "fl"){
       # lognormal pars from mean and sd
-      pars = logprior_repar(m_t = m, s_t = sd)
+      pars = logprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -92,7 +92,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     } 
     else if(prior.dist == "fg" || prior.dist == "gg"){
       # gamma pars from mean and sd
-      pars = gamprior_repar(m_t = m, s_t = sd)
+      pars = gamprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -119,7 +119,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     
     if(prior.dist == "ll" || prior.dist == "fl"){
       # lognormal pars from mean and sd
-      pars = logprior_repar(m_t = m, s_t = sd)
+      pars = logprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -132,7 +132,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     } 
     else if(prior.dist == "fg" || prior.dist == "gg"){
       # gamma pars from mean and sd
-      pars = gamprior_repar(m_t = m, s_t = sd)
+      pars = gamprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -165,7 +165,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     
     if(prior.dist == "ll" || prior.dist == "fl"){
       # lognormal pars from mean and sd
-      pars = logprior_repar(m_t = m, s_t = sd)
+      pars = logprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -178,7 +178,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     } 
     else if(prior.dist == "fg" || prior.dist == "gg"){
       # gamma pars from mean and sd
-      pars = gamprior_repar(m_t = m, s_t = sd)
+      pars = gamprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -205,7 +205,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     
     if(prior.dist == "ll" || prior.dist == "fl"){
       # lognormal pars from mean and sd
-      pars = logprior_repar(m_t = m, s_t = sd)
+      pars = logprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
@@ -218,7 +218,7 @@ eval.calc_rope = function(rope.infos.row, cred.levels){
     } 
     else if(prior.dist == "fg" || prior.dist == "gg"){
       # gamma pars from mean and sd
-      pars = gamprior_repar(m_t = m, s_t = sd)
+      pars = gamprior_repar(mean = m, sd = sd)
       # prepare storage
       ropes.list = vector("list", length(cred.levels))
       
