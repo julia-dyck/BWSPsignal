@@ -125,14 +125,14 @@ eval.calc_perf_b = function(pc_list)
                 credregion = credregion,
                 nullregion = nullregion,
                 option = opt,
-                mod =  tte.dist
+                tte.dist =  tte.dist
               )
             } else if(tte.dist == "w"){
               bwsp_test(
                 credregion = credregion[1:2],
                 nullregion = nullregion[1:2],
                 option = opt,
-                mod =  tte.dist
+                tte.dist =  tte.dist
               )
             }
           }
