@@ -1,57 +1,71 @@
-#' Reparametrization of Gamma mean and sd
+#' Reparametrization of gamma mean and sd
 #' 
 #' 
-#' `gamprior_repar` can be used after specifying a Gamma prior in terms of
-#' mean `m_t` and standard deviation `s_t` to calculate the `shape` 
-#' and `rate` as defined and used in \code{\link[stats]{dgamma}}.
+#' Can be used after specifying a gamma prior in terms of
+#' mean and standard deviation (sd) to calculate the `shape` 
+#' and `rate` as defined in \code{\link[stats]{qgamma}}.
 #' 
-#' @param m_t mean of the Gamma distribution
-#' @param s_t standard deviation of the Gamma distribution
+#' @param mean mean of the gamma distribution
+#' @param sd standard deviation of the gamma distribution
 #' 
 #' @return a vector with the `shape` 
-#' and `rate` of the Gamma distribution
+#' and `rate` of the gamma distribution
 #' 
 #' @details
-#' Expectation (mean) and standard deviation of a Gamma distributed random variable \eqn{X} 
+#' Mean \eqn{E(X)} and sd \eqn{sd(X)} of a gamma distributed random variable \eqn{X} 
 #' parametrized in terms of the shape parameter \eqn{\alpha}
 #' and rate parameter \eqn{\beta} are given by
 #' 
 #' \deqn{E(X) = \frac{\alpha}{\beta}}
 #' \deqn{sd(X) = \frac{\alpha}{\beta^2}}
 #' 
-#' For \eqn{E(X), \;sd(X)>0} rearraging above equations to
+#' For \eqn{E(X), \;sd(X)>0} rearranging above equations to
 #' 
 #' \deqn{\alpha = \frac{\mu^2}{\sigma^2}}
 #' 
 #' \deqn{\beta = \frac{\mu}{\sigma^2}}
 #' 
 #' is possible such that the shape parameter \eqn{\alpha} 
-#' and rate parameter \eqn{\beta} of the Gamma distribution are 
+#' and rate parameter \eqn{\beta} of the gamma distribution are 
 #' obtained.
 #' 
-#' @examples
-#' # obtain shape and rate for Gamma distribution with mean = 1 and sd = 10
-#' m = 1; s = 10
-#' gam_pars = gamprior_repar(m_t = m, s_t = s)
-#' shape = gam_pars[1] # shape parameter
-#' rate = gam_pars[2] # rate parameter
+#' The application purpose is to reparametrize gamma prior
+#' mean and sd to the parameters used in \code{\link[stats]{qgamma}}, for instance to 
+#' calculate a ROPE \insertCite{kruschke2018}{BWSPsignal} based on the prior belief representing the 
+#' null hypothesis in BWSP testing \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
 #' 
-#' # test: sample from the Gamma distribution with the obtained parameters
+#' @examples
+#' # obtain shape and rate for gamma distribution with mean = 1 and sd = 10
+#' m = 1; s = 10
+#' gampars = gamprior_repar(mean = m, sd = s)
+#' shape = gampars[1] # shape parameter
+#' rate = gampars[2] # rate parameter
+#' 
+#' # test: sample from the gamma distribution with the obtained parameters
 #' gamma_sample = rgamma(10000000, shape = shape, rate = rate)
 #' m_emp = mean(gamma_sample); m_emp # estimated mean
 #' s_emp = sd(gamma_sample); s_emp # estimated sd
+#' 
+#' # suppose, upper mean and sd reflect prior belief about the Weibull shape parameter and 
+#' # calculate an 80% ROPE based on the parameters
+#' rope = qgamma(p = c(0.1,0.9), shape = gampars[1], rate = gampars[2])
+#' rope
 #'
-#'@export
+#' @references 
+#' \insertAllCited{}
+#'
+#' @seealso [logprior_repar]
+#' @export
 
-gamprior_repar = function(m_t, s_t){
-  if(m_t <= 0 | s_t <= 0) stop("m_t and s_t must be positive.")
+gamprior_repar = function(mean, sd){
+  if(mean <= 0 | sd <= 0) stop("mean and sd must be positive.")
   
   # same reparametrization as in stan
-  # given random variable t~Gamma with expectation m_t and variance s_t^2,
+  # given random variable t~Gamma with expectation mean and variance sd^2,
   # shape (also called shape in pgamma fct) and rate (also called rate in pgamma fct)
   # are decucted as
-  shape = m_t^2 / s_t^2
-  rate = m_t / s_t^2
+  shape = mean^2 / sd^2
+  rate = mean / sd^2
   return(c(shape, rate)) # returned parameterization
   # can be used to calculate ROPEs with qgamma
 }

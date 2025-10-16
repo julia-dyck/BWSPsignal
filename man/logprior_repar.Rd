@@ -2,52 +2,68 @@
 % Please edit documentation in R/logprior_repar.R
 \name{logprior_repar}
 \alias{logprior_repar}
-\title{Reparametrization of Lognormal mean and sd}
+\title{Reparametrization of lognormal mean and standard deviation}
 \usage{
-logprior_repar(m_t, s_t)
+logprior_repar(mean, sd)
 }
 \arguments{
-\item{m_t}{mean of the Lognormal distribution}
+\item{mean}{mean of the lognormal distribution}
 
-\item{s_t}{standard deviation of the Lognormal distribution}
+\item{sd}{sd of the lognormal distribution}
 }
 \value{
 a vector with the location \code{meanlog} and scale \code{sdlog} of the
-Lognormal distribution
+lognormal distribution
 }
 \description{
-\code{logprior_repar} can be used after specifying a Lognormal prior in terms of
-mean \code{m_t} and standard deviation \code{s_t} to calculate the location \code{meanlog}
-and scale \code{sdlog} as defined and used in \code{\link[stats]{dlnorm}}.
+Can be used after specifying a lognormal prior in terms of
+mean and standard deviation (sd) to calculate the location \code{meanlog}
+and scale \code{sdlog} as defined in \code{\link[stats]{qlnorm}}.
 }
 \details{
-Expectation (mean) and standard deviation of a Lognormal random variable \eqn{X}
+Mean \eqn{E(X)} and sd \eqn{sd(X)} of a lognormal random variable \eqn{X}
 parametrized in terms of the location \code{meanlog} \eqn{\mu} and scale \code{sdlog}
 \eqn{\sigma} are given by
 
 \deqn{E(X) = \exp\left( \mu + \frac{1}{2\sigma^2}  \right)}
 \deqn{sd(X) = \sqrt{\left(\exp\left( 2\mu + \sigma^2 \right) \left( \exp(\sigma^2) - 1 \right) \right)}.}
 
-If \eqn{|sd(X)|>|E(X)|>0} rearraging above equations to
+If \eqn{|sd(X)|>|E(X)|>0}, rearranging above equations to
 
 \deqn{\mu = \log(E(X)) - \frac{1}{2} \log\left(\frac{sd(X)^2}{E(X)^2} - 1\right)}
 
 \deqn{\sigma = \sqrt{\log\left(\frac{sd(X)^2}{E(X)^2} + 1\right)}.}
 
-is possible such that the location parameter \code{meanlog} or \eqn{\mu} and the
-scale parameter \code{logmean} or \eqn{\sigma} of the Lognormal distribution are
+is possible such that the location parameter \code{meanlog} and the
+scale parameter \code{logmean} of the lognormal distribution are
 obtained.
+
+The application purpose is to reparametrize lognormal prior
+mean and sd to the parameters used in \code{\link[stats]{qlnorm}}, for instance to
+calculate a ROPE \insertCite{kruschke2018}{BWSPsignal} based on the prior belief representing the
+null hypothesis in BWSP testing \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
 }
 \examples{
-# obtain location and scale for Lognormal distribution with mean = 1 and sd = 10
+# obtain location and scale for lognormal distribution with mean = 1 and sd = 10
 m = 1; s = 10
-lnorm_pars = logprior_repar(m_t = m, s_t = s)
-mu = lnorm_pars[1] # location parameter
-sigma = lnorm_pars[2] # scale parameter
+logpars = logprior_repar(mean = m, sd = s)
+mu = logpars[1] # location parameter
+sigma = logpars[2] # scale parameter
 
-# test: sample from the Lognormal distribution with the obtained parameters
+# test: sample from the lognormal distribution with the obtained parameters
 lnorm_sample = rlnorm(10000000, meanlog = mu, sdlog = sigma)
 m_emp = mean(lnorm_sample); m_emp # estimated mean
 s_emp = sd(lnorm_sample); s_emp # estimated sd
 
+# suppose, upper mean and sd reflect prior belief about the Weibull shape parameter and 
+# calculate an 80\% ROPE based on the parameters
+rope = qlnorm(p = c(0.1,0.9), meanlog = logpars[1], sdlog = logpars[2])
+rope
+
+}
+\references{
+\insertAllCited{}
+}
+\seealso{
+\link{gamprior_repar}
 }

@@ -2,52 +2,68 @@
 % Please edit documentation in R/gamprior_repar.R
 \name{gamprior_repar}
 \alias{gamprior_repar}
-\title{Reparametrization of Gamma mean and sd}
+\title{Reparametrization of gamma mean and sd}
 \usage{
-gamprior_repar(m_t, s_t)
+gamprior_repar(mean, sd)
 }
 \arguments{
-\item{m_t}{mean of the Gamma distribution}
+\item{mean}{mean of the gamma distribution}
 
-\item{s_t}{standard deviation of the Gamma distribution}
+\item{sd}{standard deviation of the gamma distribution}
 }
 \value{
 a vector with the \code{shape}
-and \code{rate} of the Gamma distribution
+and \code{rate} of the gamma distribution
 }
 \description{
-\code{gamprior_repar} can be used after specifying a Gamma prior in terms of
-mean \code{m_t} and standard deviation \code{s_t} to calculate the \code{shape}
-and \code{rate} as defined and used in \code{\link[stats]{dgamma}}.
+Can be used after specifying a gamma prior in terms of
+mean and standard deviation (sd) to calculate the \code{shape}
+and \code{rate} as defined in \code{\link[stats]{qgamma}}.
 }
 \details{
-Expectation (mean) and standard deviation of a Gamma distributed random variable \eqn{X}
+Mean \eqn{E(X)} and sd \eqn{sd(X)} of a gamma distributed random variable \eqn{X}
 parametrized in terms of the shape parameter \eqn{\alpha}
 and rate parameter \eqn{\beta} are given by
 
 \deqn{E(X) = \frac{\alpha}{\beta}}
 \deqn{sd(X) = \frac{\alpha}{\beta^2}}
 
-For \eqn{E(X), \;sd(X)>0} rearraging above equations to
+For \eqn{E(X), \;sd(X)>0} rearranging above equations to
 
 \deqn{\alpha = \frac{\mu^2}{\sigma^2}}
 
 \deqn{\beta = \frac{\mu}{\sigma^2}}
 
 is possible such that the shape parameter \eqn{\alpha}
-and rate parameter \eqn{\beta} of the Gamma distribution are
+and rate parameter \eqn{\beta} of the gamma distribution are
 obtained.
+
+The application purpose is to reparametrize gamma prior
+mean and sd to the parameters used in \code{\link[stats]{qgamma}}, for instance to
+calculate a ROPE \insertCite{kruschke2018}{BWSPsignal} based on the prior belief representing the
+null hypothesis in BWSP testing \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
 }
 \examples{
-# obtain shape and rate for Gamma distribution with mean = 1 and sd = 10
+# obtain shape and rate for gamma distribution with mean = 1 and sd = 10
 m = 1; s = 10
-gam_pars = gamprior_repar(m_t = m, s_t = s)
-shape = gam_pars[1] # shape parameter
-rate = gam_pars[2] # rate parameter
+gampars = gamprior_repar(mean = m, sd = s)
+shape = gampars[1] # shape parameter
+rate = gampars[2] # rate parameter
 
-# test: sample from the Gamma distribution with the obtained parameters
+# test: sample from the gamma distribution with the obtained parameters
 gamma_sample = rgamma(10000000, shape = shape, rate = rate)
 m_emp = mean(gamma_sample); m_emp # estimated mean
 s_emp = sd(gamma_sample); s_emp # estimated sd
 
+# suppose, upper mean and sd reflect prior belief about the Weibull shape parameter and 
+# calculate an 80\% ROPE based on the parameters
+rope = qgamma(p = c(0.1,0.9), shape = gampars[1], rate = gampars[2])
+rope
+
+}
+\references{
+\insertAllCited{}
+}
+\seealso{
+\link{logprior_repar}
 }
