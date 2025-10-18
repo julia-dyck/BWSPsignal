@@ -7,7 +7,6 @@
 #' event information (binary status) in second column
 #' @param tte.dist character specifying the distribution for the
 #' model; options are \code{"w", "dw", "pgw"} (see details)
-#' @param censor time of censoring; only required for \code{"dw"}.
 #' 
 #' @return Output of the fitted model. For \code{"w"}, a \code{summary.survreg} object;
 #' for \code{"dw"}, a list of two \code{summary.survreg} objects
@@ -27,13 +26,17 @@
 #' with \eqn{S(t)} the survival function of the chosen distribution and \eqn{f(t)} the
 #' density function \insertCite{nikulin2016}{BWSPsignal}. The pair \eqn{(t_i, d_i)} are the tte observations.
 #' 
+#' Since the \code{survreg} function from the \code{survival} package uses a different parametrization,
+#' the parameters transformed to the parametrization used in \link{\code[stats]{rweibull}} 
+#' and \link{\code{rpgw}} are printed after function call.
+#' 
 #' @references
 #' \insertAllCited{}
 #' 
 #' @examples
 #' head(tte)
 #' fwsp_model(tte, tte.dist = "w") # Weibull model
-#' fwsp_model(tte, tte.dist = "dw", censor = 365) # double Weibull model
+#' fwsp_model(tte, tte.dist = "dw") # double Weibull model
 #' fwsp_model(tte, tte.dist = "pgw") # power generalized Weibull model
 #' 
 #' 
@@ -42,38 +45,50 @@
 
 
 fwsp_model = function(dat, 
-                      tte.dist = c("w", "dw", "pgw"),
-                      censor = NULL
+                      tte.dist = c("w", "dw", "pgw")
                       ) {
   tte.dist <- match.arg(tte.dist)
-  
-  # enforce censor only for dw
-  if (tte.dist == "dw") {
-    if (is.null(censor)) stop("Argument 'censor' must be provided when tte.dist='dw'")
-  } else {
-    if (!is.null(censor)) warning("'censor' is ignored when tte.dist='dw' or 'pgw'.")
-  }
   
   if(tte.dist == "w"){
     # fit model
     res.w = summary(survival::survreg(survival::Surv(time = dat[,1], event = dat[,2])~1, dist = "weibull"))
+    # print estimates in dweibull parametrization
+    #   survreg's scale  =    1/(rweibull shape)
+    #   survreg's intercept = log(rweibull scale)
+    outprint = data.frame(parameter = c("scale", "shape"),
+                          estimate = c(exp(res.w$coefficients[1]), 1/res.w$scale),
+                          row.names = NULL)
+    message("Weibull parameter estimates in rweibull parametrization:")
+    print(outprint)
     return(res.w)
   }
   
   if(tte.dist == "dw"){
     # extract data censored a middle of observation period
     dat.c = dat
-    dat.c[dat$time > censor/2,1] = ceiling(censor/2)
-    dat.c[dat$time > censor/2,2] = 0
+    half_op = ceiling(max(dat[,1])/2)
+    dat.c[dat$time > half_op,1] = half_op
+    dat.c[dat$time > half_op,2] = 0
     # fit models
     res.w = summary(survival::survreg(survival::Surv(time = dat[,1], event = dat[,2])~1, dist = "weibull"))
     res.c.w = summary(survival::survreg(survival::Surv(time = dat.c[,1], event = dat.c[,2])~1, dist = "weibull"))
+    outprint = data.frame(parameter = c("scale", "shape", "scale.c", "shape.c"),
+                          estimate = c(exp(res.w$coefficients[1]), 1/res.w$scale, 
+                                       exp(res.c.w$coefficients[1]), 1/res.c.w$scale),
+                          row.names = NULL)
+    message("Double Weibull parameter estimates in rweibull parametrization:")
+    print(outprint)
     return(list(uncens = res.w, cens = res.c.w))
   }
   
   if(tte.dist == "pgw"){
     # fit model
     res.pgw = try(nlm(mllk_pgw, p = c(0,0,0), dat = dat, hessian = T))
+    outprint = data.frame(parameter = c("scale", "shape", "powershape"),
+                          estimate = c(exp(res.pgw$estimate[1]), exp(res.pgw$estimate[2]), exp(res.pgw$estimate[3])),
+                          row.names = NULL)
+    message("Power generalized Weibull parameter estimates in rpgw parametrization:")
+    print(outprint)
     return(res.pgw)
   }
   
