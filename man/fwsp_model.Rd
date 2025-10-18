@@ -4,7 +4,7 @@
 \alias{fwsp_model}
 \title{Fit frequentist model to time-to-event data}
 \usage{
-fwsp_model(dat, tte.dist = c("w", "dw", "pgw"), censor = NULL)
+fwsp_model(dat, tte.dist = c("w", "dw", "pgw"))
 }
 \arguments{
 \item{dat}{data frame or matrix with time information in first column and
@@ -12,38 +12,39 @@ event information (binary status) in second column}
 
 \item{tte.dist}{character specifying the distribution for the
 model; options are \code{"w", "dw", "pgw"} (see details)}
-
-\item{censor}{time of censoring; only required for \code{"dw"}.}
 }
 \value{
-Output of the fitted model. For Weibull models, a \code{summary.survreg} object;
-in case of \code{tte.dist = "dw"} a list of two \code{summary.survreg} objects
-with \code{$uncens} containing the maximum likelihood estimate
+Output of the fitted model. For \code{"w"}, a \code{summary.survreg} object;
+for \code{"dw"}, a list of two \code{summary.survreg} objects
+with \code{$uncens} containing the ML estimate
 obtained from the model to the tte data as is, and \code{$cens} containing the
-maximum likelihood estimate
-obtained from the model to the tte data censored at mid of observation period;
-for the pgw model, a list containing the maximum likelihood estimate
-(log of all parameters) obtained via \code{nlm}.
+ML estimate obtained from the model fitted to the tte data censored at mid of observation period;
+for \code{pgw}, a list containing the maximum likelihood estimate
+(log of all parameters) obtained from \code{\link[stats]{nlm}}.
 }
 \description{
 Fits a frequentist model to time-to-event (tte) data via maximum
-likelihood estimation.
+likelihood (ML) estimation.
 }
 \details{
 The model can be a Weibull \code{("w")},
-a double Weibull \code{("w"}, estimating two Weibull models - one to the data as is &
+a double Weibull (estimating two Weibull models - one to the data as is and
 one to the data censored at mid of observation period),
 or a power generalized Weibull \code{("pgw")} model.
 
-The likelihood used in maximum likelihood estimation is
+The likelihood used in ML estimation is
 \deqn{\mathcal{L}(t) = \prod_{i=1}^N S(t_i)^{1-d_i}\cdot f(t_i)^{d_i}}
 with \eqn{S(t)} the survival function of the chosen distribution and \eqn{f(t)} the
-density function. The pair \eqn{(t_i, d_i)} are the tte observations \insertCite{nikulin2016}{BWSPsignal}.
+density function \insertCite{nikulin2016}{BWSPsignal}. The pair \eqn{(t_i, d_i)} are the tte observations.
+
+Since the \code{survreg} function from the \code{survival} package uses a different parametrization,
+the parameters transformed to the parametrization used in \link{\code[stats]{rweibull}}
+and \link{\code{rpgw}} are printed after function call.
 }
 \examples{
 head(tte)
 fwsp_model(tte, tte.dist = "w") # Weibull model
-fwsp_model(tte, tte.dist = "dw", censor = 365) # double Weibull model
+fwsp_model(tte, tte.dist = "dw") # double Weibull model
 fwsp_model(tte, tte.dist = "pgw") # power generalized Weibull model
 
 
