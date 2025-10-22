@@ -38,8 +38,8 @@ with \eqn{S(t)} the survival function of the chosen distribution and \eqn{f(t)} 
 density function \insertCite{nikulin2016}{BWSPsignal}. The pair \eqn{(t_i, d_i)} are the tte observations.
 
 Since the \code{survreg} function from the \code{survival} package uses a different parametrization,
-the parameters transformed to the parametrization used in \link{\code[stats]{rweibull}}
-and \link{\code{rpgw}} are printed after function call.
+the parameters transformed to the parametrization used in \code{\link[stats]{rweibull}}
+and \code{\link{rpgw}} are printed after function call.
 }
 \examples{
 head(tte)

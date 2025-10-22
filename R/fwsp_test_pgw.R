@@ -63,8 +63,12 @@ fwsp_test_pgw = function(mod.output, credlevel = 1 - c(1:10/1000, 2:10/100)){
       # rule: reject H0 only, if both shapes differ significantly from null value
       rej.H0 = rej.nu*rej.gamma 
     }
-    return(rej.H0) # here: 1 if H0 rejected, 0 if H0 not rejected 
   }
+  if(is.na(rej.H0[1])){
+    warning("Issues with standard error calculation from the estimated Hessian matrix. Test result NA is set to 0.")
+    rej.H0 = rep(0, length(alphas))
+  }
+  return(rej.H0) # here: 1 if H0 rejected, 0 if H0 not rejected 
 }
 
 
