@@ -23,7 +23,7 @@ fwsp_test_pgw = function(mod.output, credlevel = 1 - c(1:10/1000, 2:10/100)){
   
   # check whether mod.output is a list
   if(!inherits(mod.output, "list")){
-    stop("Argument mod.output must be a list returned by fit_mod_tte_freq(..., tte.dist = 'pgw').")
+    stop("Argument mod.output must be a list returned by fwsp_model(..., tte.dist = 'pgw').")
   }
   alphas = 1 - credlevel
   
