@@ -1,55 +1,61 @@
 #' Set up simulation parameters
 #' 
-#' With one partly interactive function
-#' data generation, model fitting, number of simulation runs and evaluation are 
-#' set up and gathered in a parameter combination (pc) list, from which the 
-#' information are called in following steps of a simulation study.
+#' Sets up parameters for a simulation study to tune the Bayesian Weibull shape parameter (BWSP) test.
+#' Simulation parameters encompass data generating process (DGP) parameters (\code{N} to \code{study.period}),
+#' tuning parameters for the BWSP test (\code{tte.dist} to \code{sensitivity.option}), 
+#' and additional parameters (\code{reps} to \code{stanmod.warmup}).
 #'
-#' @param N A scalar or vector of sample sizes.
-#' @param br A scalar or vector of background rates.
-#' @param adr.rate A scalar or vector of adverse drug reaction rates.
-#' @param adr.relsd A scalar or vector of relative standard deviations from the adverse drug reaction times.
-#' @param study.period A scalar specifying the length of the study period.
-#' @param tte.dist A character string indicating the modelling approach. Options are
-#' \code{"w", "dw", "pgw"} (see also \link{bwsp_model}).
-#' @param prior.dist A character string indicating the prior distribution for the
-#' parameters of the pgW distribution. Options are 
-#' \code{"fg", "fl", "gg", "ll"} (see also \link{bwsp_model}).
-#' @param post.ci.type A character string indicating whether to extract equal tailed
-#' intervals (\code{"ETI"}) or highest posterior density intervals (\code{HDI}) as
-#' credibilty interval/region for BWSP testing (see \link{bwsp_test}).
-#' @param cred.level A scalar or vector of credibility levels to be tried for construction
-#' of region of practical equivalence (ROPE) and posterior credibility interval (CI).
-#' @param sensitivity.option A scalar or vector of sensitivity options to be tried for the BWSP test.
-#' @param reps The number of repetitions for each simulation scenario.
-#' @param batch.size The number of simulation repetitions to be saved in a batch
-#' @param batch.nr per default \code{reps/batch.size}; the number of batch files 
-#' in resultpath.
-#' @param resultpath The directory where intermediate results of the simulation
-#' are saved.
-#' @param stanmod.chains The number of Markov chains to run.
-#' @param stanmod.iter The total number of iterations per chain (including warmup).
-#' @param standmod.warmup The number of warmup iterations per chain.
+#' @param N vector of sample sizes
+#' @param br vector of background rates (observed in population on average)
+#' @param adr.rate vector of adverse drug reaction rates as proportions of the background rates
+#' @param adr.relsd scalar or vector of relative standard deviations from the adverse drug reaction times
+#' @param study.period scalar specifying the length of the study period
+#' @param tte.dist character vector specifying one or multiple modelling approaches; options are
+#' \code{"w", "dw", "pgw"} (see also \code{\link{bwsp_model}})
+#' @param prior.dist character indicating the prior distribution for the parameters 
+#' of the tte distribution; options are "fg", "fl", "gg", "ll" (see details)
+#' @param fitpars.list list with one data.frame per tte distribution containing
+#' the prior specifications for model fitting; setup with \code{\link{sim.priors_template}}
+#' @param post.ci.type character indicating whether to extract equal tailed
+#' intervals (\code{"ETI"}) or highest posterior density intervals (\code{"HDI"}) as
+#' credibilty interval (CI) for BWSP testing (see \code{\link{bwsp_test}})
+#' @param cred.level vector of credibility levels used for construction
+#' of region of practical equivalence (ROPE) and posterior CI
+#' @param sensitivity.option vector of sensitivity options for the BWSP test (see \code{\link{bwsp_test}})
+#' @param reps number of repetitions for each simulation scenario
+#' @param batch.size number of simulation repetitions to be saved in a batch (see details)
+#' @param batch.nr per default \code{reps/batch.size}; number of batch files
+#' @param resultpath directory where intermediate results of the simulation
+#' are saved
+#' @param stanmod.chains number of Markov chains (see \code\link[rstan]{sampling}})
+#' @param stanmod.iter total number of iterations per chain including warmup (see \code\link[rstan]{sampling}})
+#' @param stanmod.warmup number of warmup iterations per chain (see \code\link[rstan]{sampling}})
 #' 
 #' 
 #' @details
-#' The tuning parameters are used to evaluate the performance of different BWSP 
-#' signal detection tests applied to data scenarios of interest.
-#' The set of tuning parameters consisting of the choice of the
-#' \enumerate{
-#' \item distribution chosen for the tte model, must be a subset out of "w", "dw" 
-#' and pgw",
-#' \item specification of prior means and standard deviations to reflect the 
-#' prior belief about an expected event time toward the beginning/1st quarter,
-#' middle/2nd quarter or end/3rd quarter of the study period,
-#' prior distribution chosen for scale and shape parameters, must be a subset 
-#' out of "fgg", "ggg", "fll" and "lll",
-#' \item type of posterior credible interval, must be a subset out of "ETI" 
-#' (equal-tailed interval) and "HDI" (highest density interval).
-#' }
+#' The goal is to evaluate the performance of different BWSP 
+#' signal detection test tunings for data scenarios of interest following the tuning
+#' scheme developed in \insertCite{dyck2024bpgwsppreprint;textual}{BWSPsignal}.
+#' 
+#' DGP parameters (\code{N} to \code{study.period}) should 
+#' reflect the data characteristics of interest. Given the intention to apply the
+#' WSP test to a specific real data set, the DGP parameters should reflect its features.
+#' Within the simulation, data is generated with \code{\link{sim.datagen_tte}}.
+#' 
+#' Tuning parameters for the BWSP test (\code{tte.dist} to \code{sensitivity.option})
+#' 
+#' 
+#'  
+#' and additional parameters (\code{reps} to \code{stanmod.warmup}).
 #' 
 #' Batch saving is done to prevent losing simulation results in case of an
-#' interuption of simulation.
+#' interruption of simulation.
+#' 
+#' @references 
+#' \insertAllCited{}
+#' 
+#' 
+#' @examples
 #'
 #' @export
 
@@ -60,7 +66,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               study.period,      # -
                               tte.dist,          # tuning parameters
                               prior.dist,        # |
-                              fitpars.list = NULL, # |
+                              fitpars.list,      # |
                               post.ci.type,      # |
                               cred.level,        # v
                               sensitivity.option,# -

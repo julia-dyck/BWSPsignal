@@ -12,7 +12,7 @@ sim.setup_sim_pars(
   study.period,
   tte.dist,
   prior.dist,
-  fitpars.list = NULL,
+  fitpars.list,
   post.ci.type,
   cred.level,
   sensitivity.option,
@@ -26,22 +26,24 @@ sim.setup_sim_pars(
 )
 }
 \arguments{
-\item{N}{A scalar or vector of sample sizes.}
+\item{N}{vector of sample sizes}
 
-\item{br}{A scalar or vector of background rates.}
+\item{br}{vector of background rates}
 
-\item{adr.rate}{A scalar or vector of adverse drug reaction rates.}
+\item{adr.rate}{vector of adverse drug reaction rates}
 
-\item{adr.relsd}{A scalar or vector of relative standard deviations from the adverse drug reaction times.}
+\item{adr.relsd}{scalar or vector of relative standard deviations from the adverse drug reaction times}
 
-\item{study.period}{A scalar specifying the length of the study period.}
+\item{study.period}{scalar specifying the length of the study period}
 
-\item{tte.dist}{A character string indicating the modelling approach. Options are
-\code{"w", "dw", "pgw"} (see also \link{bwsp_model}).}
+\item{tte.dist}{character indicating the modelling approach; options are
+\code{"w", "dw", "pgw"} (see also \code{\link{bwsp_model}})}
 
-\item{prior.dist}{A character string indicating the prior distribution for the
-parameters of the pgW distribution. Options are
-\code{"fg", "fl", "gg", "ll"} (see also \link{bwsp_model}).}
+\item{prior.dist}{character indicating the prior distribution for the parameters
+of the tte distribution; options are "fg", "fl", "gg", "ll" (see details)}
+
+\item{fitpars.list}{list with one data.frame per tte distribution containing
+the prior specifications to be used for model fitting; setup with \code{\link{sim.priors_template}}.}
 
 \item{post.ci.type}{A character string indicating whether to extract equal tailed
 intervals (\code{"ETI"}) or highest posterior density intervals (\code{HDI}) as
@@ -66,13 +68,13 @@ are saved.}
 
 \item{stanmod.iter}{The total number of iterations per chain (including warmup).}
 
-\item{standmod.warmup}{The number of warmup iterations per chain.}
+\item{stanmod.warmup}{The number of warmup iterations per chain.}
 }
 \description{
-With one partly interactive function
-data generation, model fitting, number of simulation runs and evaluation are
-set up and gathered in a parameter combination (pc) list, from which the
-information are called in following steps of a simulation study.
+Sets up parameters for a simulation study to tune the Bayesian Weibull shape parameter (BWSP) test.
+Simulation parameters encompass data generating process (DGP) parameters (\code{N} to \code{study.period}),
+tuning parameters for the BWSP test (\code{tte.dist} to \code{sensitivity.option}),
+and additional parameters (\code{reps} to \code{stanmod.warmup}).
 }
 \details{
 The tuning parameters are used to evaluate the performance of different BWSP
