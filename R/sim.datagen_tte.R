@@ -5,7 +5,7 @@
 #' @param genpar A vector containing 6 numeric elements:
 #' \enumerate{
 #'       \item the sample size \eqn{N},
-#'       \item the background rate \eqn{b}r (observed in population on average),
+#'       \item the background rate \eqn{br} (observed in population on average),
 #'       \item the adverse drug reaction (ADR)) rate \eqn{adr} as proportion of the background rate,
 #'       \item the ADR mean time as relative proportion \eqn{m.rel} of the observation period (OP),
 #'       \item the relative standard deviation \eqn{rel.sd},
