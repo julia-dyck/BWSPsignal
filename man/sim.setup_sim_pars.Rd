@@ -18,7 +18,6 @@ sim.setup_sim_pars(
   sensitivity.option,
   reps = 100,
   batch.size = 10,
-  batch.nr = reps/batch.size,
   resultpath = paste0(getwd(), "/results_raw"),
   stanmod.chains = 4,
   stanmod.iter = 11000,
@@ -28,47 +27,50 @@ sim.setup_sim_pars(
 \arguments{
 \item{N}{vector of sample sizes}
 
-\item{br}{vector of background rates}
+\item{br}{vector of background rates (observed in population on average)}
 
-\item{adr.rate}{vector of adverse drug reaction rates}
+\item{adr.rate}{vector of adverse drug reaction rates as proportions of the background rates}
 
-\item{adr.relsd}{scalar or vector of relative standard deviations from the adverse drug reaction times}
+\item{adr.relsd}{vector of relative standard deviations from the adverse drug reaction times}
 
 \item{study.period}{scalar specifying the length of the study period}
 
-\item{tte.dist}{character indicating the modelling approach; options are
-\code{"w", "dw", "pgw"} (see also \code{\link{bwsp_model}})}
+\item{tte.dist}{character vector specifying one or multiple modelling approaches; options are
+\code{"w", "dw", "pgw"} (see \code{\link{bwsp_model}})}
 
 \item{prior.dist}{character indicating the prior distribution for the parameters
-of the tte distribution; options are "fg", "fl", "gg", "ll" (see details)}
+of the tte distribution; options are "fg", "fl", "gg", "ll" (see \code{\link{bwsp_model}})}
 
 \item{fitpars.list}{list with one data.frame per tte distribution containing
-the prior specifications to be used for model fitting; setup with \code{\link{sim.priors_template}}.}
+the prior specifications for model fitting; setup with \code{\link{sim.priors_template}}}
 
-\item{post.ci.type}{A character string indicating whether to extract equal tailed
-intervals (\code{"ETI"}) or highest posterior density intervals (\code{HDI}) as
-credibilty interval/region for BWSP testing (see \link{bwsp_test}).}
+\item{post.ci.type}{character indicating whether to extract equal tailed
+intervals (\code{"ETI"}) or highest posterior density intervals (\code{"HDI"}) as
+credibilty interval (CI) for BWSP testing (see \code{\link{bwsp_test}} details)}
 
-\item{cred.level}{A scalar or vector of credibility levels to be tried for construction
-of region of practical equivalence (ROPE) and posterior credibility interval (CI).}
+\item{cred.level}{vector of credibility levels used for construction
+of region of practical equivalence (ROPE) and posterior CI}
 
-\item{sensitivity.option}{A scalar or vector of sensitivity options to be tried for the BWSP test.}
+\item{sensitivity.option}{vector of sensitivity options for the BWSP test (see \code{\link{bwsp_test}})}
 
-\item{reps}{The number of repetitions for each simulation scenario.}
+\item{reps}{number of repetitions for each simulation scenario, default is 100}
 
-\item{batch.size}{The number of simulation repetitions to be saved in a batch}
+\item{batch.size}{number of simulation repetitions to be saved in a batch (see details); default is 10}
 
-\item{batch.nr}{per default \code{reps/batch.size}; the number of batch files
-in resultpath.}
+\item{resultpath}{directory where intermediate results of the simulation
+are saved}
 
-\item{resultpath}{The directory where intermediate results of the simulation
-are saved.}
+\item{stanmod.chains}{number of Markov chains (see \code{\link[rstan]{rstan::sampling}}); default is 4}
 
-\item{stanmod.chains}{The number of Markov chains to run.}
+\item{stanmod.iter}{total number of iterations per chain including warmup
+(see \code{\link[rstan]{rstan::sampling}}); default is 11000}
 
-\item{stanmod.iter}{The total number of iterations per chain (including warmup).}
-
-\item{stanmod.warmup}{The number of warmup iterations per chain.}
+\item{stanmod.warmup}{number of warmup (aka burnin) iterations per chain
+(see \code{\link[rstan]{rstan::sampling}}); default is 1000}
+}
+\value{
+A list containing all simulation specifications in the format required for
+\code{\link{sim.run}}.
 }
 \description{
 Sets up parameters for a simulation study to tune the Bayesian Weibull shape parameter (BWSP) test.
@@ -77,21 +79,80 @@ tuning parameters for the BWSP test (\code{tte.dist} to \code{sensitivity.option
 and additional parameters (\code{reps} to \code{stanmod.warmup}).
 }
 \details{
-The tuning parameters are used to evaluate the performance of different BWSP
-signal detection tests applied to data scenarios of interest.
-The set of tuning parameters consisting of the choice of the
-\enumerate{
-\item distribution chosen for the tte model, must be a subset out of "w", "dw"
-and pgw",
-\item specification of prior means and standard deviations to reflect the
-prior belief about an expected event time toward the beginning/1st quarter,
-middle/2nd quarter or end/3rd quarter of the study period,
-prior distribution chosen for scale and shape parameters, must be a subset
-out of "fgg", "ggg", "fll" and "lll",
-\item type of posterior credible interval, must be a subset out of "ETI"
-(equal-tailed interval) and "HDI" (highest density interval).
-}
+The purpose of the simulation study is to evaluate the performance of different BWSP
+tests for data scenarios of interest following the tuning
+scheme developed in \insertCite{dyck2024bpgwsppreprint;textual}{BWSPsignal}.
 
+DGP parameters (\code{N} to \code{study.period}) should
+reflect the data characteristics of interest. Given the intention to apply the
+WSP test to a specific real data set, the DGP parameters should reflect its features.
+Within the simulation, data are generated with \code{\link{sim.datagen_tte}}.
+
+Tuning parameters for the BWSP test (\code{tte.dist} to \code{sensitivity.option})
+lead to a range of tuning combinations evaluated during the simulation study to
+find the best test tuning.
+Among them, argument \code{fitpars.list} contains the prior means and sds for the
+prior distributions (\code{prior.dist}) for all scale and shape parameters.
+A template for the \code{fitpars.list} to be filled can be generated with
+\code{\link{sim.priors_template}}. Note, that the \code{tte.dist} argument
+in \code{\link{sim.priors_template}} and in \code{\link{sim.setup_sim_pars}} must
+match.
+
+Additional parameters (\code{reps} to \code{stanmod.warmup}) specify simulation
+settings and specifications for posterior sampling.
+Simulation settings encompass the number of repetitions per simulation scenario,
+the directory to save results
+and batch saving.
 Batch saving is done to prevent losing simulation results in case of an
-interuption of simulation.
+interruption of simulation e.g. due to termination of the R session.
+Posterior sampling specifications encompass the number of chains, iterations and
+the length of the warmup phase. See \code{\link[rstan]{rstan::sampling}} for
+more details on the posterior estimation function.
+}
+\examples{
+#### specify parameter combinations for simulation study 
+
+# setup prior template
+fp_list = sim.priors_template(tte.dist = c("w", "pgw"), prior.sds = 10) 
+fp_list # fitpars.list template
+
+# fill in prior template with values chosen in prior elicitation
+# for weibull models:
+fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
+fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
+
+# for pgw models:
+fp_list$pgw[,2] = c(1, 1, 20, 300)   # scale prior means
+fp_list$pgw[,4] = c(1, 0.207, 5.5, 4)# shape prior means
+fp_list$pgw[,6] = c(1, 1, 14, 1)     # powershape prior means
+
+fp_list # fitpars.list filled with means
+
+# setup parameter combination list for simulation
+pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),
+                             br = 0.1,
+                             adr.rate = c(0, 0.5, 1),
+                             adr.relsd = 0.05,
+                             study.period = 365,
+                             tte.dist = c("w", "pgw"),
+                             prior.dist = c("ll", "gg"),
+                             fitpars.list = fp_list,
+                             post.ci.type = c("ETI", "HDI"),
+                             cred.level = c(seq(0.5,0.9, by = 0.05), 
+                             sensitivity.option = 1:3,
+                             reps = 100, # additional parameters
+                             batch.size = 10,
+                             resultpath = paste0(getwd(),"/simulation_results"),
+                             stanmod.iter = 11000,
+                             stanmod.warmup = 1000
+                             )
+                             
+
+pc_list 
+                             
+                             
+
+}
+\references{
+\insertAllCited{}
 }
