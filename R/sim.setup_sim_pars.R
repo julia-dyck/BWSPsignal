@@ -33,7 +33,7 @@
 #' 
 #' 
 #' @details
-#' The goal is to evaluate the performance of different BWSP 
+#' The purpose of the simulation study is to evaluate the performance of different BWSP 
 #' signal detection test tunings for data scenarios of interest following the tuning
 #' scheme developed in \insertCite{dyck2024bpgwsppreprint;textual}{BWSPsignal}.
 #' 
@@ -43,6 +43,13 @@
 #' Within the simulation, data is generated with \code{\link{sim.datagen_tte}}.
 #' 
 #' Tuning parameters for the BWSP test (\code{tte.dist} to \code{sensitivity.option})
+#' lead to a range of tuning combinations evaluated during the simulation study to
+#' find the best test tuning. 
+#' 
+#' Argument \code{fitpars.list} contains the prior means and sds for the
+#' prior distributions (\code{prior.dist}) for all scale and shape parameters.
+#' A template for the \code{fitpars.list} to be filled can be generated with 
+#' \code{\link{sim.priors_template}}.
 #' 
 #' 
 #'  
