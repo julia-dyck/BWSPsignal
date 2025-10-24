@@ -48,7 +48,7 @@
 #' 
 #' 
 #' 
-#' @section Bayesian approach: 
+#' @section Bayesian test components: 
 #' 
 #' Information on the Bayesian 
 #' variant of the Power Generalized Weibull (PGW) shape 
@@ -59,14 +59,26 @@
 #' The region of practical equivalence (ROPE) specified in the 
 #' \code{nullregion} argument represents the expected parameter value under \eqn{H_0}.
 #' The credibility region(s) specified in the \code{credregion} argument represent
-#' the posterior distribution of each shape parameter. See Examples for exemplary ROPE and post CI setup.
+#' the posterior distribution of each shape parameter. 
+#' For the ROPE we recommend to set up an equal-tailed interval (ETI) with 
+#' \deqn{[q_{(1-\alpha)/2}, q_{(1+\alpha)/2}]}
+#' based on the quantiles \eqn{q} of the shape parameters' prior distributions under 
+#' \eqn{H_0} at a chosen credibility level \eqn{1 - \alpha}.
+#' For the posterior CI, we recommend either an ETI at the same credibility level obtained from
+#' the empirical quantiles of the posterior distribution per shape parameter 
+#' or a highest density interval (HDI, \insertCite{kruschke2015;textual}{BWSPsignal})
+#' \deqn{HDI(\nu) = \{\nu \; |\; p_1(\nu) \geq w\} \text{ with } w\in [0,1] \text{ such that} \int_{\nu \; | \; p_1(\nu) \geq w} p_1(\nu|t)\;  d\nu = 1 - \alpha}
+#' at the same credibility level.
+#' See Examples for exemplary ROPE and post CI setup in R.
+#' Best choices for ROPE and CI can be obtained from a simulation study to tune the 
+#' BWSP test specifications.
+
 #' 
 #' The HDI+ROPE test checks the 
 #' relationship between ROPE and credibility region(s) leading to either acceptance,
 #' rejection or no decision regarding the null hypothesis for a single shape parameter.
-#' 
 #' Options to generate a binary outcome, i.e. a signal or not, from HDI+ROPE test results 
-#' based on one (in case of \code{"w"}) ore two (in case of \code{"dw", "pgw"}) shape parameters are:
+#' based on one (in case of \code{"w"}) or two (in case of \code{"dw", "pgw"}) shape parameters are:
 #' \tabular{ccccc}{
 #' HDI+ROPE \tab HDI+ROPE \tab combination \tab combination \tab combination \cr
 #' outcome \tab outcome \tab rule \tab rule \tab rule \cr
@@ -96,7 +108,6 @@
 #' 
 #' @references 
 #' \insertAllCited{}
-#' 
 #' 
 #' @examples
 #' #### Exemplary conduction of a test from data and prior to test result:
