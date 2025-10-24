@@ -42,7 +42,8 @@ for the purpose of performing Weibull shape parameter signal detection tests
 with \code{\link{bwsp_test}}.
 }
 \details{
-The function applies the \code{\link[rstan]{sampling}} command to fit a Bayesian model to
+The function applies the \code{\link[rstan]{sampling}} command with the No U-Turn sampler
+to fit a Bayesian model to
 time-to-event data.
 The model can be a Weibull \code{("w")},
 a double Weibull \code{("w"}, estimating two Weibull models - one to the data as is and
