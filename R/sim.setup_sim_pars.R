@@ -102,7 +102,7 @@
 #'                              prior.dist = c("ll", "gg"),
 #'                              fitpars.list = fp_list,
 #'                              post.ci.type = c("ETI", "HDI"),
-#'                              cred.level = c(seq(0.5,0.9, by = 0.05), 
+#'                              cred.level = c(seq(0.5,0.9, by = 0.05)), 
 #'                              sensitivity.option = 1:3,
 #'                              reps = 100, # additional parameters
 #'                              batch.size = 10,
@@ -138,15 +138,70 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               stanmod.warmup = 1000
 ){   
   
+  # --- Argument checks ---
+  if (!is.numeric(N)) stop("N must be numeric.\n")
+  if (any(N <= 0)) stop("N must contain positive values.\n")
+  if (any(N %% 1 != 0)) {
+    warning("N contains non-integer values that will be rounded.\n")
+    N <- round(N)
+  }
+  
+  if (!is.numeric(br)) stop("br must be numeric.\n")
+  if (any(br < 0 | br > 1)) stop("br must be between 0 and 1.\n")
+  
+  if (!is.numeric(adr.rate)) stop("adr.rate must be numeric.\n")
+  if (any(adr.rate < 0 | adr.rate > 1)) stop("adr.rate must be between 0 and 1.\n")
+  
+  if (!is.numeric(adr.relsd)) stop("adr.relsd must be numeric.\n")
+  if (any(adr.relsd <= 0)) stop("adr.relsd must be positive.\n")
+  
+  if (!is.numeric(study.period) || length(study.period) != 1)
+    stop("study.period must be a single numeric value.\n")
+  
+  allowed_dists <- c("w","dw","pgw")
+  if (any(is.na(match(tte.dist, allowed_dists))))
+    stop(paste0("tte.dist must be out of: ",
+                paste(allowed_dists, collapse = ", "),
+                ".\n"))
+  # check whether tte.dist matches tte.dist defined fitpars.list
+  # extract non-empty dataframe names from fitpars.list
+  tte.dist.in.fitpars.list <- names(Filter(function(x) is.data.frame(x) && nrow(x) > 0, fitpars.list))
+  # check for set equality
+  if (!setequal(tte.dist, tte.dist.in.fitpars.list)) {
+    stop(paste0(
+      "Argument tte.dist must match names of data.frames in fitpars.list.\n",
+      "Given tte.dist: ", paste(tte.dist, collapse = ", "), "\n",
+      "Names in fitpars.list: ", paste(tte.dist.in.fitpars.list, collapse = ", "), "\n"
+    ))
+  }
+  
+  # write check whether fitpars.list has correct format (matching output form priors.template) ## HIER WEITER
+  
+  allowed_priors <- c("fg","fl","gg","ll")
+  if (any(is.na(match(prior.dist, allowed_priors))))
+    stop(paste0("prior.dist must be one of: ",
+                paste(allowed_priors, collapse = ", "),
+                ".\n"))
+  
+  allowed_ci <- c("ETI","HDI")
+  if (any(is.na(match(post.ci.type, allowed_ci))))
+    stop(paste0("post.ci.type must be one of: ",
+                paste(allowed_ci, collapse = ", "),
+                ".\n"))
+  
+  if (!is.numeric(cred.level) || any(cred.level <= 0 | cred.level >= 1))
+    stop("cred.level must contain numeric values between 0 and 1.\n")
+  
+  if (any(is.na(match(sensitivity.option, 1:3))))
+    stop("sensitivity.option must be in {1, 2, 3}.\n")
+  
+  # --- set up list components ---
   dgp_pars = sim.setup_dgp_pars(N = N,
                                 br = br,
                                 adr.when = c(0, 0.25, 0.5, 0.75), # fixed (reduce complexity)
                                 adr.rate = adr.rate,
                                 adr.relsd = adr.relsd,
                                 study.period = study.period)
-  
-  
-  
   
   fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
                                 prior.belief = c("none", "beginning", "middle", "end"), # fixed (matching adr.when)

@@ -138,7 +138,7 @@ pc_list = sim.setup_sim_pars(N = c(500, 3000, 5000),
                              prior.dist = c("ll", "gg"),
                              fitpars.list = fp_list,
                              post.ci.type = c("ETI", "HDI"),
-                             cred.level = c(seq(0.5,0.9, by = 0.05), 
+                             cred.level = c(seq(0.5,0.9, by = 0.05)), 
                              sensitivity.option = 1:3,
                              reps = 100, # additional parameters
                              batch.size = 10,
