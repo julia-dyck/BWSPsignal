@@ -138,73 +138,172 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
                               stanmod.warmup = 1000
 ){   
   
-  # --- Argument checks ---
-  if (!is.numeric(N)) stop("N must be numeric.\n")
-  if (any(N <= 0)) stop("N must contain positive values.\n")
+  # Argument checks ------------------------------------------------------------
+  
+  ## for DGP parameters ---
+  if (!is.numeric(N)) stop("Argument N must be numeric.\n")
+  if (any(N <= 0)) stop("Argument N must contain positive values.\n")
   if (any(N %% 1 != 0)) {
-    warning("N contains non-integer values that will be rounded.\n")
+    warning("Argument N contains non-integer values that will be rounded.\n")
     N <- round(N)
   }
-  
-  if (!is.numeric(br)) stop("br must be numeric.\n")
-  if (any(br < 0 | br > 1)) stop("br must be between 0 and 1.\n")
-  
-  if (!is.numeric(adr.rate)) stop("adr.rate must be numeric.\n")
-  if (any(adr.rate < 0 | adr.rate > 1)) stop("adr.rate must be between 0 and 1.\n")
-  
-  if (!is.numeric(adr.relsd)) stop("adr.relsd must be numeric.\n")
-  if (any(adr.relsd <= 0)) stop("adr.relsd must be positive.\n")
-  
-  if (!is.numeric(study.period) || length(study.period) != 1)
-    stop("study.period must be a single numeric value.\n")
-  
-  allowed_dists <- c("w","dw","pgw")
-  if (any(is.na(match(tte.dist, allowed_dists))))
-    stop(paste0("tte.dist must be out of: ",
-                paste(allowed_dists, collapse = ", "),
-                ".\n"))
-  # check whether tte.dist matches tte.dist defined fitpars.list
-  # extract non-empty dataframe names from fitpars.list
-  tte.dist.in.fitpars.list <- names(Filter(function(x) is.data.frame(x) && nrow(x) > 0, fitpars.list))
-  # check for set equality
-  if (!setequal(tte.dist, tte.dist.in.fitpars.list)) {
-    stop(paste0(
-      "Argument tte.dist must match names of data.frames in fitpars.list.\n",
-      "Given tte.dist: ", paste(tte.dist, collapse = ", "), "\n",
-      "Names in fitpars.list: ", paste(tte.dist.in.fitpars.list, collapse = ", "), "\n"
-    ))
+  if (any(duplicated(N))) {
+    warning("Duplicate entries removed from N.\n")
+    N <- unique(N)
   }
   
-  # write check whether fitpars.list has correct format (matching output form priors.template) ## HIER WEITER
+  if (!is.numeric(br)) stop("Argument br must be numeric.\n")
+  if (any(br < 0 | br > 1)) stop("Argument br must be between 0 and 1.\n")
+  if (any(duplicated(br))) {
+    warning("Duplicate entries removed from br.\n")
+    br <- unique(br)
+  }
   
+  if (!is.numeric(adr.rate)) stop("Argument adr.rate must be numeric.\n")
+  if (any(adr.rate < 0 | adr.rate > 1)) stop("Argument adr.rate must be between 0 and 1.\n")
+  if (any(duplicated(adr.rate))) {
+    warning("Duplicate entries removed from adr.rate.\n")
+    adr.rate <- unique(adr.rate)
+  }
+  if (!any(adr.rate == 0)){
+    warning("Control case (adr.rate = 0) necessary for simulation study. Value 0 is added to specified vector adr.rate.\n")
+  }
+  
+  if (!is.numeric(adr.relsd)) stop("Argument adr.relsd must be numeric.\n")
+  if (any(adr.relsd <= 0)) stop("Argument adr.relsd must be positive.\n")
+  if (any(duplicated(adr.relsd))) {
+    warning("Duplicate entries removed from adr.relsd.\n")
+    adr.relsd <- unique(adr.relsd)
+  }
+  
+  if (!is.numeric(study.period) || length(study.period) != 1)
+    stop("Argument study.period must be a single numeric value.\n")
+  
+  ## for fit parameters ---
+  
+  ### checks for tte.dist
+  if (any(duplicated(tte.dist))) {
+    warning("Duplicate entries removed from tte.dist.\n")
+    tte.dist <- unique(tte.dist)
+  }
+  allowed_dists <- c("w","dw","pgw")
+  if (any(is.na(match(tte.dist, allowed_dists))))
+    stop(paste0("Argument tte.dist must be out of: ",
+                paste(allowed_dists, collapse = ", "),
+                ".\n"))
+  
+  ### checks for prior.dist
+  if (any(duplicated(prior.dist))) {
+    warning("Duplicate entries removed from prior.dist.\n")
+    prior.dist <- unique(prior.dist)
+  }
   allowed_priors <- c("fg","fl","gg","ll")
   if (any(is.na(match(prior.dist, allowed_priors))))
-    stop(paste0("prior.dist must be one of: ",
-                paste(allowed_priors, collapse = ", "),
-                ".\n"))
+    stop(paste0("Argument prior.dist must be out of: ", paste(allowed_priors, collapse = ", "),".\n"))
   
+  ### checks regarding fitpars.list
+  if(!setequal(names(fitpars.list), c("w", "dw", "pgw")))
+    stop("Argument fitpars.list must be a list with elements $w, $dw and $pgw.\nSetup a fitpars.list template with sim.priors_template.\n")
+  # check whether tte.dist matches tte.dist defined fitpars.list
+  tte.dist.in.fitpars.list <- names(Filter(function(x) is.data.frame(x) && nrow(x) > 0, fitpars.list))
+  # Check matching distributions
+  if (!setequal(tte.dist, tte.dist.in.fitpars.list))
+    stop("Argument tte.dist must match non-empty fitpars.list data.frames.\nSetup a fitpars.list template with sim.priors_template.\n")
+  # Validate each dataframe
+  for (dist in tte.dist) {
+    df <- fitpars.list[[dist]]
+    # numeric check except first col
+    if (!all(sapply(df[-1], is.numeric))) 
+      stop(paste0("All parameter columns in fitpars.list$", dist," must be numeric (no characters or factors).\nSetup a fitpars.list template with sim.priors_template.\n"))
+    # no remaining NA
+    if (any(is.na(df[-1]))) 
+      stop(paste0("All priors in fitpars.list$", dist, " must be filled — no NA allowed.\nSetup a fitpars.list template with sim.priors_template.\n"))
+  }
+  
+  ## for test parameters ---
+  
+  if (any(duplicated(post.ci.type))) {
+    warning("Duplicate entries removed from post.ci.type.\n")
+    post.ci.type <- unique(post.ci.type)
+  }
   allowed_ci <- c("ETI","HDI")
   if (any(is.na(match(post.ci.type, allowed_ci))))
-    stop(paste0("post.ci.type must be one of: ",
-                paste(allowed_ci, collapse = ", "),
-                ".\n"))
+    stop(paste0("Argument post.ci.type must be out of: ",paste(allowed_ci, collapse = ", "),".\n"))
   
   if (!is.numeric(cred.level) || any(cred.level <= 0 | cred.level >= 1))
-    stop("cred.level must contain numeric values between 0 and 1.\n")
+    stop("Argument cred.level must contain numeric values between 0 and 1.\n")
+  # Credibility interval grid
+  if (any(duplicated(cred.level))) {
+    warning("Duplicate entries removed from cred.level.\n")
+    cred.level <- unique(cred.level)
+  }
   
+  if (any(duplicated(sensitivity.option))) {
+    warning("Duplicate entries removed from sensitivity.option.\n")
+    sensitivity.option <- unique(sensitivity.option)
+  }
   if (any(is.na(match(sensitivity.option, 1:3))))
-    stop("sensitivity.option must be in {1, 2, 3}.\n")
+    stop("Argument sensitivity.option must be out of 1, 2, 3.\n")
   
-  # --- set up list components ---
+  ## for additional parameters ---
+  
+  if (!is.numeric(reps) || length(reps) != 1)
+    stop("Argument reps must be a single numeric value.\n")
+  if (reps <= 0)
+    stop("Argument reps must be positive.\n")
+  if (reps %% 1 != 0) {
+    warning("Argument reps contains non-integer value and will be rounded.\n")
+    reps <- round(reps)
+  }
+  
+  if (!is.numeric(batch.size) || length(batch.size) != 1)
+    stop("Argument batch.size must be a single numeric value.\n")
+  if (batch.size <= 0)
+    stop("Argument batch.size must be positive.\n")
+  if (reps %% batch.size != 0) {
+    stop("Argument batch.size must be an integer divisor of reps such that batch.size times an integer number of batches is exactly the specified number of reps.\n")
+  }
+  
+  if (!is.character(resultpath) || length(resultpath) != 1)
+    stop("Argument resultpath must be a single character string.\n")
+  
+  if (!is.numeric(stanmod.chains) || length(stanmod.chains) != 1)
+    stop("Argument stanmod.chains must be a single numeric value.\n")
+  if (stanmod.chains <= 0)
+    stop("Argument stanmod.chains must be positive.\n")
+  if (stanmod.chains %% 1 != 0) {
+    warning("Argument stanmod.chains contains non-integer value and will be rounded.\n")
+    stanmod.chains <- round(stanmod.chains)
+  }
+  
+  if (!is.numeric(stanmod.iter) || length(stanmod.iter) != 1)
+    stop("Argument stanmod.iter must be a single numeric value.\n")
+  if (stanmod.iter <= 0)
+    stop("Argument stanmod.iter must be positive.\n")
+  if (stanmod.iter %% 1 != 0) {
+    warning("Argument stanmod.iter contains non-integer value and will be rounded.\n")
+    stanmod.iter <- round(stanmod.iter)
+  }
+  
+  if (!is.numeric(stanmod.warmup) || length(stanmod.warmup) != 1)
+    stop("Argument stanmod.warmup must be a single numeric value.\n")
+  if (stanmod.warmup < 0)
+    stop("Argument stanmod.warmup must be non-negative.\n")
+  if (stanmod.warmup %% 1 != 0) {
+    warning("Argument stanmod.warmup contains non-integer value and will be rounded.\n")
+    stanmod.warmup <- round(stanmod.warmup)
+  }
+  
+  # Set up list components -----------------------------------------------------
   dgp_pars = sim.setup_dgp_pars(N = N,
                                 br = br,
-                                adr.when = c(0, 0.25, 0.5, 0.75), # fixed (reduce complexity)
+                                adr.when = c(0, 0.25, 0.5, 0.75), # fixed (to reduce complexity)
                                 adr.rate = adr.rate,
                                 adr.relsd = adr.relsd,
                                 study.period = study.period)
   
   fit_pars = sim.setup_fit_pars(tte.dist = tte.dist,
-                                prior.belief = c("none", "beginning", "middle", "end"), # fixed (matching adr.when)
+                                prior.belief = c("none", "beginning", "middle", "end"), # fixed (to reduce complexity; matching adr.when)
                                 prior.dist = prior.dist,
                                 fit_pars_list = fitpars.list)
   

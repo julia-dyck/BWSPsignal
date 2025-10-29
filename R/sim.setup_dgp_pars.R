@@ -28,6 +28,45 @@ sim.setup_dgp_pars = function(N,           # dgp parameters
                               adr.relsd,
                               study.period 
 ){
+  # Argument checks ------------------------------------------------------------
+  
+  ## for DGP parameters ---
+  if (!is.numeric(N)) stop("Argument N must be numeric.\n")
+  if (any(N <= 0)) stop("Argument N must contain positive values.\n")
+  if (any(N %% 1 != 0)) {
+    warning("Argument N contains non-integer values that will be rounded.\n")
+    N <- round(N)
+  }
+  if (any(duplicated(N))) {
+    warning("Duplicate entries removed from N.\n")
+    N <- unique(N)
+  }
+  
+  if (!is.numeric(br)) stop("Argument br must be numeric.\n")
+  if (any(br < 0 | br > 1)) stop("Argument br must be between 0 and 1.\n")
+  if (any(duplicated(br))) {
+    warning("Duplicate entries removed from br.\n")
+    br <- unique(br)
+  }
+  
+  if (!is.numeric(adr.rate)) stop("Argument adr.rate must be numeric.\n")
+  if (any(adr.rate < 0 | adr.rate > 1)) stop("Argument adr.rate must be between 0 and 1.\n")
+  if (any(duplicated(adr.rate))) {
+    warning("Duplicate entries removed from adr.rate.\n")
+    adr.rate <- unique(adr.rate)
+  }
+  
+  if (!is.numeric(adr.relsd)) stop("Argument adr.relsd must be numeric.\n")
+  if (any(adr.relsd <= 0)) stop("Argument adr.relsd must be positive.\n")
+  if (any(duplicated(adr.relsd))) {
+    warning("Duplicate entries removed from adr.relsd.\n")
+    adr.relsd <- unique(adr.relsd)
+  }
+  
+  if (!is.numeric(study.period) || length(study.period) != 1)
+    stop("Argument study.period must be a single numeric value.\n")
+  
+  # adr when and rate "with/without 0" handling
   if(any(adr.rate == 0)){ # separate control and adr>0 cases
     adr.rate = adr.rate[-(which(adr.rate==0))]
   }
