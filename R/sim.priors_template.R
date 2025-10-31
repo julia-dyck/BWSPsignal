@@ -1,7 +1,67 @@
+#' Template for prior specification in simulation study
+#'
+#' @description
+#' Generates a structured template for specifying prior means and prior standard
+#' deviations (sds) for the Weibull, double Weibull, or Power generalized Weibull
+#' (PgW) model parameters to be inserted into \code{\link{sim.setup_sim_pars}}.
 #'
 #'
+#' @param tte.dist character vector specifying one or multiple modelling approaches; options are
+#' \code{"w", "dw", "pgw"} (see \code{\link{bwsp_model}})
+#' @param prior.sds numeric value setting the same prior sd for all scale
+#' and shape parameters across all included model types. Defaults to \code{NULL},
+#' leaving all sd fields as \code{NA}.
+#'
+#' @details
+#' The returned list contains one data frame per time-to-event distribution
+#' (\code{w}, \code{dw}, \code{pgw}). 
+#' For each chosen tte distribution, rows corresponding to
+#' different levels of prior belief about the the hazard function are provided, namely
+#' \code{"none"}, \code{"beginning"}, \code{"middle"}, and \code{"end"}
+#' \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
+#' Given the template, prior means and sds must be filled by the user before simulation.
+#'
+#' @return
+#' A named list containing three data frames
+#' \code{$w}, \code{$dw}, and \code{$pgw}.
+#' Each is a data frame specifying prior beliefs and placeholder entries for prior means and sds.
+#'
+#'
+#' @examples
+#' ####  prior elicitation --------------------------------------------------------
+#' # try a few prior parameter combinations and see whether the resulting hazard 
+#' # roughly matches the prior belief about the hazard form 
+#'
+#' # Expected event time can also be taken into account for some guidance, but 
+#' # should not be prioritized.
+#' # The reason is that we do not expect the model to accurately fit the hazard of the 
+#' # data, but only catch the rough form by distinguishing the cases
+#' # constant vs decreasing vs unimodal vs increasing hazard.
+#'
+#' # set prior means for Power generalized Weibull parameters:
+#' plot_pgw(scale = 1, shape = 1, powershape = 1)     # under prior belief "none"
+#' plot_pgw(scale = 20, shape = 5.5, powershape = 14) # under prior belief "beginning"
+#' plot_pgw(scale = 180, shape = 1, powershape = 1)   # under prior belief "middle"
+#' plot_pgw(scale = 300, shape = 4, powershape = 1)   # under prior belief "end"
+#'
+#'
+#' #### specify parameter combinations for simulation study -----------------------
+#'
+#' fp_list = sim.priors_template(tte.dist = c("pgw"),
+#'                               prior.sds = 10) # setup prior template
+#' # fill in prior template with values chosen in prior elicitation
+#' fp_list$pgw[,2] = c(1, 1, 20, 300)   # scale prior means
+#' fp_list$pgw$shape.mean_pgw <- c(1, 0.207, 5.5, 4) # shape prior means
+#' fp_list$pgw[,6] = c(1, 1, 14, 1)     # powershape prior means
+#'
+#' fp_list # filled fitpars.list ready for sim.setup_sim_pars()
+
+#'
+#' @seealso
+#' \code{\link{sim.setup_sim_pars}}
 #'
 #' @export
+
 
 
 # add commentaries about support of prior means and sds (have a look at 
