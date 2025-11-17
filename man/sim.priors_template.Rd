@@ -25,7 +25,7 @@ deviations (sds) for the Weibull, double Weibull, or Power generalized Weibull
 (PgW) model parameters to be inserted into \code{\link{sim.setup_sim_pars}}.
 }
 \details{
-The returned list contains one data frame per time-to-event distribution
+The returned list contains one data frame per time-to-event (tte) distribution
 (\code{w}, \code{dw}, \code{pgw}).
 For each chosen tte distribution, rows corresponding to
 different levels of prior belief about the the hazard function are provided, namely
