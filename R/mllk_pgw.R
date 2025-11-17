@@ -13,18 +13,22 @@
 
 
 
-mllk_pgw = function(par, dat){
-  theta = exp(par[1])
-  nu = exp(par[2])
-  gamma = exp(par[3])
-  dens.survi = function(x){
-    ((nu/gamma)*(x[1]^(nu-1)/theta^nu)*(1+(x[1]/theta)^nu)^(1/gamma -1)*exp(1 - (1 + (x[1]/theta)^nu)^(1/gamma)))^x[2]*(exp(1 - (1 + (x[1]/theta)^nu)^(1/gamma)))^(1-x[2])
-  }
-  -sum(log(apply(dat,1,dens.survi)))
+mllk_pgw = function(par, dat) {
+  theta  <- exp(par[1])
+  nu     <- exp(par[2])
+  gamma  <- exp(par[3])
+  
+  x <- dat[,1]
+  d <- dat[,2]
+  
+  logdens <- dpgw(x, scale = theta, shape = nu, powershape = gamma, log = TRUE)
+  logsurv <- spgw(x, scale = theta, shape = nu, powershape = gamma, log = TRUE)
+  
+  # log-likelihood
+  ll <- d * logdens + (1 - d) * logsurv
+  
+  return(-sum(ll))
 }
 
-## test mlogl
-#M = matrix(c(10,5,1,1), ncol = 2)
-#M
-#mllk_pgw(c(0,0,0),M)
+
 

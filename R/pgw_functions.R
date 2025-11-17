@@ -52,22 +52,19 @@ NULL
 #'
 ## Survival function
 
-spgw = function(x, scale = 1, shape = 1, powershape = 1, log = FALSE){
-  # renaming to match the formula
-  theta = scale
-  nu = shape
-  gamma = powershape
+spgw =  function(x, scale = 1, shape = 1, powershape = 1, log = FALSE) {
+  theta <- scale
+  nu <- shape
+  gamma <- powershape
   
-  log_survival_values = 1 - (1 + (x/theta)^nu)^(1/gamma)
-  if(log == TRUE){
-    return(log_survival_values)
-  }
-  else{
-    survival_values = exp(log_survival_values)
-    return(survival_values)
-  }
+  log1pxtn <- log1p((x/theta)^nu)
+  log_inner <- log1pxtn / gamma     # stabilised exponent
+  Slog <- 1 - exp(log_inner)        # log survival
   
+  if(log) return(Slog)
+  return(exp(Slog))
 }
+
 
 
 #' @rdname pgw
@@ -83,7 +80,7 @@ hpgw = function(x, scale = 1, shape = 1, powershape = 1, log = FALSE){
   nu = shape
   gamma = powershape
   
-  log_hazard_values = log(nu) - log(gamma) -nu*log(theta) + (nu-1)*log(x) + (1/gamma - 1)*log(1 + (x/theta)^nu)
+  log_hazard_values = log(nu) - log(gamma) -nu*log(theta) + (nu-1)*log(x) + (1/gamma - 1)*log1p((x/theta)^nu)
   if(log == TRUE){
     return(log_hazard_values)
   }
@@ -108,9 +105,12 @@ ppgw = function(x, scale = 1, shape = 1, powershape = 1){
   theta = scale
   nu = shape
   gamma = powershape
+  
+  log1pxtn <- log1p((x/theta)^nu)
+  log_inner <- log1pxtn / gamma     # hopefully stabilised exponent
+  Slog <- 1 - exp(log_inner)        # log survival
 
-  log_surv_values = 1 - (1 + (x/theta)^nu)^(1/gamma)
-  cdf_values = 1 - exp(log_surv_values)
+  cdf_values = 1 - exp(Slog)
 
   return(cdf_values)
 
@@ -125,22 +125,24 @@ ppgw = function(x, scale = 1, shape = 1, powershape = 1){
 
 ## density function
 
-dpgw = function(x, scale = 1, shape = 1, powershape = 1, log = FALSE){
+dpgw = function(x, scale = 1, shape = 1, powershape = 1, log = FALSE) {
   # renaming to match the formula
-  theta = scale
-  nu = shape
-  gamma = powershape
+  theta <- scale
+  nu <- shape
+  gamma <- powershape
   
-  log_pdf_values = log(nu) - log(gamma) -nu*log(theta) + (nu-1)*log(x) + (1/gamma - 1)*log(1 + (x/theta)^nu) +1 - (1 + (x/theta)^nu)^(1/gamma)
-  if(log == TRUE){
-    return(log_pdf_values)
-  }
-  else{
-    pdf_values = exp(log_pdf_values)
-    return(pdf_values)
-  }
+  log1pxtn <- log1p((x/theta)^nu)
+  log_inner <- log1pxtn / gamma # hopefully stabilises double power
+  log_S <- 1 - exp(log_inner)
+  log_h <- log(nu) - log(gamma) - nu * log(theta) +
+    (nu-1) * log(x) + (1/gamma - 1) * log1pxtn
   
+  logdens <- log_S + log_h
+  
+  if(log) return(logdens)
+  return(exp(logdens))
 }
+
 
 
 
