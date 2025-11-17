@@ -74,21 +74,21 @@ A list containing all simulation specifications in the format required for
 }
 \description{
 Sets up parameters for a simulation study to tune the Bayesian Weibull shape parameter (BWSP) test.
-Simulation parameters encompass data generating process (DGP) parameters (\code{N} to \code{study.period}),
-tuning parameters for the BWSP test (\code{tte.dist} to \code{sensitivity.option}),
-and additional parameters (\code{reps} to \code{stanmod.warmup}).
+Simulation parameters encompass data generating process (DGP) parameters (\code{N,..., study.period}),
+tuning parameters for the BWSP test (\code{tte.dist,..., sensitivity.option}),
+and additional parameters (\code{reps,..., stanmod.warmup}).
 }
 \details{
 The purpose of the simulation study is to evaluate the performance of different BWSP
 tests for data scenarios of interest following the tuning
 scheme developed in \insertCite{dyck2024bpgwsppreprint;textual}{BWSPsignal}.
 
-DGP parameters (\code{N} to \code{study.period}) should
+DGP parameters (\code{N,..., study.period}) should
 reflect the data characteristics of interest. Given the intention to apply the
 WSP test to a specific real data set, the DGP parameters should reflect its features.
-Within the simulation, data are generated with \code{\link{sim.datagen_tte}}.
+Within simulation, data are generated with \code{\link{sim.datagen_tte}}.
 
-Tuning parameters for the BWSP test (\code{tte.dist} to \code{sensitivity.option})
+Tuning parameters for the BWSP test (\code{tte.dist,..., sensitivity.option})
 lead to a range of tuning combinations evaluated during the simulation study to
 find the best test tuning.
 Among them, argument \code{fitpars.list} contains the prior means and sds for the
@@ -98,10 +98,10 @@ A template for the \code{fitpars.list} to be filled can be generated with
 in \code{\link{sim.priors_template}} and in \code{\link{sim.setup_sim_pars}} must
 match.
 
-Additional parameters (\code{reps} to \code{stanmod.warmup}) specify simulation
+Additional parameters (\code{reps,..., stanmod.warmup}) specify simulation
 settings and specifications for posterior sampling.
 Simulation settings encompass the number of repetitions per simulation scenario,
-the directory to save results
+the directory in which to save results
 and batch saving.
 Batch saving is done to prevent losing simulation results in case of an
 interruption of simulation e.g. due to termination of the R session.
