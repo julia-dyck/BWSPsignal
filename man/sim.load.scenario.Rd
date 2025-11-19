@@ -7,7 +7,7 @@
 sim.load.scenario(wd, pc, batchnr = 1, bayes = T)
 }
 \arguments{
-\item{wd}{working directory were ALL the simulation files lie}
+\item{wd}{working directory where ALL the simulation files lie}
 
 \item{pc}{parameter combination (numeric version)}
 

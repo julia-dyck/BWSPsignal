@@ -3,7 +3,7 @@
 #' Load all simulations of a simulated scenario (obtained using 
 #' \code{\link{sim.repeat.1.scenario}}).
 #'
-#' @param wd working directory were ALL the simulation files lie
+#' @param wd working directory where ALL the simulation files lie
 #' 
 #' @param pc parameter combination (numeric version)
 #' 
