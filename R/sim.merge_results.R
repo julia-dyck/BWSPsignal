@@ -22,19 +22,6 @@
 #'       }
 #'       
 #'       
-#' #' @examples 
-#'  \dontrun{
-#'  # given simulations based on the setup stored in a pc_list were executed:
-#'  
-#'  # merge Bayesian result batches and save
-#'  sim.merge_results(pc_list, save = T)
-#'  # merge frequentist result batches and save
-#'  sim.merge_results(pc_list, save = T, bayes = F)
-#'  # load merged results into environment
-#'  load(paste0(pc_list$add$resultpath, "/res_b.RData"))
-#'  load(paste0(pc_list$add$resultpath, "/res_f.RData"))
-#' }
-#'       
 #' @export
 
 sim.merge_results = function(pc_list, save = T, bayes = T){

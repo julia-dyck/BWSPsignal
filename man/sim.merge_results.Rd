@@ -27,19 +27,6 @@ posterior distribution) for each shape parameter and
 \item posterior credibility
 intervals (as specified in \code{$test} list element obtained from \link{sim.setup_simpars}).
 }
-
-#' @examples
-\dontrun{
- # given simulations based on the setup stored in a pc_list were executed:
- 
- # merge Bayesian result batches and save
- sim.merge_results(pc_list, save = T)
- # merge frequentist result batches and save
- sim.merge_results(pc_list, save = T, bayes = F)
- # load merged results into environment
- load(paste0(pc_list$add$resultpath, "/res_b.RData"))
- load(paste0(pc_list$add$resultpath, "/res_f.RData"))
-}
 }
 \description{
 Merges result table batches from simulation study obtained from using
