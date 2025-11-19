@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim.run_parallel.R
 \name{sim.run_parallel}
 \alias{sim.run_parallel}
-\title{run all or subset of simulation scenarios}
+\title{Run simulation (in parallel)}
 \usage{
 sim.run_parallel(pc_list, subset_ind = NULL)
 }
@@ -18,12 +18,13 @@ specified in pc_list. If part of the simulations is already run and saved in the
 detemined resultpath, only missing simulations are run and saved.
 }
 \details{
-Simulation runs can be parallelized using the \code{\link[future]{plan}} command.
+Simulation runs can be parallelized using the \code{\link[future]{future::plan}}
+command (see example).
 }
 \examples{
 \dontrun{
  # install.packages(future)
- future::plan(multisession) # or another plan strategy
+ future::plan(multisession, workers = availableCores()) # or another plan strategy
  sim.run_parallel(pc_list, subset_ind = NULL) # run all simulations
  
  
@@ -31,7 +32,7 @@ Simulation runs can be parallelized using the \code{\link[future]{plan}} command
  # in pc_list$pc_table that you want to run. For example, to run the first 10 scenarios:
  
  # install.packages(future)
- future::plan(multisession) # or another plan strategy
+ future::plan(multisession, workers = availableCores()) # or another plan strategy
  sim.run_parallel(pc_list, subset_ind = 1:10) # run first 10 simulation scenarios
 }
 

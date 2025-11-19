@@ -2,20 +2,24 @@
 % Please edit documentation in R/sim.run.R
 \name{sim.run}
 \alias{sim.run}
-\title{run all simulation scenarios}
+\title{Run simulation}
 \usage{
 sim.run(pc_list, subset_ind = NULL)
 }
 \arguments{
-\item{pc_list}{list of parameter combinations obtained from \code{\link{sim.setup_sim_pars}}}
+\item{pc_list}{list of parameter combinations generated with \code{\link{sim.setup_sim_pars}}}
 
 \item{subset_ind}{vector of integers specifying which rows of \code{pc_list$pc_table}
-to be considered in simulation runs}
+to be considered in simulation runs; defaults all rows}
 }
 \description{
 Runs simulations for all data generating processes, model and test alternatives
-specified in pc_list. If part of the simulations is already run and saved in the
-detemined resultpath, only missing simulations are run and saved.
+specified in \code{pc_list}. If part of the simulations is already run and saved in the
+determined resultpath, only missing simulations are run and saved.
+}
+\details{
+This function runs the simulations in serial. To parallelise the
+execution, see \code{\link{sim.run_parallel}}.
 }
 \examples{
  \dontrun{
