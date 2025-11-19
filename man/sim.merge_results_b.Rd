@@ -9,7 +9,8 @@ sim.merge_results_b(pc_list, save = T)
 \arguments{
 \item{pc_list}{list of parameter combinations obtained from \link{sim.setup_simpars}}
 
-\item{save}{if \code{TRUE} (default), merged table is saved in same path where batches are stored;
+\item{save}{if \code{TRUE} (default), merged table is saved
+as res_b.RData in same path where batches are stored;
 else, it is returned to global environment}
 }
 \value{

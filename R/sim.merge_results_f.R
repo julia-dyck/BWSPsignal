@@ -4,7 +4,7 @@
 #' \code{\link{sim.run}}.
 #'
 #' @param pc_list list of parameter combinations obtained from \link{sim.setup_simpars}
-#' @param save if \code{TRUE} (default), merged table is saved in same path where batches are stored; 
+#' @param save if \code{TRUE} (default), merged table is saved as res_f.RData in same path where batches are stored; 
 #' else, it is returned to global environment
 #' 
 #' @return Dataframe containing all simulation results (one repetition of one 

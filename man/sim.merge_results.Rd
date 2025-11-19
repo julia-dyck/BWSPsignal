@@ -9,11 +9,12 @@ sim.merge_results(pc_list, save = T, bayes = T)
 \arguments{
 \item{pc_list}{list of parameter combinations obtained from \link{sim.setup_simpars}}
 
-\item{save}{if \code{TRUE} (default), merged table is saved in same path where batches are stored;
+\item{save}{if \code{TRUE} (default), merged table is saved as res_b.RData or res_f.RData
+in same path where batches are stored;
 else, it is returned to global environment}
 
 \item{bayes}{\code{TRUE} (default), results of Bayesian simulations are merged,
-else, results of frequentist simulations are merged.}
+else, results of frequentist simulations are merged}
 }
 \value{
 Dataframe containing all simulation results (one repetition of one
@@ -29,5 +30,5 @@ intervals (as specified in \code{$test} list element obtained from \link{sim.set
 }
 \description{
 Merges result table batches from simulation study obtained from using
-\code{\link{sim.run}}.
+\code{\link{sim.run}} or \code{\link{sim.run_parallel}}.
 }
