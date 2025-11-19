@@ -7,12 +7,12 @@
 eval.non_conv_cases(pc_list)
 }
 \arguments{
-\item{pc_list}{a list containing simulation parameters (see \code{\link{sim.setup_simpars}})}
+\item{pc_list}{list of simulation parameters generated with \code{\link{sim.setup_sim_pars}}}
 }
 \value{
 A data frame with the following columns:
 \itemize{
-\item \code{tte.dist}: The time-to-event distribution as grouping factor.
+\item \code{tte.dist}: The tte distribution as grouping factor.
 \item \code{prior.dist}: The prior distribution as grouping factor.
 \item \code{total.planned}: The total number of planned repetitions in this group.
 \item \code{total.notrun}: The total number of repetitions that were not run in this group.
@@ -20,10 +20,13 @@ A data frame with the following columns:
 }
 }
 \description{
-Based on simulation study batch files the function groups the data by \code{tte.dist}
-and \code{prior.dist}, and calculates the total planned and total not run repetitions,
-and the proportion of repetitions that were not run
-to guide the
-tte and prior distributional choices (along with \code{\link{eval.execution_times}}
+Summarizes the number of planned vs. not successfully run simulations grouped by \code{tte.dist}
+and \code{prior.dist}. The purpose of the table is to guide the
+time-to-event (tte) and prior distributional choices (along with \code{\link{eval.execution_times}}
 and \code{\link{eval.eff_sample_sizes}}).
+}
+\details{
+Calculations are based on the stored result batch files of the simulation study.
+Unsuccessfully run simulations are missing (supposedly due to non-convergence during
+model estimation).
 }
