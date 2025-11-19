@@ -2,8 +2,8 @@
 #'
 #' Summarizes the number of planned vs. not successfully run simulations grouped by `tte.dist`
 #' and `prior.dist`. The purpose of the table is to guide the
-#' time-to-event (tte) and prior distributional choices (along with \code{\link{eval.execution_times}} 
-#' and \code{\link{eval.eff_sample_sizes}}).
+#' time-to-event (tte) and prior distributional choices (along with other diagnostics
+#' such as \code{\link{eval.execution_times}} and \code{\link{eval.eff_sample_sizes}}).
 #'
 #' @param pc_list list of simulation parameters generated with \code{\link{sim.setup_sim_pars}}
 #' 
@@ -19,7 +19,7 @@
 #' Unsuccessfully run simulations are missing (supposedly due to non-convergence during
 #' model estimation).
 #'
-#' 
+#' @seealso  \code{\link{eval.execution_times}}, \code{\link{eval.eff_sample_sizes}}
 #' 
 #' 
 #' @export

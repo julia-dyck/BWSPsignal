@@ -2,18 +2,54 @@
 #'
 #' Summarizes and visualizes execution times of the models fitted during the simulation study grouped
 #' by time-to-event (tte) and prior distribution types to guide the
-#' tte and prior distributional choices (along with \code{\link{eval.non_conv_cases}} 
-#' and \code{\link{eval.eff_sample_sizes}}).
+#' tte and prior distributional choices (along with other diagnostics such as
+#' \code{\link{eval.non_conv_cases}} and \code{\link{eval.eff_sample_sizes}}).
 #'
-#' @param pc_list a list containing simulation parameters (see \code{\link{sim.setup_simpars}})
+#' @param pc_list list of simulation parameters generated with \code{\link{sim.setup_sim_pars}}
 #'
 #' @return A list with summary statistics (`$summary`), a ggplot2 object (`$plot`), 
 #' and the data (`$df`) on which summary and plot are based.
+#' 
+#' @seealso \code{\link{eval.non_conv_cases}}, \code{\link{eval.eff_sample_sizes}}
 #'
 #' @export
 
 
 eval.execution_times = function(pc_list){
+  
+  ## argument checks -----------------------------------------------------------
+  pc_list_is_valid <-
+    is.list(pc_list) &&
+    # pc_list$dgp must be a data.frame
+    !is.null(pc_list$dgp) && 
+    is.data.frame(pc_list$dgp) &&
+    # pc_list$fit must be a list whose elements are all data.frames
+    !is.null(pc_list$fit) && 
+    is.list(pc_list$fit) &&
+    length(pc_list$fit) > 0 &&
+    all(vapply(pc_list$fit, is.data.frame, logical(1))) &&
+    # pc_list$test must be a list
+    !is.null(pc_list$test) && 
+    is.list(pc_list$test) &&
+    # pc_list$add must be a list with required numeric/character elements
+    !is.null(pc_list$add) &&
+    is.list(pc_list$add) &&
+    is.numeric(pc_list$add$reps) &&
+    is.numeric(pc_list$add$batch.size) &&
+    is.numeric(pc_list$add$batch.nr) &&
+    is.character(pc_list$add$resultpath) &&
+    is.numeric(pc_list$add$stanmod.chains) &&
+    is.numeric(pc_list$add$stanmod.iter) &&
+    is.numeric(pc_list$add$stanmod.warmup) &&
+    # pc_list$pc_table must be a non-empty data.frame
+    !is.null(pc_list$pc_table) &&
+    is.data.frame(pc_list$pc_table)
+  
+  if (!pc_list_is_valid) {
+    stop("Argument pc_list has wrong format. It must be a list produced by sim.setup_sim_pars().\n")
+  }
+  
+  ## fct body ------------------------------------------------------------------
  
   if (!exists("res_b")) { 
   # obtain res_b table

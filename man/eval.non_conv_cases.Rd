@@ -22,11 +22,14 @@ A data frame with the following columns:
 \description{
 Summarizes the number of planned vs. not successfully run simulations grouped by \code{tte.dist}
 and \code{prior.dist}. The purpose of the table is to guide the
-time-to-event (tte) and prior distributional choices (along with \code{\link{eval.execution_times}}
-and \code{\link{eval.eff_sample_sizes}}).
+time-to-event (tte) and prior distributional choices (along with other diagnostics
+such as \code{\link{eval.execution_times}} and \code{\link{eval.eff_sample_sizes}}).
 }
 \details{
 Calculations are based on the stored result batch files of the simulation study.
 Unsuccessfully run simulations are missing (supposedly due to non-convergence during
 model estimation).
+}
+\seealso{
+\code{\link{eval.execution_times}}, \code{\link{eval.eff_sample_sizes}}
 }

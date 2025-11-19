@@ -7,7 +7,7 @@
 eval.execution_times(pc_list)
 }
 \arguments{
-\item{pc_list}{a list containing simulation parameters (see \code{\link{sim.setup_simpars}})}
+\item{pc_list}{list of simulation parameters generated with \code{\link{sim.setup_sim_pars}}}
 }
 \value{
 A list with summary statistics (\verb{$summary}), a ggplot2 object (\verb{$plot}),
@@ -16,6 +16,9 @@ and the data (\verb{$df}) on which summary and plot are based.
 \description{
 Summarizes and visualizes execution times of the models fitted during the simulation study grouped
 by time-to-event (tte) and prior distribution types to guide the
-tte and prior distributional choices (along with \code{\link{eval.non_conv_cases}}
-and \code{\link{eval.eff_sample_sizes}}).
+tte and prior distributional choices (along with other diagnostics such as
+\code{\link{eval.non_conv_cases}} and \code{\link{eval.eff_sample_sizes}}).
+}
+\seealso{
+\code{\link{eval.non_conv_cases}}, \code{\link{eval.eff_sample_sizes}}
 }

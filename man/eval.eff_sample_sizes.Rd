@@ -26,3 +26,6 @@ for HDI+ROPE testing (along with other diagnostics such as
 \references{
 \insertAllCited{}
 }
+\seealso{
+\code{\link{eval.non_conv_cases}}, \code{\link{eval.execution_times}}
+}
