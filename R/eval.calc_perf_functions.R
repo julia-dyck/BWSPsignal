@@ -486,6 +486,38 @@ eval.calc_perf_b = function(pc_list){
 eval.calc_perf_f = function(pc_list) {
   require(dplyr)
   
+  ## argument checks -----------------------------------------------------------
+  pc_list_is_valid <-
+    is.list(pc_list) &&
+    # pc_list$dgp must be a data.frame
+    !is.null(pc_list$dgp) && 
+    is.data.frame(pc_list$dgp) &&
+    # pc_list$fit must be a list whose elements are all data.frames
+    !is.null(pc_list$fit) && 
+    is.list(pc_list$fit) &&
+    length(pc_list$fit) > 0 &&
+    all(vapply(pc_list$fit, is.data.frame, logical(1))) &&
+    # pc_list$test must be a list
+    !is.null(pc_list$test) && 
+    is.list(pc_list$test) &&
+    # pc_list$add must be a list with required numeric/character elements
+    !is.null(pc_list$add) &&
+    is.list(pc_list$add) &&
+    is.numeric(pc_list$add$reps) &&
+    is.numeric(pc_list$add$batch.size) &&
+    is.numeric(pc_list$add$batch.nr) &&
+    is.character(pc_list$add$resultpath) &&
+    is.numeric(pc_list$add$stanmod.chains) &&
+    is.numeric(pc_list$add$stanmod.iter) &&
+    is.numeric(pc_list$add$stanmod.warmup) &&
+    # pc_list$pc_table must be a non-empty data.frame
+    !is.null(pc_list$pc_table) &&
+    is.data.frame(pc_list$pc_table)
+  
+  if (!pc_list_is_valid) {
+    stop("Argument pc_list has wrong format. It must be a list produced by sim.setup_sim_pars().\n")
+  }
+  # fct body -------------------------------------------------------------------
   # Load results
   if (!exists("res_f")) {
     tryCatch({
