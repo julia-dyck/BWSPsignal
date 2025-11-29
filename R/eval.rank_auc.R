@@ -1,7 +1,6 @@
-#' Rank WSP test configurations by AUC obtained from simulation
+#' Classification of WSP test configurations by AUC 
 #'
-#' Ranks all fit (defined by time-to-event and prior distribution) 
-#' and test specifications grouped by simulation scenarios in terms
+#' Classifies all model and test specifications grouped by simulation scenarios in terms
 #' of the corresponding area under the curve (AUC) value for either Bayesian or 
 #' frequentist Weibull Shape Parameter (BWSP, FWSP) tests.
 #'
@@ -80,8 +79,29 @@ NULL
 eval.rank_auc_b = function(perf_b){
   require(dplyr)
  
-  # 0. argument checks
-  # TODO
+  # 0. argument check
+  required_cols = c(
+    "N","br","adr.rate","adr.when","adr.relsd","study.period",
+    "tte.dist","prior.dist","prior.belief","dist.prior.to.truth",
+    "post.ci.type","cred.level","sensitivity.option",
+    "auc","fpr","tpr","fnr","tnr"
+  )
+  num_cols = c(
+    "N","br","adr.rate","adr.when","adr.relsd","study.period",
+    "cred.level","auc","fpr","tpr","fnr","tnr"
+  )
+  chr_cols <- c(
+    "tte.dist","prior.dist","prior.belief",
+    "dist.prior.to.truth","post.ci.type"
+  )
+  if (
+    !is.data.frame(perf_b) ||
+    !all(required_cols %in% names(perf_b)) ||
+    !all(vapply(perf_b[num_cols], is.numeric, logical(1))) ||
+    !all(vapply(perf_b[chr_cols], function(x) is.character(x), logical(1)))
+  ) {
+    stop("Argument `perf_b` has wrong format. It must be the output of eval.calc_perf_b().")
+  }
   
   tab.df = perf_b
   
@@ -186,6 +206,30 @@ eval.rank_auc_b = function(perf_b){
 
 eval.rank_auc_f = function(perf_f){
   require(dplyr)
+  
+  # 0. argument check
+  required_cols <- c(
+    "N","br","adr.rate","adr.when","adr.relsd","study.period",
+    "tte.dist","cred.level",
+    "auc","fpr","tpr","fnr","tnr"
+  )
+  
+  num_cols <- c(
+    "N","br","adr.rate","adr.when","adr.relsd","study.period",
+    "cred.level","auc","fpr","tpr","fnr","tnr"
+  )
+  
+  chr_cols <- c("tte.dist")
+  
+  if (
+    !is.data.frame(perf_f) ||
+    !all(required_cols %in% names(perf_f)) ||
+    !all(vapply(perf_f[num_cols], is.numeric, logical(1))) ||
+    !all(vapply(perf_f[chr_cols], is.character, logical(1)))
+  ) {
+    stop("Argument `perf_f` has wrong format. It must be the output of eval.calc_perf_f().")
+  }
+  
   
   tab.df = perf_f
   
