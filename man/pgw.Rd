@@ -52,7 +52,7 @@ The survival function of the PgW distribution is:
 }
 The hazard function is
 \deqn{
-\frac{\nu}{\gamma\theta^{\nu}}\cdot x^{\nu-1}\cdot  \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma-1}}
+    h(x) = \frac{\nu}{\gamma\theta^{\nu}}\cdot x^{\nu-1}\cdot  \left[ 1 + \left(\frac{x}{\theta}\right)^{\nu}\right]^{\frac{1}{\gamma-1}}
 }
 The cumulative distribution function is then \eqn{F(x) = 1 - S(x)} and the density function
 is \eqn{S(x)\cdot h(x)}. The quantile function is the inverse of the cumulative
