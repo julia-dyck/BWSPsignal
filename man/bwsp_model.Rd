@@ -46,7 +46,7 @@ The function applies the \code{\link[rstan]{sampling}} command with the No U-Tur
 to fit a Bayesian model to
 time-to-event data.
 The model can be a Weibull \code{("w")},
-a double Weibull \code{("w"}, estimating two Weibull models - one to the data as is and
+a double Weibull \code{("dw"}, estimating two Weibull models - one to the data as is and
 one to the data censored at mid of observation period),
 or a power generalized Weibull \code{("pgw")} model.
 
