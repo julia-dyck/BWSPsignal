@@ -71,11 +71,11 @@ eval.calc_perf = function(pc_list){
   
   # calc performance measures for all Bayesian test types
   out_b = eval.calc_perf_b(pc_list)
-  out_b_ext = cbind(test.type = rep("BWSP", nrow(out_b)), out_b)
+  out_b_ext = cbind(test.type = rep("bwsp", nrow(out_b)), out_b)
   
   # calc performance measures for all frequentist test types
   out_f = eval.calc_perf_f(pc_list)
-  out_f_ext = cbind(test.type = rep("FWSP", nrow(out_f)), out_f)
+  out_f_ext = cbind(test.type = rep("fwsp", nrow(out_f)), out_f)
   
   out = dplyr::bind_rows(out_b_ext, out_f_ext)
   
