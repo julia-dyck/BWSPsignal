@@ -1,87 +1,107 @@
 #' Classification of WSP test configurations by AUC 
 #'
 #' Classifies all model and test specifications grouped by simulation scenarios in terms
-#' of the corresponding area under the curve (AUC) value for either Bayesian or 
-#' frequentist Weibull Shape Parameter (BWSP, FWSP) tests.
+#' of the corresponding area under the curve (AUC) value for Weibull Shape Parameter 
+#' (WSP) tests.
 #'
-#' @param perf_b data frame containing performance results for BWSP tests 
-#'               returned by \link{eval.calc_perf_b}
-#' @param perf_f data frame containing performance results for FWSP tests 
-#'               returned by \link{eval.calc_perf_f} 
+#' @param perf data frame containing performance results for WSP tests returned 
+#' by \link{eval.calc_perf}
+#' @param test.type.subset character to filter for Bayesian and frequentist
+#' WSP (BWSP, FWSP) test types to be considered in the ranking; 
+#' must be a subset of \code{c("bwsp", "fwsp")}
+#'
+#' @param tte.dist.subset character to filter for the time-to-event (tte)
+#'   distributions considered in the ranking, must be a subset of
+#'   \code{c("w", "dw", "pgw")}
+#'
+#' @param prior.dist.subset character to filter for the prior distribution
+#'   (relevant only for BWSP tests), must be a subset of
+#'   \code{c("fg", "fl", "gg", "ll")}
 #'
 #' @return A list containing 
 #' \itemize{
-#' \item \code{$ranking}: Ranking of fit and WSP test specifications according 
-#' to AUC averaged over all sample scenarios (- for BWSP given a correct 
+#' \item \code{$rank.tab}: Ranking of fit and WSP test specifications according 
+#' to AUC averaged over all sample scenarios (- for BWSP tests given a correct 
 #' specification of prior belief)
 #' \item \code{$effect.of.N}: Effect of sample size on AUC for the optimal fit 
-#' and WSP test (- for BWSP given a correct specification of prior belief)
+#' and WSP test (- for BWSP tests given a correct specification of prior belief)
 #' \item \code{$effect.of.br}: Effect of background rate on AUC for the optimal fit
-#' and WSP test (- for BWSP given a correct specification of prior belief)
+#' and WSP test (- for BWSP tests given a correct specification of prior belief)
 #' \item \code{$effect.of.adr.rate}: Effect of ADR rate on AUC for the optimal fit
-#' and WSP test (- for BWSP given a correct specification of prior belief)
+#' and WSP test (- for BWSP tests given a correct specification of prior belief)
 #' \item \code{$effect.of.adr.when}: Effect of true expected event times on AUC 
-#' for the optimal fit and WSP test (- for BWSP given a correct 
+#' for the optimal fit and WSP test (- for BWSP tests given a correct 
 #' specification of prior belief)
 #' \item \code{$effect.of.adr.relsd}: Effect of relative standard deviation of event 
-#' time on AUC for the optimal fit and WSP test (- for BWSP given a correct 
+#' time on AUC for the optimal fit and WSP test (- for BWSP tests given a correct 
 #' specification of prior belief)
 #' \item \code{$effect.of.dist.prior.to.truth}: Effect of distance of prior belief 
 #' to true \code{adr.when} on AUC for the optimal fit and WSP test (only BWSP)
 #' }
 #' 
-#' @details For definitions of the performance metrics returned in output, 
+#' @details For definitions of the performance metrics \code{AUC, FPR, TPR, FNR} 
+#' and \code{TNR} returned in output, 
 #' see the details section of \link{eval.calc_perf}.
+#' 
+#' The filter mechanism enables filtering for a subset of test specifications. 
+#' This is helpful for example when tte distributions, prior distributions or 
+#' an estimation approach are no longer under consideration after inspecting the 
+#' model diagnostics with \code{\link{eval.execution_times}}, 
+#' \code{\link{eval.non_conv_cases}} and \code{\link{eval.eff_sample_sizes}}, 
+#' or when inspection of only one tte distribution was the objective from the beginning.
+#' 
+#' 
+#' 
+#' 
 #' 
 #' 
 #' @examples
 #' \dontrun{
-#' # ranking for all Bayesian WSP tests 
-#' # input perf_b loaded or generated with eval.calc_perf_b
-#' ranking_b = eval.rank_auc_b(perf_b)
-#' # effects of DGP parameters on AUC of top test
-#' ranking_b
+#' # loading of performance metrics returned by eval.calc_perf function,
+#' # called perf here
+#' load(paste0(pc_list$add$resultpath, "/perf.RData"))
 #' 
-#' # ranking for all frequentist WSP tests
-#' # perf_f loaded or generated with eval.calc_perf_f
-#' ranking_f = eval.rank_auc_f(perf_f)
-#' # effects of DGP parameters on AUC of top test
-#' ranking_f
+#' # ranking of all WSP tests considered in simulation setup
+#' rank = eval.rank_auc(perf)
 #' 
-#' # merging AUC ranking of Bayesian and frequentist tests
-#' ranking = dplyr::bind_rows(ranking_b$ranking[, 1:8], 
-#'                            ranking_f$ranking[, 1:5]) %>%
-#'           filter(tte.dist == "pgw") %>%
-#'           dplyr::arrange(dplyr::desc(AUC))
-#'       
-#'     
-#' # ranking among subset of scenarios, e.g. excluding model choices that lead to
-#' # long execution times
-#' auc_pgw_ll <- dplyr::filter(perf_b, tte.dist == "pgw", prior.dist == "ll")
-#' eval.rank_auc_b(auc_dw_ll) 
-#'                                
+#' # ranking of subset of all Bayesian WSP tests considered in the simulation setup
+#' rank_b = eval.rank_auc(perf, test.type.subset = "bwsp")
+#'
+#' # ranking of subset of all frequentist Weibull tests considered
+#' # in the simulation setup
+#' rank_w = eval.rank_auc(perf, tte.dist.subset = "w")
+#' 
+#' # ranking of subset of all Bayesian WSP tests with "ll"-prior considered in 
+#' # the simulation setup
+#' rank_b_ll = eval.rank_auc(perf, test.type.subset = "bwsp", 
+#'                        tte.dist.subset = "pgw",
+#'                        prior.dist.subset = "ll")
+#'                        
+#' # ranking of subset of all frequentist WSP tests with prior distribution 
+#' # specification -> leads to warning as prior dist specification has no effect
+#' # on subset
+#' rank_f = eval.rank_auc(perf, test.type.subset = "fwsp", 
+#'                            prior.dist.subset = "fg")
+#' 
 #' }
 #' 
 #'
-#' @name eval.rank_auc
-#'
-NULL
-
-
-#' @rdname eval.rank_auc
-#' 
 #' @export
 #'
 
 
-# for the Bayesian tests 
 
-eval.rank_auc_b = function(perf_b){
+
+eval.rank_auc = function(perf, 
+                         test.type.subset = c("bwsp", "fwsp"), 
+                         tte.dist.subset = c("w", "dw", "pgw"), 
+                         prior.dist.subset = c("fg", "fl", "gg", "ll")){
   require(dplyr)
- 
-  # 0. argument check
+  
+  # 0. argument checks ---------------------------------------------------------
+  # for perf
   required_cols = c(
-    "N","br","adr.rate","adr.when","adr.relsd","study.period",
+    "test.type", "N","br","adr.rate","adr.when","adr.relsd","study.period",
     "tte.dist","prior.dist","prior.belief","dist.prior.to.truth",
     "post.ci.type","cred.level","sensitivity.option",
     "auc","fpr","tpr","fnr","tnr"
@@ -91,210 +111,105 @@ eval.rank_auc_b = function(perf_b){
     "cred.level","auc","fpr","tpr","fnr","tnr"
   )
   chr_cols <- c(
-    "tte.dist","prior.dist","prior.belief",
+    "test.type", "tte.dist","prior.dist","prior.belief",
     "dist.prior.to.truth","post.ci.type"
   )
   if (
-    !is.data.frame(perf_b) ||
-    !all(required_cols %in% names(perf_b)) ||
-    !all(vapply(perf_b[num_cols], is.numeric, logical(1))) ||
-    !all(vapply(perf_b[chr_cols], function(x) is.character(x), logical(1)))
+    !is.data.frame(perf) ||
+    !all(required_cols %in% names(perf)) ||
+    !all(vapply(perf[num_cols], is.numeric, logical(1))) ||
+    !all(vapply(perf[chr_cols], function(x) is.character(x), logical(1)))
   ) {
-    stop("Argument `perf_b` has wrong format. It must be the output of eval.calc_perf_b().")
+    stop("Argument `perf` has wrong format. It must be the output of eval.calc_perf().")
+  }
+  # check: test.type.subset
+  if (!all(test.type.subset %in% c("bwsp", "fwsp"))) {
+    stop("Argument `test.type.subset` must be a subset of c('bwsp','fwsp').")
+  }
+  # check: tte.dist.subset
+  if (!all(tte.dist.subset %in% c("w","dw","pgw"))) {
+    stop("Argument `tte.dist.subset` must be a subset of c('w','dw','pgw').")
+  }
+  # check: prior.dist.subset
+  if (!all(prior.dist.subset %in% c("fg","fl","gg","ll"))) {
+    stop("Argument `prior.dist.subset` must be a subset of c('fg','fl','gg','ll').")
+  }
+  # warning if bwsp is filtered out, but prior.dist subset specified
+  if (!("bwsp" %in% test.type.subset) && !identical(prior.dist.subset, c("fg","fl","gg","ll"))) {
+    warning("No 'bwsp' tests are considered. Argument `prior.dist.subset` has no effect.")
   }
   
-  tab.df = perf_b
+  ## fct body ------------------------------------------------------------------
+  # apply filter options
+  perf = perf %>% dplyr::filter(tte.dist %in% tte.dist.subset) %>%
+    dplyr::filter(prior.dist %in% c(prior.dist.subset,NA))
   
-  # 1. summarize and rank fit & test specifications
+  # apply ranking fcts
+  if(("bwsp" %in% test.type.subset) & (sum(perf$test.type == "bwsp") > 0)){
+    perf_b = perf %>% dplyr::filter(test.type == "bwsp")
+    rlist_b = eval.rank_auc_b(perf_b)
+    rtab_b = rlist_b$ranking
+    rtab_b_ext = cbind(test.type = rep("bwsp", nrow(rtab_b)), rtab_b)
+  }
+  else{ # generate table, reduce to zero rows, to keep column structure
+    rtab_b_ext = data.frame(test.type = "bwsp", tte.dist = "w", prior.dist = "ll",
+                           post.ci.type = "hdi", cred.level = 0.9, sensitivity.option = 1,
+                           AUC = 0.999, FPR = 0.99, TPR = 0.99, FNR = 0.99, TNR = 0.99)
+    rtab_b_ext = rtab_b_ext[0,]
+  } 
   
-  # ranking under correct prior belief
-  tab.ranked <- tab.df %>%
-    dplyr::filter(dist.prior.to.truth == "correct specification") %>% # only for correct prior spec for now
-    dplyr::group_by(tte.dist, prior.dist, post.ci.type, cred.level, sensitivity.option) %>% # group by fit&test specifications
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
-                     .groups = "drop") %>%
-    dplyr::arrange(dplyr::desc(AUC)) # ranking by AUC
-
+  if(("fwsp" %in% test.type.subset) & (sum(perf$test.type == "fwsp") > 0)){ 
+    perf_f = perf %>% dplyr::filter(test.type == "fwsp") 
+    rlist_f = eval.rank_auc_f(perf_f)
+    rtab_f = rlist_f$ranking
+    rtab_f_ext = cbind(test.type = rep("fwsp", nrow(rtab_f)), rtab_f)
+  }
+  else{ # generate table, reduce to zero rows, to keep column structure
+    rtab_f_ext = data.frame(test.type = "fwsp", tte.dist = "w", prior.dist = "ll",
+                            post.ci.type = "hdi", cred.level = 0.9, sensitivity.option = 1,
+                            AUC = 0.999, FPR = 0.99, TPR = 0.99, FNR = 0.99, TNR = 0.99)
+    rtab_f_ext = rtab_f_ext[0,]
+  } 
   
-  # 2. filter for best fit & test specification and investigate effect of scenario parameters 
+  # combine bwsp & fwsp ranking tables
+  rtab = dplyr::bind_rows(rtab_b_ext, rtab_f_ext) %>%
+    dplyr::arrange(dplyr::desc(AUC))
   
-  opti.tte.dist = tab.ranked$tte.dist[1]
-  opti.prior.dist = tab.ranked$prior.dist[1]
-  opti.post.ci.type = tab.ranked$post.ci.type[1]
-  opti.cred.level = tab.ranked$cred.level[1]
-  opti.sensitivity.option = tab.ranked$sensitivity.option[1]
+  if(nrow(rtab) == 0){
+    # ie. when filter leads to empty ranking table
+    out = list(rank.tab = rtab, 
+               effect.of.N = NULL,
+               effect.of.br = NULL,
+               effect.of.adr.rate = NULL,
+               effect.of.adr.when = NULL,
+               effect.of.adr.relsd = NULL,
+               effect.of.dist.prior.to.truth = NULL)
+    warning("Filter mechanisms removed all test candidates from ranking.") 
+  }
+  else if(rtab$test.type[1] == "bwsp"){
+    out = list(rank.tab = rtab, 
+               effect.of.N = rlist_b$effect.of.N,
+               effect.of.br = rlist_b$effect.of.br,
+               effect.of.adr.rate = rlist_b$effect.of.adr.rate,
+               effect.of.adr.when = rlist_b$effect.of.adr.when,
+               effect.of.adr.relsd = rlist_b$effect.of.adr.relsd,
+               effect.of.dist.prior.to.truth = rlist_b$effect.of.dist.prior.to.truth)
+  }
+  else if(rtab$test.type[1] == "fwsp"){
+    out = list(rank.tab = rtab, 
+               effect.of.N = rlist_f$effect.of.N,
+               effect.of.br = rlist_f$effect.of.br,
+               effect.of.adr.rate = rlist_f$effect.of.adr.rate,
+               effect.of.adr.when = rlist_f$effect.of.adr.when,
+               effect.of.adr.relsd = rlist_f$effect.of.adr.relsd,
+               effect.of.dist.prior.to.truth = NULL)
+  }
   
-  
-  # optimal fit & test specification according to ranking under correct prior belief
-  tab.opti = tab.df %>% filter(tte.dist == opti.tte.dist, 
-                               prior.dist == opti.prior.dist,
-                               post.ci.type == opti.post.ci.type,
-                               cred.level == opti.cred.level,
-                               sensitivity.option == opti.sensitivity.option,
-                               dist.prior.to.truth == "correct specification")
-  
-  # Effect of N
-  tab.opti.N = tab.opti %>% 
-    dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(N) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
-                     .groups = "drop")
-  
-  # Effect of br
-  tab.opti.br = tab.opti %>% 
-    dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(br) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
-                     .groups = "drop")
-  
-  # Effect of adr.rate
-  tab.opti.adr.rate = tab.opti %>% 
-    dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(adr.rate) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
-                     .groups = "drop")
-  
-  # Effect of adr.when
-  tab.opti.adr.when = tab.opti %>% 
-    dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(adr.when) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
-                     .groups = "drop")
-  
-  # Effect of adr.relsd
-  tab.opti.adr.relsd = tab.opti %>% 
-    dplyr::filter(dist.prior.to.truth == "correct specification") %>%
-    group_by(adr.relsd) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
-                     .groups = "drop")
-  
-  # 3. Robustness wrt prior specification
-  
-  # Effect of distance of prior belief to true adr.when
-  tab.robu.dist.prior.to.truth = tab.df %>% 
-    filter(tte.dist == opti.tte.dist, 
-           prior.dist == opti.prior.dist,
-           post.ci.type == opti.post.ci.type,
-           cred.level == opti.cred.level,
-           sensitivity.option == opti.sensitivity.option) %>% 
-    group_by(dist.prior.to.truth) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
-                     .groups = "drop")
-  
-  out = list(ranking = tab.ranked,
-             effect.of.N = tab.opti.N,
-             effect.of.br = tab.opti.br,
-             effect.of.adr.rate = tab.opti.adr.rate,
-             effect.of.adr.when = tab.opti.adr.when,
-             effect.of.adr.relsd = tab.opti.adr.relsd,
-             effect.of.dist.prior.to.truth = tab.robu.dist.prior.to.truth
-  )
   return(out)
-  
 }
 
 
 
-
-#' @rdname eval.rank_auc
-#' 
-#' @export
-#'
-
-
-## fct for frequentist tests
-
-eval.rank_auc_f = function(perf_f){
-  require(dplyr)
-  
-  # 0. argument check
-  required_cols <- c(
-    "N","br","adr.rate","adr.when","adr.relsd","study.period",
-    "tte.dist","cred.level",
-    "auc","fpr","tpr","fnr","tnr"
-  )
-  
-  num_cols <- c(
-    "N","br","adr.rate","adr.when","adr.relsd","study.period",
-    "cred.level","auc","fpr","tpr","fnr","tnr"
-  )
-  
-  chr_cols <- c("tte.dist")
-  
-  if (
-    !is.data.frame(perf_f) ||
-    !all(required_cols %in% names(perf_f)) ||
-    !all(vapply(perf_f[num_cols], is.numeric, logical(1))) ||
-    !all(vapply(perf_f[chr_cols], is.character, logical(1)))
-  ) {
-    stop("Argument `perf_f` has wrong format. It must be the output of eval.calc_perf_f().")
-  }
-  
-  
-  tab.df = perf_f
-  
-  # 1. summarize and rank fit & test specifications
-  
-  # ranking
-  tab.ranked <- tab.df %>%
-    dplyr::group_by(tte.dist, cred.level) %>% # group by fit&test specifications
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
-                     .groups = "drop") %>%
-    dplyr::arrange(dplyr::desc(AUC)) # ranking
-  
-  
-  # 2. filter for best fit & test specification and investigate effect of scenario parameters 
-  
-  opti.tte.dist = tab.ranked$tte.dist[1]
-  opti.cred.level = tab.ranked$cred.level[1]
-  
-  # optimal fit & test specification according to ranking under correct prior belief
-  tab.opti = tab.df %>% filter(tte.dist == opti.tte.dist, 
-                               cred.level == opti.cred.level,
-  )
-  
-  # Effect of N
-  tab.opti.N = tab.opti %>% 
-    group_by(N) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
-                     .groups = "drop")
-  
-  # Effect of br
-  tab.opti.br = tab.opti %>% 
-    group_by(br) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr), 
-                     .groups = "drop")
-  
-  # Effect of adr.rate
-  tab.opti.adr.rate = tab.opti %>% 
-    group_by(adr.rate) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
-                     .groups = "drop")
-  
-  # Effect of adr.when
-  tab.opti.adr.when = tab.opti %>% 
-    group_by(adr.when) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
-                     .groups = "drop")
-  
-  # Effect of adr.relsd
-  tab.opti.adr.relsd = tab.opti %>% 
-    group_by(adr.relsd) %>% 
-    dplyr::summarise(AUC = mean(auc), FPR = mean(fpr), TPR = mean(tpr), FNR = mean(fnr), TNR = mean(tnr),
-                     .groups = "drop")
-  
-  # Output 
-  out = list(
-    ranking = tab.ranked,
-    effect.of.N = tab.opti.N,
-    effect.of.br = tab.opti.br,
-    effect.of.adr.rate = tab.opti.adr.rate,
-    effect.of.adr.when = tab.opti.adr.when,
-    effect.of.adr.relsd = tab.opti.adr.relsd
-  )
-  return(out)
-  
-}
 
 
 

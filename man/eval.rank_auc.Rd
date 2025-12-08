@@ -2,38 +2,48 @@
 % Please edit documentation in R/eval.rank_auc.R
 \name{eval.rank_auc}
 \alias{eval.rank_auc}
-\alias{eval.rank_auc_b}
-\alias{eval.rank_auc_f}
 \title{Classification of WSP test configurations by AUC}
 \usage{
-eval.rank_auc_b(perf_b)
-
-eval.rank_auc_f(perf_f)
+eval.rank_auc(
+  perf,
+  test.type.subset = c("bwsp", "fwsp"),
+  tte.dist.subset = c("w", "dw", "pgw"),
+  prior.dist.subset = c("fg", "fl", "gg", "ll")
+)
 }
 \arguments{
-\item{perf_b}{data frame containing performance results for BWSP tests
-returned by \link{eval.calc_perf_b}}
+\item{perf}{data frame containing performance results for WSP tests returned
+by \link{eval.calc_perf}}
 
-\item{perf_f}{data frame containing performance results for FWSP tests
-returned by \link{eval.calc_perf_f}}
+\item{test.type.subset}{character to filter for Bayesian and frequentist
+WSP (BWSP, FWSP) test types to be considered in the ranking;
+must be a subset of \code{c("bwsp", "fwsp")}}
+
+\item{tte.dist.subset}{character to filter for the time-to-event (tte)
+distributions considered in the ranking, must be a subset of
+\code{c("w", "dw", "pgw")}}
+
+\item{prior.dist.subset}{character to filter for the prior distribution
+(relevant only for BWSP tests), must be a subset of
+\code{c("fg", "fl", "gg", "ll")}}
 }
 \value{
 A list containing
 \itemize{
-\item \code{$ranking}: Ranking of fit and WSP test specifications according
-to AUC averaged over all sample scenarios (- for BWSP given a correct
+\item \code{$rank.tab}: Ranking of fit and WSP test specifications according
+to AUC averaged over all sample scenarios (- for BWSP tests given a correct
 specification of prior belief)
 \item \code{$effect.of.N}: Effect of sample size on AUC for the optimal fit
-and WSP test (- for BWSP given a correct specification of prior belief)
+and WSP test (- for BWSP tests given a correct specification of prior belief)
 \item \code{$effect.of.br}: Effect of background rate on AUC for the optimal fit
-and WSP test (- for BWSP given a correct specification of prior belief)
+and WSP test (- for BWSP tests given a correct specification of prior belief)
 \item \code{$effect.of.adr.rate}: Effect of ADR rate on AUC for the optimal fit
-and WSP test (- for BWSP given a correct specification of prior belief)
+and WSP test (- for BWSP tests given a correct specification of prior belief)
 \item \code{$effect.of.adr.when}: Effect of true expected event times on AUC
-for the optimal fit and WSP test (- for BWSP given a correct
+for the optimal fit and WSP test (- for BWSP tests given a correct
 specification of prior belief)
 \item \code{$effect.of.adr.relsd}: Effect of relative standard deviation of event
-time on AUC for the optimal fit and WSP test (- for BWSP given a correct
+time on AUC for the optimal fit and WSP test (- for BWSP tests given a correct
 specification of prior belief)
 \item \code{$effect.of.dist.prior.to.truth}: Effect of distance of prior belief
 to true \code{adr.when} on AUC for the optimal fit and WSP test (only BWSP)
@@ -41,39 +51,49 @@ to true \code{adr.when} on AUC for the optimal fit and WSP test (only BWSP)
 }
 \description{
 Classifies all model and test specifications grouped by simulation scenarios in terms
-of the corresponding area under the curve (AUC) value for either Bayesian or
-frequentist Weibull Shape Parameter (BWSP, FWSP) tests.
+of the corresponding area under the curve (AUC) value for Weibull Shape Parameter
+(WSP) tests.
 }
 \details{
-For definitions of the performance metrics returned in output,
+For definitions of the performance metrics \code{AUC, FPR, TPR, FNR}
+and \code{TNR} returned in output,
 see the details section of \link{eval.calc_perf}.
+
+The filter mechanism enables filtering for a subset of test specifications.
+This is helpful for example when tte distributions, prior distributions or
+an estimation approach are no longer under consideration after inspecting the
+model diagnostics with \code{\link{eval.execution_times}},
+\code{\link{eval.non_conv_cases}} and \code{\link{eval.eff_sample_sizes}},
+or when inspection of only one tte distribution was the objective from the beginning.
 }
 \examples{
 \dontrun{
-# ranking for all Bayesian WSP tests 
-# input perf_b loaded or generated with eval.calc_perf_b
-ranking_b = eval.rank_auc_b(perf_b)
-# effects of DGP parameters on AUC of top test
-ranking_b
+# loading of performance metrics returned by eval.calc_perf function,
+# called perf here
+load(paste0(pc_list$add$resultpath, "/perf.RData"))
 
-# ranking for all frequentist WSP tests
-# perf_f loaded or generated with eval.calc_perf_f
-ranking_f = eval.rank_auc_f(perf_f)
-# effects of DGP parameters on AUC of top test
-ranking_f
+# ranking of all WSP tests considered in simulation setup
+rank = eval.rank_auc(perf)
 
-# merging AUC ranking of Bayesian and frequentist tests
-ranking = dplyr::bind_rows(ranking_b$ranking[, 1:8], 
-                           ranking_f$ranking[, 1:5]) \%>\%
-          filter(tte.dist == "pgw") \%>\%
-          dplyr::arrange(dplyr::desc(AUC))
-      
-    
-# ranking among subset of scenarios, e.g. excluding model choices that lead to
-# long execution times
-auc_pgw_ll <- dplyr::filter(perf_b, tte.dist == "pgw", prior.dist == "ll")
-eval.rank_auc_b(auc_dw_ll) 
-                               
+# ranking of subset of all Bayesian WSP tests considered in the simulation setup
+rank_b = eval.rank_auc(perf, test.type.subset = "bwsp")
+
+# ranking of subset of all frequentist Weibull tests considered
+# in the simulation setup
+rank_w = eval.rank_auc(perf, tte.dist.subset = "w")
+
+# ranking of subset of all Bayesian WSP tests with "ll"-prior considered in 
+# the simulation setup
+rank_b_ll = eval.rank_auc(perf, test.type.subset = "bwsp", 
+                       tte.dist.subset = "pgw",
+                       prior.dist.subset = "ll")
+                       
+# ranking of subset of all frequentist WSP tests with prior distribution 
+# specification -> leads to warning as prior dist specification has no effect
+# on subset
+rank_f = eval.rank_auc(perf, test.type.subset = "fwsp", 
+                           prior.dist.subset = "fg")
+
 }
 
 
