@@ -5,7 +5,7 @@
 #' (WSP) tests.
 #'
 #' @param perf data frame containing performance results for WSP tests returned 
-#' by \link{eval.calc_perf}
+#' by \code{\link{eval.calc_perf}}
 #' @param test.type.subset character to filter for Bayesian and frequentist
 #' WSP (BWSP, FWSP) test types to be considered in the ranking; 
 #' must be a subset of \code{c("bwsp", "fwsp")}
@@ -41,7 +41,7 @@
 #' 
 #' @details For definitions of the performance metrics \code{AUC, FPR, TPR, FNR} 
 #' and \code{TNR} returned in output, 
-#' see the details section of \link{eval.calc_perf}.
+#' see the details section of \code{\link{eval.calc_perf}}.
 #' 
 #' The filter mechanism enables filtering for a subset of test specifications. 
 #' This is helpful for example when tte distributions, prior distributions or 
