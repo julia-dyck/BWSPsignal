@@ -2,40 +2,59 @@
 % Please edit documentation in R/eval.roc_curve.R
 \name{eval.roc_curve}
 \alias{eval.roc_curve}
-\title{Plot ROC Curves for Top Test Specifications}
+\title{Plot ROC curves for top WSP test specifications}
 \usage{
-eval.roc_curve(rank_tab, n = 10)
+eval.roc_curve(rank.tab, n = 10)
 }
 \arguments{
-\item{rank_tab}{A data frame of ranked test specifications obtained from
-\link{`eval.rank_auc_b()`} or \link{`eval.rank_auc_f()`}.}
+\item{rank.tab}{data frame of ranked test specifications obtained from
+\link{eval.rank_auc} (\code{output$rank.tab})}
 
-\item{n}{The number of top-ranked test specifications to plot (default = 10).}
+\item{n}{numeric number of top-ranked test specifications to plot (10 by default)}
 }
 \value{
 A ggplot object displaying ROC curves with shaded AUC regions.
 }
 \description{
-Plots ROC curves with shaded areas under the curve for the top-ranked test specifications
-(based on AUC).
+Plots receiver operating characteristic (ROC) curves with shaded areas under the curve (AUC) for the top-ranked test
+specifications.
 }
 \details{
-add details and references for ROC curves...
+The function returns the receiver ROC curves for the top n WSP test
+configurations based
+on the ranking returned by \code{\link{eval.rank_auc}} by plotting the
+true positive rate (TPR) on the y-axis against the false positive rate (FPR)
+on the x-axis \insertCite{fawcett2004}{BWSPsignal}.
+Here, we use the ROC curve with one threshold based on equal numbers
+of ADR-positive and control scenarios.
+
+For definitions of the performance metrics \code{AUC, FPR, TPR, FNR}
+and \code{TNR} returned in printed output,
+see the details section of \link{eval.calc_perf}.
+
+The ggplot output can be adjusted to individual needs by adding \code{ggplot2}
+layers to the output.
 }
 \examples{
-\dontrun{
-ranking_b # output of eval.rank_auc_b()
-eval.roc_curve(ranking_b$ranking, n = 3)
+\notrun{
+# Given object rank as output of eval.rank_auc:
+eval.roc_curve(rank$rank.tab, n = 1) # top 1 test
+eval.roc_curve(rank$rank.tab, n = 10) # top 10 tests
 
-ranking_f # output of eval.rank_auc_f()
-eval.roc_curve(ranking_b$ranking, n = 3)
-
-# for a comparative study of Bayesian and Frequentist tests 
-ranking = dplyr::bind_rows(ranking_b$ranking[, 1:8], 
-                           ranking_f$ranking[, 1:5]) \%>\%
-  filter(tte.dist == "pgw") \%>\%
-  dplyr::arrange(dplyr::desc(AUC))
-
+# exemplary further processing of the plot
+library(patchwork) # again, formatted next to each other
+# Left plot: n=1, no legend, no title
+p1 <- eval.roc_curve(rank$rank.tab, n = 1) +
+  ggplot2::guides(color = "none", fill = "none") +
+  ggplot2::labs(title = NULL)
+Right plot: n=10, legend, no title
+p2 <- eval.roc_curve(rank$rank.tab, n = 10) +
+  ggplot2::labs(title = NULL)
+# Combine with patchwork and add global title
+(p1 | p2) + patchwork::plot_annotation(title = "ROC curves")
 }
 
+}
+\references{
+\insertAllCited{}
 }
