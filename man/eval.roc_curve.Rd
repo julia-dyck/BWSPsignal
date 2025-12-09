@@ -10,13 +10,13 @@ eval.roc_curve(rank.tab, n = 10)
 \item{rank.tab}{data frame of ranked test specifications obtained from
 \link{eval.rank_auc} (\code{output$rank.tab})}
 
-\item{n}{numeric number of top-ranked test specifications to plot (10 by default)}
+\item{n}{number of top-ranked test specifications to plot (10 by default)}
 }
 \value{
 A ggplot object displaying ROC curves with shaded AUC regions.
 }
 \description{
-Plots receiver operating characteristic (ROC) curves with shaded areas under the curve (AUC) for the top-ranked test
+Plots receiver operating characteristic (ROC) curves for the top-ranked test
 specifications.
 }
 \details{
@@ -36,7 +36,7 @@ The ggplot output can be adjusted to individual needs by adding \code{ggplot2}
 layers to the output.
 }
 \examples{
-\notrun{
+\dontrun{
 # Given object rank as output of eval.rank_auc:
 eval.roc_curve(rank$rank.tab, n = 1) # top 1 test
 eval.roc_curve(rank$rank.tab, n = 10) # top 10 tests

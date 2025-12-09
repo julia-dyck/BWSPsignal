@@ -1,11 +1,11 @@
 #' Plot ROC curves for top WSP test specifications
 #'
-#' Plots receiver operating characteristic (ROC) curves with shaded areas under the curve (AUC) for the top-ranked test 
+#' Plots receiver operating characteristic (ROC) curves for the top-ranked test 
 #' specifications.
 #'
 #' @param rank.tab data frame of ranked test specifications obtained from 
 #' \link{eval.rank_auc} (\code{output$rank.tab})
-#' @param n numeric number of top-ranked test specifications to plot (10 by default)
+#' @param n number of top-ranked test specifications to plot (10 by default)
 #'
 #' @return A ggplot object displaying ROC curves with shaded AUC regions.
 #' 
@@ -26,7 +26,7 @@
 #' 
 #'
 #' @examples
-#' \notrun{
+#' \dontrun{
 #' # Given object rank as output of eval.rank_auc:
 #' eval.roc_curve(rank$rank.tab, n = 1) # top 1 test
 #' eval.roc_curve(rank$rank.tab, n = 10) # top 10 tests
