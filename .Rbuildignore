@@ -8,3 +8,9 @@
 ^simulationstudy_template$
 ^\.github$
 manual_creation_for_RPackages.R
+
+
+^src/.*\.(o|obj|so|dll|exe)$
+^.*\.(o|obj|so|dll|exe)$
+^\.Rproj\.user$
+^\.Rcheck$

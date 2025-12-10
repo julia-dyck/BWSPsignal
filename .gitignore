@@ -1,4 +1,18 @@
-.Rproj.user
+# R / project
+.Rproj.user/
 .Rhistory
+.RData
+.Ruserdata
 ^simulationstudy
 ^simulationstudy_template/results_raw
+
+# Build artifacts
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.dSYM/
+
+# R package build / check
+.Rcheck/
