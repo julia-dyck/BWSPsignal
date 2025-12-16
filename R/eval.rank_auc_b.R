@@ -1,4 +1,5 @@
-
+#'
+#' @noRd
 
 # for the Bayesian tests 
 

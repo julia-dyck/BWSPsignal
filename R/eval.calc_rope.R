@@ -1,7 +1,7 @@
 #' Derive ROPEs from setup parameter combinations in simulation study
 #' 
 #' 
-#' 
+#' @noRd
 
 
 eval.calc_rope = function(rope.infos.row, cred.levels){

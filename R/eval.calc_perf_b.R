@@ -1,3 +1,7 @@
+#'
+#' @noRd
+
+
 ## eval.calc_perf for Bayesian tests (inner fct)
 
 

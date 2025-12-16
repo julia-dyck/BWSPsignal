@@ -59,7 +59,7 @@
 #' # print the summary
 #' fit
 #' 
-#'
+#' @noRd
 
 
 bwsp_model_pgw = function(datstan, 

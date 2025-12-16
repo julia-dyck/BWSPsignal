@@ -18,7 +18,7 @@
 #' equivalent to performing the test based on the shape parameter itself.
 #' 
 #' 
-#' 
+#' @noRd
 
 
 fwsp_test_dw = function(mod.output, credlevel = 1 - c(1:10/1000, 2:10/100)){ 

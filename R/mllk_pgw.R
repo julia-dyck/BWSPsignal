@@ -10,6 +10,7 @@
 #' 
 #' @return minus-log-likelihood value given the parameters and the data
 #' 
+#' @noRd
 
 
 

@@ -18,6 +18,7 @@
 #'       \item prior belief (one of the characters specified in \link{sim.setup_simpars}).
 #'       }
 #' 
+#' @noRd
 
 sim.gather_pc_vect = function(dgp_pars_vect, fit_pars_vect){
   pc_vect = data.frame(dgp_pars_vect, fit_pars_vect)

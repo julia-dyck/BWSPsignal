@@ -22,7 +22,7 @@
 #' \code{\link{sim.stanfit.to.fitstats}} and \code{\link{sim.stanfit.to.poststats}} 
 #' functions).
 #'
-#'
+#' @noRd
 
 
 

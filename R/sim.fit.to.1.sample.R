@@ -21,7 +21,7 @@
 #' 4x4 prior (fl, ll, fg, gg) and model (no ADR expected, ADR expected around 
 #' 1st, 2nd, 3rd quartile of observation period) alternatives.
 #'
-#'
+#' @noRd
 
 
 

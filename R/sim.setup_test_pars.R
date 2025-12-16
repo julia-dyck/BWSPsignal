@@ -1,6 +1,6 @@
 #'setup of test parameters
 #'
-#'
+#' @noRd
 
 sim.setup_test_pars = function(post.ci.type = c("ETI", "HDI"),
                                cred.level = seq(0.5, 0.95, by = 0.05),

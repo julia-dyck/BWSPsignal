@@ -17,7 +17,8 @@
 #'       \item posterior credibility 
 #'       intervals (as specified in \code{$test} list element obtained from \link{sim.setup_simpars}).
 #'       }
-#' 
+#'       
+#' @noRd
 
 sim.merge_results_f = function(pc_list, save = T){
   

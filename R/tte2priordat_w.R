@@ -24,6 +24,7 @@
 #' (i.e. set smaller standard deviation in case of high certainty about prior belief vs. larger 
 #' standard deviation in case of low certainty).
 #' 
+#' @noRd
 
 
 tte2priordat_w = function(dat,

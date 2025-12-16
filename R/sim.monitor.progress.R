@@ -11,6 +11,8 @@
 #' number of repetitions per scenario.
 #' 
 #' @return a vector with the number of successfully run simulations for each pc
+#' 
+#' @noRd
 
 
 sim.monitor.progress = function(pc_list){

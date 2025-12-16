@@ -1,7 +1,7 @@
 #' model fitting parameter specification
 #' 
 #' 
-#' 
+#' @noRd
 
 
 sim.setup_fit_pars = function(tte.dist = c("w", "dw", "pgw"),

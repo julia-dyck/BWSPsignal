@@ -19,7 +19,7 @@
 #'       intervals (as specified in \code{$test} list element obtained from \link{sim.setup_simpars}).
 #'       }
 #'
-#' 
+#' @noRd
 
 sim.merge_results_b = function(pc_list, save = T){
   # prepare ncols of merged df per tte.dist

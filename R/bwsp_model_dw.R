@@ -69,7 +69,7 @@
 #' # print the summary
 #' fit
 #' 
-#'
+#' @noRd
 
 
 

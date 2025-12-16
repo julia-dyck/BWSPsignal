@@ -1,3 +1,6 @@
+#'
+#' @noRd
+
 ## eval.calc_perf for frequentist tests (inner fct)
 
 

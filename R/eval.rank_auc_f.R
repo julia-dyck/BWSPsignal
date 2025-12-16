@@ -1,3 +1,6 @@
+#'
+#' @noRd
+
 ## fct for frequentist tests
 
 eval.rank_auc_f = function(perf_f){
