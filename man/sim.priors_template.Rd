@@ -30,7 +30,7 @@ The returned list contains one data frame per time-to-event (tte) distribution
 For each chosen tte distribution, rows corresponding to
 different levels of prior belief about the the hazard function are provided, namely
 \code{"none"}, \code{"beginning"}, \code{"middle"}, and \code{"end"}
-\insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
+\insertCite{dyck2024bpgwsppreprint}{WSPsignal}.
 Given the template, prior means and sds must be filled by the user before simulation.
 }
 \examples{

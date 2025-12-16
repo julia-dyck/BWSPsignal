@@ -42,7 +42,7 @@ All generated event-times \eqn{\leq 0} (due to the normal distribution's support
 all others are rounded to integer.
 The data set is filled up with censored observations (status = 0) at time \eqn{censor}.
 
-For more details, see \insertCite{dyck2024bpgwsppreprint;textual}{BWSPsignal}.
+For more details, see \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal}.
 }
 \examples{
 sim.datagen_tte(c(100, 0.1, 1, 0.5, 0.05, 365))

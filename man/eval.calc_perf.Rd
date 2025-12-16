@@ -57,7 +57,7 @@ among simulation repetitions, as well, as
 \item Area under the ROC curve:
 
 The AUC is the area under the receiver operating characteristic (ROC)
-graph \insertCite{fawcett2004}{BWSPsignal}.
+graph \insertCite{fawcett2004}{WSPsignal}.
 Here, we use the ROC curve with one threshold based on equal numbers
 of ADR-positive and control
 scenarios. It is computed using the \code{\link[ROCR]{ROCR::performance}} function.

@@ -39,7 +39,7 @@
 #' @details
 #' The purpose of the simulation study is to evaluate the performance of different BWSP 
 #' tests for data scenarios of interest following the tuning
-#' scheme developed in \insertCite{dyck2024bpgwsppreprint;textual}{BWSPsignal}.
+#' scheme developed in \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal}.
 #' 
 #' DGP parameters (\code{N,..., study.period}) should 
 #' reflect the data characteristics of interest. Given the intention to apply the

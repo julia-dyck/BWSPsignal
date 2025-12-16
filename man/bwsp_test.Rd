@@ -43,7 +43,7 @@ Weibull family.
 
 The Bayesian Weibull shape parameter (WSP) test is a hypothesis test
 for signal detection of adverse drug reactions.
-It is based on the principle of non-constant hazard \insertCite{cornelius2012}{BWSPsignal}
+It is based on the principle of non-constant hazard \insertCite{cornelius2012}{WSPsignal}
 which associates a constant hazard function with the absence of a drug-event
 association and a non-constant hazard function with the presence of a drug-event
 association.
@@ -65,7 +65,7 @@ under PGW model \tab \eqn{\nu = 1 \text{ and } \gamma = 1} \tab \eqn{\nu \neq 1 
 
 Information on the Bayesian
 variant of the Power Generalized Weibull (PGW) shape
-parameter test can be found in \insertCite{dyck2024bpgwsppreprint;textual}{BWSPsignal}.
+parameter test can be found in \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal}.
 The same concept applies to the construction of the Bayesian Weibull and double
 Weibull shape parameter test.
 
@@ -79,7 +79,7 @@ based on the quantiles \eqn{q} of the shape parameters' prior distributions unde
 \eqn{H_0} at a chosen credibility level \eqn{1 - \alpha}.
 For the posterior CI, we recommend either an ETI at the same credibility level obtained from
 the empirical quantiles of the posterior distribution per shape parameter
-or a highest density interval (HDI, \insertCite{kruschke2015;textual}{BWSPsignal})
+or a highest density interval (HDI, \insertCite{kruschke2015;textual}{WSPsignal})
 \deqn{HDI(\nu) = \{\nu \; |\; p_1(\nu) \geq w\} \text{ with } w\in [0,1] \text{ such that} \int_{\nu \; | \; p_1(\nu) \geq w} p_1(\nu|t)\;  d\nu = 1 - \alpha}
 at the same credibility level.
 See Examples for exemplary ROPE and post CI setup in R.
@@ -114,8 +114,8 @@ The hypotheses as stated above (see test concept) are implemented in \code{optio
 
 More details on the HDI+ROPE test, recommendations for interval specifications
 and the combination rules
-can be found in \insertCite{kruschke2018}{BWSPsignal} and
-\insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
+can be found in \insertCite{kruschke2018}{WSPsignal} and
+\insertCite{dyck2024bpgwsppreprint}{WSPsignal}.
 }
 
 \examples{

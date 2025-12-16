@@ -31,8 +31,8 @@
 #' 
 #' The application purpose is to reparametrize gamma prior
 #' mean and sd to the parameters used in \code{\link[stats]{qgamma}}, for instance to 
-#' calculate a ROPE \insertCite{kruschke2018}{BWSPsignal} based on the prior belief representing the 
-#' null hypothesis in BWSP testing \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
+#' calculate a ROPE \insertCite{kruschke2018}{WSPsignal} based on the prior belief representing the 
+#' null hypothesis in BWSP testing \insertCite{dyck2024bpgwsppreprint}{WSPsignal}.
 #' 
 #' @examples
 #' # obtain shape and rate for gamma distribution with mean = 1 and sd = 10

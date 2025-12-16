@@ -40,8 +40,8 @@ obtained.
 
 The application purpose is to reparametrize lognormal prior
 mean and sd to the parameters used in \code{\link[stats]{qlnorm}}, for instance to
-calculate a ROPE \insertCite{kruschke2018}{BWSPsignal} based on the prior belief representing the
-null hypothesis in BWSP testing \insertCite{dyck2024bpgwsppreprint}{BWSPsignal}.
+calculate a ROPE \insertCite{kruschke2018}{WSPsignal} based on the prior belief representing the
+null hypothesis in BWSP testing \insertCite{dyck2024bpgwsppreprint}{WSPsignal}.
 }
 \examples{
 # obtain location and scale for lognormal distribution with mean = 1 and sd = 10

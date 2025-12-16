@@ -16,7 +16,7 @@
 #' @details This function tests the null hypothesis that the shape parameter(s) of the
 #' Weibull family distribution are equal to one.
 #' The distribution specific definitions of the null and alternative hypotheses 
-#' can be seen in \insertCite{sauzet2022;textual}{BWSPsignal}.
+#' can be seen in \insertCite{sauzet2022;textual}{WSPsignal}.
 #' 
 #' For the \code{"w"} and \code{"dw"} case, the model output is a summary of a 
 #' `survival::Survreg` outcome which provides
@@ -33,7 +33,7 @@
 #' Hessian matrix.
 #' Issues with standard error calculation from the estimated Hessian matrix
 #' may lead to \code{NA} test result which are then transformed to no signal (0) 
-#' following \insertCite{sauzet2022;textual}{BWSPsignal}.
+#' following \insertCite{sauzet2022;textual}{WSPsignal}.
 #'
 #' @references 
 #' \insertAllCited{}

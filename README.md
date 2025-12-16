@@ -1,6 +1,6 @@
-# BWSPsignal
+# WSPsignal
 
-This repository provides the BWSPsignal R package and a "/simulationstudy" folder to tune and apply the Bayesian Power generalized Weibull Shape Parameter (BPgWSP) test.
+This repository provides the WSPsignal R package and a "/simulationstudy" folder to tune and apply the Bayesian Power generalized Weibull Shape Parameter (BPgWSP) test.
 
 The BPgWSP test was developed to perform signal detection for adverse event monitoring based on electronic health records.
 
@@ -10,17 +10,17 @@ Dyck, J., & Sauzet, O. (2024). **The BPgWSP test: a Bayesian Weibull Shape Param
 
 available on [https://arxiv.org/abs/2412.05463](https://arxiv.org/abs/2412.05463).
 
-## Installation of the BWSPsignal package
-You can install the BWSPsignal package with
+## Installation of the WSPsignal package
+You can install the WSPsignal package with
 
 ``` r
 # install.packages("devtools") # if not installed, yet
-devtools::install_github(repo = "julia-dyck/BWSPsignal")
+devtools::install_github(repo = "julia-dyck/WSPsignal")
 ```
 
 ## Reproduction of simulation study
-To reproduce the simulation study presented in [Dyck & Sauzet (2024)](https://arxiv.org/abs/2412.05463) fork the repository, go to the release tag v1.0.0 and follow the instructions in "BWSPsignal/simulationstudy/README".
+To reproduce the simulation study presented in [Dyck & Sauzet (2024)](https://arxiv.org/abs/2412.05463) fork the repository, go to the release tag v1.0.0 and follow the instructions in "WSPsignal/simulationstudy/README".
 
 ## Tuning of the PgWSP test for your purpose
-To tune the PgWSP test for your application you can use the folder in "BWSPsignal/simulationstudy/" as a template, and adjust sample scenarios, and test alternatives accordingly.
+To tune the PgWSP test for your application you can use the folder in "WSPsignal/simulationstudy/" as a template, and adjust sample scenarios, and test alternatives accordingly.
 

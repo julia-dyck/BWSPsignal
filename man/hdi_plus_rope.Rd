@@ -31,7 +31,7 @@ Decision rule:
 
 There are many ways to choose an HDI and ROPE depending on the context. For more
 information on the concept and exemplary applications see
-\insertCite{kruschke2015}{BWSPsignal} and \insertCite{kruschke2018}{BWSPsignal}.
+\insertCite{kruschke2015}{WSPsignal} and \insertCite{kruschke2018}{WSPsignal}.
 }
 \examples{
 hdi_plus_rope(nullregion = c(1,2), credregion = c(3,5)) # rope left from hdi and disjunct
@@ -44,9 +44,9 @@ hdi_plus_rope(nullregion = c(4,4.5), credregion = c(3,5)) # rope encompassed by 
 
 }
 \references{
-\insertRef{kruschke2015}{BWSPsignal}
+\insertRef{kruschke2015}{WSPsignal}
 
-\insertRef{kruschke2018}{BWSPsignal}
+\insertRef{kruschke2018}{WSPsignal}
 }
 \seealso{
 \code{\link[HDInterval:hdi]{HDInterval::hdi()}} for calculating highest density intervals from posterior samples.

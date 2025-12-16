@@ -24,7 +24,7 @@ The function returns the receiver ROC curves for the top n WSP test
 configurations based
 on the ranking returned by \code{\link{eval.rank_auc}} by plotting the
 true positive rate (TPR) on the y-axis against the false positive rate (FPR)
-on the x-axis \insertCite{fawcett2004}{BWSPsignal}.
+on the x-axis \insertCite{fawcett2004}{WSPsignal}.
 Here, we use the ROC curve with one threshold based on equal numbers
 of ADR-positive and control scenarios.
 

@@ -8,7 +8,7 @@
 #'
 #' @param pc_list a list containing simulation parameters (see \code{\link{sim.setup_simpars}})
 #' @param threshold numeric threshold for effective sample size acceptable for 
-#' HDI+ROPE testing (10000 by default as recommended by \insertCite{kruschke2015;textual}{BWSPsignal})
+#' HDI+ROPE testing (10000 by default as recommended by \insertCite{kruschke2015;textual}{WSPsignal})
 #'
 #' @return A list with summary statistics (`$summary`), a ggplot2 object (`$plot`), 
 #' and the data (`$df`) on which summary and plot are based.

@@ -67,5 +67,5 @@ If parameter values are not specified, they are set as
 \code{scale = 1, shape = 1, powershape = 1} per default.
 }
 \references{
-\insertRef{nikulin2016}{BWSPsignal}
+\insertRef{nikulin2016}{WSPsignal}
 }

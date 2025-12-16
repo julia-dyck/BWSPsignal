@@ -7,7 +7,7 @@ setwd("C:/Users/jdyck/github_office_laptop") # office laptop
 # install.packages("rstantools")
 library("rstantools")
 
-#rstan_create_package(path = 'BWSPsignal')
+#rstan_create_package(path = 'WSPsignal')
 getwd()
 
 
@@ -17,7 +17,7 @@ roxygen2::roxygenize()
 
 
 # build the package with recompiling the stanfiles
-install.packages("BWSPsignal", repos = NULL, type = "source")
+install.packages("WSPsignal", repos = NULL, type = "source")
 
 # build the package quickly without recompiling the stanfiles
 devtools::install(quick = F)

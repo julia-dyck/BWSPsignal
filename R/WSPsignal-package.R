@@ -1,12 +1,12 @@
-#' The 'BWSPsignal' package.
+#' The 'WSPsignal' package.
 #'
 #' @description An R package to perform Bayesian Weibull Shape Parameter (BWSP)
 #' tests for signal detection.
 #'
 #' @docType package
-#' @name BWSPsignal-package
-#' @aliases BWSPsignal
-#' @useDynLib BWSPsignal, .registration = TRUE
+#' @name WSPsignal-package
+#' @aliases WSPsignal
+#' @useDynLib WSPsignal, .registration = TRUE
 #' @import methods
 #' @import Rcpp
 #' @importFrom rstan sampling
