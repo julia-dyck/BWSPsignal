@@ -4,8 +4,8 @@
 #### prep ----------------------------------------------------------------------
 # packages
 
-library(BWSPsignal) # signal detection test & simulation fcts.
-
+library(WSPsignal) # signal detection test & simulation fcts.
+library(dplyr)      # for handling results and 
 
 ####  prior elicitation --------------------------------------------------------
 # try a few prior parameter combinations and see whether the resulting hazard 
@@ -45,17 +45,17 @@ plot_pgw(scale = 300, shape = 4, powershape = 1)   # under prior belief "end"
 
 #### specify parameter combinations for simulation study -----------------------
 
-fp_list = sim.priors_template(tte.dist = c("pgw"),
-                              prior.sds = 10) # setup prior template
+fp_list = sim.priors_template(tte.dist = c("pgw"), # setup prior template
+                              prior.sds = 10)      # (here, only pgw models considered)
 # fill in prior template with values chosen in prior elicitation
 
-fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
-fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
-
-fp_list$dw[,2] = c(1, 1, 180, 300) # scale prior means
-fp_list$dw[,4] = c(1, 0.207, 1, 4) # shape prior means
-fp_list$dw[,6] = c(1, 1, 100, 1)   # scale_c prior means
-fp_list$dw[,8] = c(1, 0.207, 4, 1) # shape_c prior means
+# fp_list$w[,2] = c(1, 1, 180, 300) # scale prior means
+# fp_list$w[,4] = c(1, 0.207, 1, 4) # shape prior means
+# 
+# fp_list$dw[,2] = c(1, 1, 180, 300) # scale prior means
+# fp_list$dw[,4] = c(1, 0.207, 1, 4) # shape prior means
+# fp_list$dw[,6] = c(1, 1, 100, 1)   # scale_c prior means
+# fp_list$dw[,8] = c(1, 0.207, 4, 1) # shape_c prior means
 
 fp_list$pgw[,2] = c(1, 1, 20, 300)   # scale prior means
 fp_list$pgw[,4] = c(1, 0.207, 5.5, 4)# shape prior means
@@ -69,18 +69,18 @@ pc_list = sim.setup_sim_pars(N = c(500),
                              adr.relsd = 0.05,
                              study.period = 365,
                              
-                             tte.dist = c("w", "dw", "pgw"),
-                             prior.dist = c("fl", "ll", "fg", "gg"),
+                             tte.dist = c("pgw"),
+                             prior.dist = c("ll", "gg"),
                              fitpars.list = fp_list,
                              
                              post.ci.type = c("ETI", "HDI"),
-                             cred.level = seq(0.5,0.9, by = 0.05), 
+                             cred.level = c(seq(0.5,0.9, by = 0.05), seq(0.91,0.99, by = 0.01), seq(0.991, 0.999, by = 0.001)), 
                              sensitivity.option = 1:3,
                              
-                             reps = 10, # additional parameters
-                             batch.size = 2,
+                             reps = 50, 
+                             batch.size = 10,
                              
-                             resultpath = "C:/Users/jdyck/github_projects_office/BWSPsignal/simulationstudy_demo",
+                             resultpath = "C:/Users/jdyck/github_office_laptop/WSPsignal/simulationstudy_demo", # to be adjusted
                              stanmod.chains = 4,
                              stanmod.iter = 11000,
                              stanmod.warmup = 1000
@@ -92,24 +92,26 @@ save(pc_list, file = paste0(pc_list$add$resultpath, "/pc_list.RData"))
 
 #### test for issues in prior choice -------------------------------------------
 
-# test rope calculation given all prior distributions under none (exemplary for
-# credibility level 90%):
+# test rope calculation given all prior distributions under "none"-prior 
+# (exemplary with credibility level 80%):
 qlnorm(p = c(0.1,0.9), meanlog = logprior_repar(1, 10)[1], sdlog = logprior_repar(1, 10)[2])
 qgamma(p = c(0.1,0.9), shape = gamprior_repar(1, 10)[1], rate = gamprior_repar(1, 10)[2])
 
 
 #### run simulation study ------------------------------------------------------
 
-load(paste0(pc_list$add$resultpath, "/pc_list.RData"))
 sim.run(pc_list = pc_list)
 
 
 #### merge results -------------------------------------------------------------
 
-# merge result batches and save
+# merge bayesian result batches and save
 sim.merge_results(pc_list, save = T)
+# merge frequentist result batches and save
+sim.merge_results(pc_list, save = T, bayes = F)
 # load merged results into environment
-load(paste0(pc_list$add$resultpath, "/res.RData"))
+load(paste0(pc_list$add$resultpath, "/res_b.RData"))
+load(paste0(pc_list$add$resultpath, "/res_f.RData"))
 
 
 #### convergence issues, execution times and effective sample sizes ------------
@@ -121,18 +123,33 @@ eval.non_conv_cases(pc_list)
 ## execution times 
 eval.execution_times(pc_list)
 
-## effective sample sizes ## HIER WEITER
+## effective sample sizes
 eval.eff_sample_sizes(pc_list, threshold = 10000)
 
 
-#### AUC performance -----------------------------------------------------------
-# (AUC: area under the ROC curve)
+#### Performance measure calculation -------------------------------------------
 
-# calculate AUC per scenario with
-auc.df = eval.calc_auc(pc_list)
+# calculate performance measures per scenario with
+perf = eval.calc_perf(pc_list = pc_list)
+save(perf, file = paste0(pc_list$add$resultpath, "/perf.RData"))
+
+load(paste0(pc_list$add$resultpath, "/perf.RData"))
+# perf contains performance metrics for B & FWSP test types
+
+#### Ranking results -----------------------------------------------------------
+
+# AUC ranking of all PgWSP tests
+rank = eval.rank_auc(perf, tte.dist.subset = "pgw")
 
 
-# AUC results (grouped averages over all tte & prior distributional choices)
-ranking = eval.rank_auc(auc.df)
-ranking
+# Top tests
+
+## roc curves
+eval.roc_curve(rank$rank.tab, n = 1)
+eval.roc_curve(rank$rank.tab, n = 10)
+
+## Effects of dgp parameters on AUC of top test
+rank
+
+
 ## END OF DOC
