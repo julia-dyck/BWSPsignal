@@ -3,8 +3,6 @@
 .Rhistory
 .RData
 .Ruserdata
-^simulationstudy
-^simulationstudy_template/results_raw
 # Build artifacts
 *.o
 *.obj
