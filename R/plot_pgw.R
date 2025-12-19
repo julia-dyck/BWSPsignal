@@ -9,7 +9,7 @@
 #' @return A plot of the PDF, CDF, hazard and survival function
 #' 
 #' @examples
-#' plotpgw(scale = 2, shape = 5, powershape = 10)
+#' plot_pgw(scale = 2, shape = 5, powershape = 10)
 #'
 #'
 #' @seealso \code{\link{pgw}}
