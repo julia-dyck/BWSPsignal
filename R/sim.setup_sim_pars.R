@@ -217,7 +217,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
       stop(paste0("All parameter columns in fitpars.list$", dist," must be numeric (no characters or factors).\nSetup a fitpars.list template with sim.priors_template.\n"))
     # no remaining NA
     if (any(is.na(df[-1]))) 
-      stop(paste0("All priors in fitpars.list$", dist, " must be filled — no NA allowed.\nSetup a fitpars.list template with sim.priors_template.\n"))
+      stop(paste0("All priors in fitpars.list$", dist, " must be filled - no NA allowed.\nSetup a fitpars.list template with sim.priors_template.\n"))
   }
   
   ## for test parameters ---
@@ -343,7 +343,7 @@ sim.setup_sim_pars = function(N,                 # dgp parameters
   cat(paste0("Each combination of sample scenario and prior specification leads to a total of ",
              nrow(dgp_pars) * sum(nrow(fit_pars$w), nrow(fit_pars$dw), nrow(fit_pars$pgw)),
              " different simulation settings. ",
-             "Each simulation scenario’s data generation and posterior estimation will be repeated ", 
+             "Each simulation scenario's data generation and posterior estimation will be repeated ", 
              reps,
              " times. "))
   
