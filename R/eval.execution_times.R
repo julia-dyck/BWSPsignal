@@ -77,10 +77,10 @@ eval.execution_times = function(pc_list){
   time.summaries = dplyr::summarise(
     dplyr::group_by(time.df, tte.dist, prior.dist),
     min = min(run.min, na.rm = TRUE),
-    first_qu = quantile(run.min, 0.25, na.rm = TRUE),
-    median = median(run.min, na.rm = TRUE),
+    first_qu = stats::quantile(run.min, 0.25, na.rm = TRUE),
+    median = stats::median(run.min, na.rm = TRUE),
     mean = mean(run.min, na.rm = TRUE),
-    third_qu = quantile(run.min, 0.75, na.rm = TRUE),
+    third_qu = stats::quantile(run.min, 0.75, na.rm = TRUE),
     max = max(run.min, na.rm = TRUE),
     .groups = "drop"
   )

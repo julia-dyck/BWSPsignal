@@ -30,8 +30,6 @@ Imports:
     survival,
     furrr
 Suggests:
-    dplyr,
-    ggplot2,
     tidyr
 LinkingTo: 
     BH (>= 1.66.0),

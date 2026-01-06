@@ -50,9 +50,9 @@ fwsp_test_pgw = function(mod.output, credlevel = 1 - c(1:10/1000, 2:10/100)){
     }
     else{
       test.pgW.inside = function(alpha){
-        CI.nu = mod.output$estimate[1] + c(-1,1)*qnorm(1-alpha/2)*sqrt(varmatrix[2,2])
+        CI.nu = mod.output$estimate[1] + c(-1,1)*stats::qnorm(1-alpha/2)*sqrt(varmatrix[2,2])
         rej.nu = as.numeric(0 <= CI.nu[1] | CI.nu[2] <= 0) #here: 1 if rejected, 0 if not rejected
-        CI.gamma = mod.output$estimate[2] + c(-1,1)*qnorm(1-alpha/2)*sqrt(varmatrix[3,3])
+        CI.gamma = mod.output$estimate[2] + c(-1,1)*stats::qnorm(1-alpha/2)*sqrt(varmatrix[3,3])
         rej.gamma = as.numeric(0 <= CI.gamma[1] | CI.gamma[2] <= 0)
         return(c(rej.nu, rej.gamma))
       }
