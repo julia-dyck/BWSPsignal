@@ -1,16 +1,18 @@
-^BWSPsignal\.Rproj$
+^WSPsignal\.Rproj$
 ^\.Rproj\.user$
-^setup_Rpackage_with_stanfiles\.R$
-^test_new_stanfile_setup\.R$
+^\.Rcheck$
+
 ^\.gitignore$
 .Rhistory
 ^simulationstudy$
-^simulationstudy_template$
+^simulationstudy_demo$
+^simulation_comparative$
 ^\.github$
-manual_creation_for_RPackages.R
 
+manual_creation_for_RPackages.R
+^setup_Rpackage_with_stanfiles\.R$
+^test_new_stanfile_setup\.R$
 
 ^src/.*\.(o|obj|so|dll|exe)$
 ^.*\.(o|obj|so|dll|exe)$
-^\.Rproj\.user$
-^\.Rcheck$
+
