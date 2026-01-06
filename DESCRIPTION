@@ -29,6 +29,10 @@ Imports:
     ggplot2,
     survival,
     furrr
+Suggests:
+    dplyr,
+    ggplot2,
+    tidyr
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
