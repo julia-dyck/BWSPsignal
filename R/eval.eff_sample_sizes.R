@@ -6,7 +6,7 @@
 #' for HDI+ROPE testing (along with other diagnostics such as 
 #' \code{\link{eval.non_conv_cases}} and \code{\link{eval.execution_times}}).
 #'
-#' @param pc_list a list containing simulation parameters (see \code{\link{sim.setup_simpars}})
+#' @param pc_list a list containing simulation parameters (see \code{\link{sim.setup_sim_pars}})
 #' @param threshold numeric threshold for effective sample size acceptable for 
 #' HDI+ROPE testing (10000 by default as recommended by \insertCite{kruschke2015;textual}{WSPsignal})
 #'

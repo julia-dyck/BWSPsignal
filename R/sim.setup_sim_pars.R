@@ -29,11 +29,11 @@
 #' @param batch.size number of simulation repetitions to be saved in a batch (see details); default is 10
 #' @param resultpath directory where intermediate results of the simulation
 #' are saved
-#' @param stanmod.chains number of Markov chains (see \code{\link[rstan]{rstan::sampling}}); default is 4
+#' @param stanmod.chains number of Markov chains (see \code{\link[rstan]{sampling}}); default is 4
 #' @param stanmod.iter total number of iterations per chain including warmup 
-#' (see \code{\link[rstan]{rstan::sampling}}); default is 11000
+#' (see \code{\link[rstan]{sampling}}); default is 11000
 #' @param stanmod.warmup number of warmup (aka burnin) iterations per chain 
-#' (see \code{\link[rstan]{rstan::sampling}}); default is 1000
+#' (see \code{\link[rstan]{sampling}}); default is 1000
 #' 
 #' 
 #' @details
@@ -66,7 +66,7 @@
 #' Batch saving is done to prevent losing simulation results in case of an
 #' interruption of simulation e.g. due to termination of the R session.
 #' Posterior sampling specifications encompass the number of chains, iterations and 
-#' the length of the warmup phase. See \code{\link[rstan]{rstan::sampling}} for 
+#' the length of the warmup phase. See \code{\link[rstan]{sampling}} for 
 #' more details on the posterior estimation function.
 #' 
 #' @references 

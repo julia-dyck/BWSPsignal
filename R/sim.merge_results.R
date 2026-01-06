@@ -3,7 +3,7 @@
 #' Merges result table batches from simulation study obtained from using 
 #' \code{\link{sim.run}} or \code{\link{sim.run_parallel}}.
 #'
-#' @param pc_list list of parameter combinations obtained from \link{sim.setup_simpars}
+#' @param pc_list list of parameter combinations obtained from \link{sim.setup_sim_pars}
 #' @param save if \code{TRUE} (default), merged table is saved as res_b.RData or res_f.RData
 #' in same path where batches are stored; 
 #' else, it is returned to global environment
@@ -18,7 +18,7 @@
 #'       \item posterior summary statistics and percentiles (ie information on the 
 #'       posterior distribution) for each shape parameter and 
 #'       \item posterior credibility 
-#'       intervals (as specified in \code{$test} list element obtained from \link{sim.setup_simpars}).
+#'       intervals (as specified in \code{$test} list element obtained from \link{sim.setup_sim_pars}).
 #'       }
 #'       
 #'       

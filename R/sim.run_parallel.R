@@ -4,7 +4,7 @@
 #' specified in pc_list. If part of the simulations is already run and saved in the 
 #' detemined resultpath, only missing simulations are run and saved.
 #' 
-#' Simulation runs can be parallelized using the \code{\link[future]{future::plan}} 
+#' Simulation runs can be parallelized using the \code{\link[future]{plan}} 
 #' command (see example).
 #' 
 #' @param pc_list list of parameter combinations obtained from \code{\link{sim.setup_sim_pars}}
