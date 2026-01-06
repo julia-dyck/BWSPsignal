@@ -25,7 +25,7 @@ The output provides the base for a ranking of tests (see \code{\link{eval.rank_a
 }
 \details{
 Based the merged simulation results (obtained with
-\code{\link{sim.merge.results}}), the function performs WSP tests for all
+\code{\link{sim.merge_results}}), the function performs WSP tests for all
 specified test setups - for Bayesian tests depending on the combination of posterior
 credibility interval (CI) type, credibility level and the sensitivity option
 (see \code{\link{bwsp_test}} and \code{pc_list$test}); for frequentist tests
@@ -60,7 +60,7 @@ The AUC is the area under the receiver operating characteristic (ROC)
 graph \insertCite{fawcett2004}{WSPsignal}.
 Here, we use the ROC curve with one threshold based on equal numbers
 of ADR-positive and control
-scenarios. It is computed using the \code{\link[ROCR]{ROCR::performance}} function.
+scenarios. It is computed using the \code{\link[ROCR]{performance}} function.
 
 }
 }

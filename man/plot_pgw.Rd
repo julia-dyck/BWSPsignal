@@ -22,7 +22,7 @@ A plot of the PDF, CDF, hazard and survival function
 Visualize the power generalized Weibull distribution
 }
 \examples{
-plotpgw(scale = 2, shape = 5, powershape = 10)
+plot_pgw(scale = 2, shape = 5, powershape = 10)
 
 
 }

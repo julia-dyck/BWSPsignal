@@ -7,7 +7,7 @@
 sim.merge_results(pc_list, save = T, bayes = T)
 }
 \arguments{
-\item{pc_list}{list of parameter combinations obtained from \link{sim.setup_simpars}}
+\item{pc_list}{list of parameter combinations obtained from \link{sim.setup_sim_pars}}
 
 \item{save}{if \code{TRUE} (default), merged table is saved as res_b.RData or res_f.RData
 in same path where batches are stored;
@@ -25,7 +25,7 @@ contain
 \item posterior summary statistics and percentiles (ie information on the
 posterior distribution) for each shape parameter and
 \item posterior credibility
-intervals (as specified in \code{$test} list element obtained from \link{sim.setup_simpars}).
+intervals (as specified in \code{$test} list element obtained from \link{sim.setup_sim_pars}).
 }
 }
 \description{

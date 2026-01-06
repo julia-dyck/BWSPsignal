@@ -60,13 +60,13 @@ of region of practical equivalence (ROPE) and posterior CI}
 \item{resultpath}{directory where intermediate results of the simulation
 are saved}
 
-\item{stanmod.chains}{number of Markov chains (see \code{\link[rstan]{rstan::sampling}}); default is 4}
+\item{stanmod.chains}{number of Markov chains (see \code{\link[rstan]{sampling}}); default is 4}
 
 \item{stanmod.iter}{total number of iterations per chain including warmup
-(see \code{\link[rstan]{rstan::sampling}}); default is 11000}
+(see \code{\link[rstan]{sampling}}); default is 11000}
 
 \item{stanmod.warmup}{number of warmup (aka burnin) iterations per chain
-(see \code{\link[rstan]{rstan::sampling}}); default is 1000}
+(see \code{\link[rstan]{sampling}}); default is 1000}
 }
 \value{
 A list containing all simulation specifications in the format required for
@@ -106,7 +106,7 @@ and batch saving.
 Batch saving is done to prevent losing simulation results in case of an
 interruption of simulation e.g. due to termination of the R session.
 Posterior sampling specifications encompass the number of chains, iterations and
-the length of the warmup phase. See \code{\link[rstan]{rstan::sampling}} for
+the length of the warmup phase. See \code{\link[rstan]{sampling}} for
 more details on the posterior estimation function.
 }
 \examples{

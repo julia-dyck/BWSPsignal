@@ -7,7 +7,7 @@
 eval.eff_sample_sizes(pc_list, threshold = 10000)
 }
 \arguments{
-\item{pc_list}{a list containing simulation parameters (see \code{\link{sim.setup_simpars}})}
+\item{pc_list}{a list containing simulation parameters (see \code{\link{sim.setup_sim_pars}})}
 
 \item{threshold}{numeric threshold for effective sample size acceptable for
 HDI+ROPE testing (10000 by default as recommended by \insertCite{kruschke2015;textual}{WSPsignal})}

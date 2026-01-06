@@ -15,7 +15,7 @@ bwsp_model(
 }
 \arguments{
 \item{datstan}{named list of data for the stanmodel; tte data can be
-formated with \code{\link{tte2standat}}}
+formated with \code{\link{tte2priordat}}}
 
 \item{tte.dist}{character indicating the modelling approach; options are
 \code{"w", "dw", "pgw"} (see details)}
