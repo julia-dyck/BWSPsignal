@@ -9,12 +9,12 @@ sim.datagen_tte(genpar)
 \arguments{
 \item{genpar}{A vector containing 6 numeric elements:
 \enumerate{
-\item the sample size \eqn{N},
-\item the background rate \eqn{br} (observed in population on average),
-\item the adverse drug reaction (ADR)) rate \eqn{adr} as proportion of the background rate,
-\item the ADR mean time as relative proportion \eqn{m.rel} of the observation period (OP),
-\item the relative standard deviation \eqn{rel.sd},
-\item the length of the OP \eqn{censor}.
+\item sample size \eqn{N},
+\item background rate \eqn{br} (observed in population on average),
+\item adverse drug reaction (ADR)) rate \eqn{adr} as proportion of the background rate,
+\item relative proportion of ADR mean time \eqn{m.rel} of the observation period (OP),
+\item relative standard deviation \eqn{rel.sd},
+\item length of the OP \eqn{censor}.
 }}
 }
 \value{
@@ -38,8 +38,9 @@ For the \eqn{br} cases, the event-times are generated using a uniform distributi
 the interval \eqn{[0, censor]}. For the ADR cases, event-times are obtained from a normal
 distribution. The mean of the normal distribution is specified as relative proportion \eqn{m.rel} of the OP.
 The standard deviation is defined as \eqn{ rel.sd \cdot censor}.
-All generated event-times \eqn{\leq 0} (due to the normal distribution's support) are set to 1,
-all others are rounded to integer.
+All generated event-times \eqn{\leq 0} (due to the normal distribution's support) are set to 1.
+All generated event-times \eqn{\geq censor} (due to the normal distribution's support) resampled.
+The continuous values are rounded to integer.
 The data set is filled up with censored observations (status = 0) at time \eqn{censor}.
 
 For more details, see \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal}.

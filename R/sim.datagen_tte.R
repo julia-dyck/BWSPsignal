@@ -4,12 +4,12 @@
 #' 
 #' @param genpar A vector containing 6 numeric elements:
 #' \enumerate{
-#'       \item the sample size \eqn{N},
-#'       \item the background rate \eqn{br} (observed in population on average),
-#'       \item the adverse drug reaction (ADR)) rate \eqn{adr} as proportion of the background rate,
-#'       \item the ADR mean time as relative proportion \eqn{m.rel} of the observation period (OP),
-#'       \item the relative standard deviation \eqn{rel.sd},
-#'       \item the length of the OP \eqn{censor}.
+#'       \item sample size \eqn{N},
+#'       \item background rate \eqn{br} (observed in population on average),
+#'       \item adverse drug reaction (ADR)) rate \eqn{adr} as proportion of the background rate,
+#'       \item relative proportion of ADR mean time \eqn{m.rel} of the observation period (OP),
+#'       \item relative standard deviation \eqn{rel.sd},
+#'       \item length of the OP \eqn{censor}.
 #'             }
 #'
 #' @return A data frame of size \eqn{N} with variables \code{time} (integer) indicating 
@@ -29,8 +29,9 @@
 #' the interval \eqn{[0, censor]}. For the ADR cases, event-times are obtained from a normal
 #' distribution. The mean of the normal distribution is specified as relative proportion \eqn{m.rel} of the OP. 
 #' The standard deviation is defined as \eqn{ rel.sd \cdot censor}. 
-#' All generated event-times \eqn{\leq 0} (due to the normal distribution's support) are set to 1, 
-#' all others are rounded to integer.
+#' All generated event-times \eqn{\leq 0} (due to the normal distribution's support) are set to 1. 
+#' All generated event-times \eqn{\geq censor} (due to the normal distribution's support) resampled. 
+#' The continuous values are rounded to integer.
 #' The data set is filled up with censored observations (status = 0) at time \eqn{censor}.
 #' 
 #' For more details, see \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal}.
@@ -49,12 +50,45 @@
 
 sim.datagen_tte = function(genpar){
   genpar = as.numeric(genpar)
-  n = genpar[1]
-  br = genpar[2]
-  adr.rate = genpar[3]
+  
+  # argument checks
+  if (length(genpar) != 6L || any(!is.finite(genpar))) {
+    stop("Argument genpar must be a numeric vector of length 6 with finite values.")
+  }
+  n            = genpar[1]
+  br           = genpar[2]
+  adr.rate     = genpar[3]
   adr.quantile = genpar[4]
-  adr.relsd = genpar[5]
-  censor = genpar[6]
+  adr.relsd    = genpar[5]
+  censor       = genpar[6]
+  
+  if (n <= 0 || n != as.integer(n)) {
+    stop("N (genpar[1]) must be a positive integer.")
+  }
+  
+  if (br < 0 || br > 1) {
+    stop("br (genpar[2]) must be in [0, 1].")
+  }
+  
+  if (adr.rate < 0) {
+    stop("adr (genpar[3]) must be >= 0.")
+  }
+  
+  if (adr.quantile <= 0 || adr.quantile >= 1) {
+    stop("m.rel (genpar[4]) must be in (0, 1).")
+  }
+  
+  if (adr.relsd <= 0) {
+    stop("rel.sd (genpar[5]) must be > 0.")
+  }
+  
+  if (censor <= 0 || censor != as.integer(censor)) {
+    stop("censor (genpar[6]) must be a positive integer.")
+  }
+  
+  if (br * adr.rate > 1) {
+    stop("Invalid rates: br * adr must not exceed 1.")
+  }
 
   # Number of br & adr cases in the study
   n.br = stats::rbinom(1,n, prob = br)
@@ -69,8 +103,13 @@ sim.datagen_tte = function(genpar){
   # event time for adr event candidates
   t.adr = stats::rnorm(n.adr, mean = m.adr, sd = sd.adr)
   # adjustment for negative time points
-  if(sum(t.adr<=0)>0){
-    t.adr[t.adr<=0] = 1
+  if(sum(t.adr <= 0) > 0){
+    t.adr[t.adr <= 0] = 1
+  }
+  # adjustment for time points after censoring
+  while(sum(t.adr > censor) > 0){
+    ind = which(t.adr > censor)
+    t.adr[ind] = stats::rnorm(length(ind), mean = m.adr, sd = sd.adr)
   }
   # number of events in the observation period
   n.events = length(c(t.br, t.adr))
@@ -84,3 +123,4 @@ sim.datagen_tte = function(genpar){
 
   return(data = dat)
 }
+
