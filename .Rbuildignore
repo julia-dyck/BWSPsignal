@@ -13,6 +13,8 @@ manual_creation_for_RPackages.R
 ^setup_Rpackage_with_stanfiles\.R$
 ^test_new_stanfile_setup\.R$
 
+^WSPsignal\.pdf$
+
 ^src/.*\.(o|obj|so|dll|exe)$
 ^.*\.(o|obj|so|dll|exe)$
 
