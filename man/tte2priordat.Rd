@@ -20,9 +20,11 @@ tte2priordat(
 )
 }
 \arguments{
-\item{dat}{matrix or data frame with time in the first column and event status in the second column}
+\item{dat}{matrix or data frame with time in the first column and event status
+in the second column}
 
-\item{tte.dist}{character indicating the modelling approach; options are \code{"w"}, \code{"dw"}, \code{"pgw"}}
+\item{tte.dist}{character indicating the modelling approach; options are \code{"w"},
+\code{"dw"}, \code{"pgw"}}
 
 \item{scale.mean}{prior mean of the scale parameter}
 
@@ -32,17 +34,23 @@ tte2priordat(
 
 \item{shape.sd}{prior sd of the shape parameter}
 
-\item{scale_c.mean}{prior mean of the scale parameter for censored-at-half data (only for \code{tte.dist="dw"})}
+\item{scale_c.mean}{prior mean of the scale parameter for censored-at-half data
+(only for \code{tte.dist="dw"})}
 
-\item{scale_c.sd}{prior sd of the scale parameter for censored-at-half data (only for \code{tte.dist="dw"})}
+\item{scale_c.sd}{prior sd of the scale parameter for censored-at-half data
+(only for \code{tte.dist="dw"})}
 
-\item{shape_c.mean}{prior mean of the shape parameter for censored-at-half data (only for \code{tte.dist="dw"})}
+\item{shape_c.mean}{prior mean of the shape parameter for censored-at-half data
+(only for \code{tte.dist="dw"})}
 
-\item{shape_c.sd}{prior sd of the shape parameter for censored-at-half data (only for \code{tte.dist="dw"})}
+\item{shape_c.sd}{prior sd of the shape parameter for censored-at-half data
+(only for \code{tte.dist="dw"})}
 
-\item{powershape.mean}{prior mean of the power shape parameter (only for \code{tte.dist="pgw"})}
+\item{powershape.mean}{prior mean of the power shape parameter (only for
+\code{tte.dist="pgw"})}
 
-\item{powershape.sd}{prior sd of the power shape parameter (only for \code{tte.dist="pgw"})}
+\item{powershape.sd}{prior sd of the power shape parameter (only for
+\code{tte.dist="pgw"})}
 }
 \value{
 A named list in the format expected by \code{\link{bwsp_model}}.
@@ -63,8 +71,8 @@ Only the parameters relevant to the chosen \code{tte.dist} must be provided, tha
 
 Prior means suitable to reflect the prior belief can be worked out by plotting the
 hazard and estimating the expected event time under different parameter combinations
-using \code{\link{plot_pgw}}(\code{powershape = 1} reduces the power generalized Weibull distribution
-to Weibull) or \url{https://janoleko.shinyapps.io/pgwd/}.
+using \code{\link{plot_pgw}}(\code{powershape = 1} reduces the power
+generalized Weibull distribution to Weibull) or \url{https://janoleko.shinyapps.io/pgwd/}.
 
 Prior standard deviations should reflect the uncertainty about the prior belief
 (i.e. set smaller standard deviation in case of high certainty about prior belief vs. larger
@@ -72,10 +80,19 @@ standard deviation in case of low certainty).
 }
 \examples{
 
-tte2priordat(dat = tte, tte.dist = "w", scale.mean = 10, scale.sd = 2, shape.mean = 1.5, shape.sd = 15)
-tte2priordat(dat = tte, tte.dist = "dw", scale.mean = 10, scale.sd = 2, shape.mean = 1.5, shape.sd = 15,
-            scale_c.mean = 5, scale_c.sd = 1, shape_c.mean = 1, shape_c.sd = 10)
-tte2priordat(dat = tte, tte.dist = "pgw", scale.mean = 10, scale.sd = 2, shape.mean = 1.5, shape.sd = 15,
+tte2priordat(dat = tte, tte.dist = "w", 
+             scale.mean = 10, scale.sd = 2, 
+             shape.mean = 1.5, shape.sd = 15)
+             
+tte2priordat(dat = tte, tte.dist = "dw", 
+             scale.mean = 10, scale.sd = 2, 
+             shape.mean = 1.5, shape.sd = 15,
+             scale_c.mean = 5, scale_c.sd = 1, 
+             shape_c.mean = 1, shape_c.sd = 10)
+             
+tte2priordat(dat = tte, tte.dist = "pgw", 
+             scale.mean = 10, scale.sd = 2, 
+             shape.mean = 1.5, shape.sd = 15,
              powershape.mean = 3, powershape.sd = 20)
 
 

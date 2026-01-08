@@ -27,7 +27,8 @@
 #'
 #' For the \eqn{br} cases, the event-times are generated using a uniform distribution on
 #' the interval \eqn{[0, censor]}. For the ADR cases, event-times are obtained from a normal
-#' distribution. The mean of the normal distribution is specified as relative proportion \eqn{m.rel} of the OP. 
+#' distribution. The mean of the normal distribution is specified as relative proportion
+#' \eqn{m.rel} of the OP. 
 #' The standard deviation is defined as \eqn{ rel.sd \cdot censor}. 
 #' All generated event-times \eqn{\leq 0} (due to the normal distribution's support) are set to 1. 
 #' All generated event-times \eqn{\geq censor} (due to the normal distribution's support) resampled. 

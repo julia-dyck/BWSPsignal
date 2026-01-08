@@ -53,7 +53,8 @@ or a power generalized Weibull \code{("pgw")} model.
 The posterior is proportional to the likelihood times the prior. The likelihood is
 \deqn{\mathcal{L}(t| \Theta) = \prod_{i=1}^N S(t_i)^{1-d_i}\cdot f(t_i)^{d_i}}
 with \eqn{S(t)} the survival function of the chosen distribution and \eqn{f(t)} the
-density function \insertCite{nikulin2016}{WSPsignal}. The pair \eqn{(t_i, d_i)} are the tte observations.
+density function \insertCite{nikulin2016}{WSPsignal}. The pair \eqn{(t_i, d_i)}
+are the tte observations.
 
 Implemented prior distributions for the scale and shape parameters are products
 of the following univariate distributional choices:

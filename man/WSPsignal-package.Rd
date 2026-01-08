@@ -10,7 +10,8 @@ An R package to perform Bayesian Weibull Shape Parameter (BWSP)
 tests for signal detection.
 }
 \references{
-Stan Development Team (NA). RStan: the R interface to Stan. R package version 2.32.6. https://mc-stan.org
+Stan Development Team (NA). RStan: the R interface to Stan.
+R package version 2.32.6. https://mc-stan.org
 }
 \author{
 \strong{Maintainer}: Julia Dyck \email{j.dyck@uni-bielefeld.de}

@@ -22,7 +22,8 @@ following bisphosphonate intake.
 The data was generated using
 \code{\link{sim.datagen_tte}}
 with parameters
-derived from the case study presented in \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal}.
+derived from the case study presented in \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal},
+namely N = ...
 }
 \references{
 \insertAllCited{}

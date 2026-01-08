@@ -24,12 +24,15 @@
 #' credibilty interval (CI) for BWSP testing (see \code{\link{bwsp_test}} details)
 #' @param cred.level vector of credibility levels used for construction
 #' of region of practical equivalence (ROPE) and posterior CI
-#' @param sensitivity.option vector of sensitivity options for the BWSP test (see \code{\link{bwsp_test}})
+#' @param sensitivity.option vector of sensitivity options for the BWSP test 
+#' (see \code{\link{bwsp_test}})
 #' @param reps number of repetitions for each simulation scenario, default is 100
-#' @param batch.size number of simulation repetitions to be saved in a batch (see details); default is 10
+#' @param batch.size number of simulation repetitions to be saved in a batch (see details); 
+#' default is 10
 #' @param resultpath directory where intermediate results of the simulation
 #' are saved
-#' @param stanmod.chains number of Markov chains (see \code{\link[rstan]{sampling}}); default is 4
+#' @param stanmod.chains number of Markov chains (see \code{\link[rstan]{sampling}}); 
+#' default is 4
 #' @param stanmod.iter total number of iterations per chain including warmup 
 #' (see \code{\link[rstan]{sampling}}); default is 11000
 #' @param stanmod.warmup number of warmup (aka burnin) iterations per chain 

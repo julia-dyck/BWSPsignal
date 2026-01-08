@@ -15,6 +15,7 @@
 #' @importFrom Rdpack reprompt
 #'
 #' @references
-#' Stan Development Team (NA). RStan: the R interface to Stan. R package version 2.32.6. https://mc-stan.org
+#' Stan Development Team (NA). RStan: the R interface to Stan. 
+#' R package version 2.32.6. https://mc-stan.org
 #'
 NULL

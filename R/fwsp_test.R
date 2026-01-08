@@ -8,10 +8,11 @@
 #' @param mod.output estimation output resulting from \code{\link{fwsp_model}}
 #' @param tte.dist character indicating the modelling approach; options are
 #' \code{"w", "dw", "pgw"}
-#' @param credlevel numeric or vector of credibility levels (i.e. 1 - significance level) for the test(s) to be performed 
+#' @param credlevel numeric or vector of credibility levels (i.e. 1 - significance level) 
+#' for the test(s) to be performed 
 #' 
-#' @return binary vector, 0 if \eqn{H_0} is accepted, 1 if \eqn{H_1} is rejected; see details for definition
-#' of \eqn{H_0} and \eqn{H_1}
+#' @return binary vector, 0 if \eqn{H_0} is accepted, 1 if \eqn{H_1} is rejected; 
+#' see details for definition of \eqn{H_0} and \eqn{H_1}
 #' 
 #' @details This function tests the null hypothesis that the shape parameter(s) of the
 #' Weibull family distribution are equal to one.

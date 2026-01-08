@@ -15,20 +15,21 @@ bwsp_test(
 \item{credregion}{vector of length 2 or 4 with the lower and upper boundaries of the
 credibility interval (CI) reflecting the posterior distribution of the shape
 parameter(s); required order: 1. lower CI boundary of first shape parameter,
-2. upper CI boundary of first shape parameter; and if existent: 3. lower CI boundary of second shape parameter,
-4. upper CI boundary of second shape parameter}
+2. upper CI boundary of first shape parameter; and if existent: 3. lower CI
+boundary of second shape parameter, 4. upper CI boundary of second shape parameter}
 
 \item{nullregion}{vector of length 2 or 4 with the lower and upper boundaries of the
 region of practical equivalence (ROPE) reflecting the null hypothesis region of the shape
 parameter(s); required order: 1. lower ROPE boundary of first shape parameter,
-2. upper ROPE boundary of first shape parameter; and if existent: 3. lower ROPE boundary of second shape parameter,
-4. upper ROPE boundary of second shape parameter}
+2. upper ROPE boundary of first shape parameter; and if existent: 3. lower ROPE
+boundary of second shape parameter, 4. upper ROPE boundary of second shape parameter}
 
 \item{tte.dist}{character specifying the modelling
 approach used to obtain the posterior samples; options are \code{"w", "dw", "pgw"};}
 
 \item{option}{numeric value out of \code{1,2,3}; rule to be used to deduct a
-binary outcome (signal/no signal) from the HDI+ROPE test results of each shape parameter (see details)}
+binary outcome (signal/no signal) from the HDI+ROPE test results of each shape
+parameter (see details)}
 }
 \value{
 binary, 0 if \eqn{H_0} is accepted, 1 if \eqn{H_1} is rejected; see details for definition
@@ -80,7 +81,8 @@ based on the quantiles \eqn{q} of the shape parameters' prior distributions unde
 For the posterior CI, we recommend either an ETI at the same credibility level obtained from
 the empirical quantiles of the posterior distribution per shape parameter
 or a highest density interval (HDI, \insertCite{kruschke2015;textual}{WSPsignal})
-\deqn{HDI(\nu) = \{\nu \; |\; p_1(\nu) \geq w\} \text{ with } w\in [0,1] \text{ such that} \int_{\nu \; | \; p_1(\nu) \geq w} p_1(\nu|t)\;  d\nu = 1 - \alpha}
+\deqn{HDI(\nu) = \{\nu \; |\; p_1(\nu) \geq w\} \text{ with } w\in [0,1] 
+\text{ such that} \int_{\nu \; | \; p_1(\nu) \geq w} p_1(\nu|t)\;  d\nu = 1 - \alpha}
 at the same credibility level.
 See Examples for exemplary ROPE and post CI setup in R.
 Best choices for ROPE and CI can be obtained from a simulation study to tune the

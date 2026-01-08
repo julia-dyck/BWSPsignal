@@ -51,16 +51,19 @@ credibilty interval (CI) for BWSP testing (see \code{\link{bwsp_test}} details)}
 \item{cred.level}{vector of credibility levels used for construction
 of region of practical equivalence (ROPE) and posterior CI}
 
-\item{sensitivity.option}{vector of sensitivity options for the BWSP test (see \code{\link{bwsp_test}})}
+\item{sensitivity.option}{vector of sensitivity options for the BWSP test
+(see \code{\link{bwsp_test}})}
 
 \item{reps}{number of repetitions for each simulation scenario, default is 100}
 
-\item{batch.size}{number of simulation repetitions to be saved in a batch (see details); default is 10}
+\item{batch.size}{number of simulation repetitions to be saved in a batch (see details);
+default is 10}
 
 \item{resultpath}{directory where intermediate results of the simulation
 are saved}
 
-\item{stanmod.chains}{number of Markov chains (see \code{\link[rstan]{sampling}}); default is 4}
+\item{stanmod.chains}{number of Markov chains (see \code{\link[rstan]{sampling}});
+default is 4}
 
 \item{stanmod.iter}{total number of iterations per chain including warmup
 (see \code{\link[rstan]{sampling}}); default is 11000}
