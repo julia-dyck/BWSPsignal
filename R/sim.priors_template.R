@@ -74,7 +74,9 @@ sim.priors_template = function(tte.dist = c("w", "dw", "pgw"),
   placeholder = rep(NA, length(pb))
   sds.filler = rep(NA, length(pb))
   if(!is.null(prior.sds)){
-    sds.filler = rep(prior.sds, length(pb))
+    nr.sds = length(prior.sds)
+    
+    sds.filler = rep(prior.sds, each = length(pb)) # TODO: setup vector with sd1 4 times, sd2 4 times, ..., last sd value 4 times
   }
   
   prior_list = list()
