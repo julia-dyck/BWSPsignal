@@ -31,7 +31,7 @@
 #' \eqn{m.rel} of the OP. 
 #' The standard deviation is defined as \eqn{ rel.sd \cdot censor}. 
 #' All generated event-times \eqn{\leq 0} (due to the normal distribution's support) are set to 1. 
-#' All generated event-times \eqn{\geq censor} (due to the normal distribution's support) resampled. 
+#' All generated event-times \eqn{\geq censor} are censored retroactively. 
 #' The continuous values are rounded to integer.
 #' The data set is filled up with censored observations (status = 0) at time \eqn{censor}.
 #' 
@@ -108,9 +108,9 @@ sim.datagen_tte = function(genpar){
     t.adr[t.adr <= 0] = 1
   }
   # adjustment for time points after censoring
-  while(sum(t.adr > censor) > 0){
+  if(sum(t.adr > censor) > 0){
     ind = which(t.adr > censor)
-    t.adr[ind] = stats::rnorm(length(ind), mean = m.adr, sd = sd.adr)
+    t.adr = t.adr[-ind]
   }
   # number of events in the observation period
   n.events = length(c(t.br, t.adr))

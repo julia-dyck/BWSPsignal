@@ -40,7 +40,7 @@ distribution. The mean of the normal distribution is specified as relative propo
 \eqn{m.rel} of the OP.
 The standard deviation is defined as \eqn{ rel.sd \cdot censor}.
 All generated event-times \eqn{\leq 0} (due to the normal distribution's support) are set to 1.
-All generated event-times \eqn{\geq censor} (due to the normal distribution's support) resampled.
+All generated event-times \eqn{\geq censor} are censored retroactively.
 The continuous values are rounded to integer.
 The data set is filled up with censored observations (status = 0) at time \eqn{censor}.
 
