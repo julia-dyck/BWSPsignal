@@ -53,8 +53,8 @@ sim.datagen_tte = function(genpar){
   genpar = as.numeric(genpar)
   
   # argument checks
-  if (length(genpar) != 6L || any(!is.finite(genpar))) {
-    stop("Argument genpar must be a numeric vector of length 6 with finite values.")
+  if (length(genpar) != 6L) {
+    stop("Argument genpar must be a vector of length 6 with finite values.")
   }
   n            = genpar[1]
   br           = genpar[2]
@@ -75,11 +75,17 @@ sim.datagen_tte = function(genpar){
     stop("adr (genpar[3]) must be >= 0.")
   }
   
-  if (adr.quantile <= 0 || adr.quantile >= 1) {
+  if (adr.rate > 0) {
+    if (is.na(adr.quantile) || is.na(adr.relsd)) {
+      stop("If adr > 0, m.rel and rel.sd must be provided (not NA).")
+    }
+  }
+  
+  if (!is.na(adr.quantile) && (adr.quantile <= 0 || adr.quantile >= 1)) {
     stop("m.rel (genpar[4]) must be in (0, 1).")
   }
   
-  if (adr.relsd <= 0) {
+  if (!is.na(adr.relsd) && adr.relsd <= 0) {
     stop("rel.sd (genpar[5]) must be > 0.")
   }
   
