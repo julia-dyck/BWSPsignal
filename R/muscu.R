@@ -12,10 +12,10 @@
 #'
 #' @details
 #' The data was generated using 
-#' \code{\link{sim.datagen_tte}} 
-#' with parameters
-#' derived from the case study presented in \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal}, 
-#' namely N = ...
+#' \code{\link{sim.datagen_tte(genpar = c(19777, 0.009, (0.017 - 0.009)/0.009, 160/365, 99/365, 365))}} 
+#' with parameters derived from the case study presented in 
+#' \insertCite{dyck2024bpgwsppreprint;textual}{WSPsignal}.
+#' 
 #'
 #' @seealso \code{\link{sim.datagen_tte}}
 #' @references \insertAllCited{}
