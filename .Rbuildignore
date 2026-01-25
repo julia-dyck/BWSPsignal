@@ -18,3 +18,5 @@ manual_creation_for_RPackages.R
 ^src/.*\.(o|obj|so|dll|exe)$
 ^.*\.(o|obj|so|dll|exe)$
 
+make_sticker.R
+flag.png

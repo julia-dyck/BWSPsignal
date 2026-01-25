@@ -13,3 +13,4 @@
 # R package build / check
 .Rcheck/
 install_log.txt
+
