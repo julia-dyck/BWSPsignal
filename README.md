@@ -1,4 +1,4 @@
-# WSPsignal
+# WSPsignal <img src="man/figures/Logo_WSPsignal.png" align="right" style="height:170px; width:auto;">
 
 The family of Weibull Shape Parameter (WSP) tests was developed to perform signal detection for adverse event monitoring based on electronic health records.
 
