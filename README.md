@@ -25,8 +25,8 @@ Rcpp::compileAttributes(verbose = T)
 pkgbuild::compile_dll(force = T, debug = F) 
 devtools::install_github(repo = "julia-dyck/WSPsignal") 
 ```
-and apply commands in "WSPsignal/simulation_comparative/conduction_comp" (adjustment of file paths might be necessary, simulation can take long dep. on local device).
+and apply commands in "WSPsignal/simulation_comparative/conduction_comp" (adjustment of file paths necessary, simulation can take long depending on local device).
 
-## Tuning of the PgWSP test for your purpose
-To tune the PgWSP test for your application, you can use the folder in "WSPsignal/simulation_comparative" as template, and adjust sample scenarios, and test alternatives accordingly.
+## Tuning of the WSP test for your purpose
+To tune the WSP test for your application, you can use the folder in "WSPsignal/simulation_comparative" as template, and adjust sample scenarios as well as test alternatives accordingly.
 
